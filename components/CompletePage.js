@@ -3,6 +3,7 @@ import { styled } from '@mui/system';
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import axios from 'axios';
 import { IoLogoGithub, IoLogoLinkedin } from 'react-icons/io';
+import { useMediaQuery } from 'react-responsive';
 import imageUrl from './myimageraj.jpg';
 
 const StyledAppBar = styled(AppBar)({
@@ -35,7 +36,6 @@ const NavItem = styled('li')({
   alignItems: 'center',
 });
 
-
 const NavLink = styled('a')({
   color: '#ecf0f1',
   textDecoration: 'none',
@@ -55,8 +55,8 @@ const NavLink = styled('a')({
   },
 });
 
-const HomeSection = styled('div')({
-  margin: '0 10%',
+const HomeSection = styled('div')(({ isMobile }) => ({
+  margin: isMobile ? '0 5%' : '0 10%',
   backgroundColor: '#eef4f7',
   padding: '20px',
   borderRadius: '8px',
@@ -65,29 +65,27 @@ const HomeSection = styled('div')({
   gridTemplateColumns: '1fr',
   gap: '20px',
   fontFamily: 'Montserrat, sans-serif',
-});
+}));
 
-const UserGrid = styled('div')({
+const UserGrid = styled('div')(({ isMobile }) => ({
   display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between', // Space between elements
+  flexDirection: isMobile ? 'column' : 'row',
+  justifyContent: 'space-between',
   alignItems: 'center',
   marginTop: '100px',
   marginBottom: '120px',
   fontFamily: 'Montserrat, sans-serif',
 
   '& > *': {
-    flexBasis: '50%',
-    textAlign: 'left', // Align text to the left within its container
+    flexBasis: isMobile ? '100%' : '50%',
+    textAlign: isMobile ? 'center' : 'left',
   },
 
   '& > img': {
-    maxWidth: '40%', // Ensure the image does not overflow
-    borderRadius: '50%', // Keep the circular shape
+    maxWidth: isMobile ? '60%' : '40%',
+    borderRadius: '50%',
   },
-});
-
-
+}));
 
 const StyledImage = styled('img')({
   width: '100%',
@@ -110,7 +108,6 @@ const EducationGrid = styled('div')({
   alignItems: 'center',
   fontFamily: 'Montserrat, sans-serif',
 });
-
 
 const LoaderWrapper = styled('div')({
   position: 'fixed',
@@ -149,9 +146,9 @@ const Loader = styled('div')({
   },
 });
 
-const StyledH1 = styled('h1')({
+const StyledH1 = styled('h1')(({ isMobile }) => ({
   padding: '0px',
-  fontSize: '95px',
+  fontSize: isMobile ? '40px' : '95px',
   margin: '15px 0px 0px 0px',
   fontWeight: 'bold',
   background: 'linear-gradient(to right, #4c65bc, #ADEFD1FF)',
@@ -162,15 +159,15 @@ const StyledH1 = styled('h1')({
     backgroundPosition: '100% 0%',
   },
   fontFamily: 'Montserrat, sans-serif',
-});
+}));
 
-const JobTitle = styled('p')({
+const JobTitle = styled('p')(({ isMobile }) => ({
   margin: '3px 3px 3px 0px',
-  fontSize: '40px',
+  fontSize: isMobile ? '20px' : '40px',
   fontWeight: 'bold',
   color: '#2c3e50',
   fontFamily: 'Montserrat, sans-serif',
-});
+}));
 
 const EducationCard = styled('div')({
   backgroundColor: '#d5deed',
@@ -211,15 +208,6 @@ const EducationCard = styled('div')({
     },
   },
 
-  '@media (max-width: 768px)': {
-    padding: '24px',
-  },
-
-  '@media (max-width: 576px)': {
-    padding: '18px',
-  },
-
-  // Styling the h3 element
   '& h3': {
     fontSize: '1.75rem',
     fontWeight: 'bold',
@@ -227,7 +215,6 @@ const EducationCard = styled('div')({
     color: '#2c3e50',
   },
 
-  // Styling the p elements
   '& p': {
     fontSize: '1.1rem',
     margin: '10px 0',
@@ -473,6 +460,7 @@ const Timeline = styled('div')({
     },
   },
 });
+
 const ProjectsTab = styled('div')`
   html, body {
     height: 100%;
@@ -607,7 +595,6 @@ const Certificates = styled('div')({
   fontFamily: 'Montserrat, sans-serif',
 });
 
-
 const List = styled('div')({
   fontFamily: 'Montserrat, sans-serif',
 
@@ -660,7 +647,7 @@ const List = styled('div')({
 });
 
 const FooterContainer = styled('footer')({
-  position: 'absolute',
+  position: 'relative',
   width: '100%',
   background: '#274c77',
   minHeight: '200px',
@@ -789,6 +776,8 @@ const CompletePage = () => {
   const [indicatorStyle, setIndicatorStyle] = useState({});
   const [showFullDescription, setShowFullDescription] = useState({});
 
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+
   const homeRef = useRef(null);
   const educationRef = useRef(null);
   const experienceRef = useRef(null);
@@ -908,18 +897,18 @@ const CompletePage = () => {
           <Loader />
         </LoaderWrapper>
       ) : error ? (
-        <HomeSection ref={homeRef}>
+        <HomeSection isMobile={isMobile} ref={homeRef}>
           <p>{error}</p>
         </HomeSection>
       ) : (
-        <HomeSection ref={homeRef}>
-          <UserGrid>
+        <HomeSection isMobile={isMobile} ref={homeRef}>
+          <UserGrid isMobile={isMobile}>
             <div>
               <h1>Hello! This is</h1>
-              <StyledH1>
+              <StyledH1 isMobile={isMobile}>
                 {userData.firstName} {userData.lastName}
               </StyledH1>
-              <JobTitle>A {userData.jobTitle}</JobTitle>
+              <JobTitle isMobile={isMobile}>A {userData.jobTitle}</JobTitle>
               <p>{userData.summary}</p>
             </div>
             <StyledImage
