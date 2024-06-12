@@ -13,7 +13,7 @@ const StyledAppBar = styled(AppBar)(({ isMobile }) => ({
   color: '#ecf0f1',
   opacity: '0.75',
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'left',
   justifyContent: isMobile ? 'space-between' : 'space-around',
   padding: isMobile ? '0 10px' : '0 20px',
 }));
