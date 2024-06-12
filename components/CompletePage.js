@@ -1,24 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { styled } from '@mui/system';
-import { AppBar, Toolbar, Typography } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import axios from 'axios';
 import { IoLogoGithub, IoLogoLinkedin } from 'react-icons/io';
 import { useMediaQuery } from 'react-responsive';
 import imageUrl from './myimageraj.jpg';
 
-const StyledAppBar = styled(AppBar)({
+// Adding viewport meta tag to disable zoom/pinch actions
+const addViewportMetaTag = () => {
+  const meta = document.createElement('meta');
+  meta.name = 'viewport';
+  meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
+  document.getElementsByTagName('head')[0].appendChild(meta);
+};
+addViewportMetaTag();
+
+const StyledAppBar = styled(AppBar)(({ isMobile }) => ({
   background: '#274c77',
   fontFamily: 'Montserrat, sans-serif',
   color: '#ecf0f1',
   opacity: '0.75',
   display: 'flex',
-  alignItems: 'left',
-  justifyContent: 'space-between',
-  padding: '0 20px',
-});
+  alignItems: 'center',
+  justifyContent: isMobile ? 'space-between' : 'space-around',
+  padding: isMobile ? '0 10px' : '0 20px',
+}));
 
-const NavLinks = styled('ul')({
-  display: 'flex',
+const NavLinks = styled('ul')(({ isMobile }) => ({
+  display: isMobile ? 'none' : 'flex',
   alignItems: 'center',
   listStyle: 'none',
   margin: 0,
@@ -26,7 +36,7 @@ const NavLinks = styled('ul')({
   color: '#ecf0f1',
   fontFamily: 'Montserrat, sans-serif',
   flexWrap: 'wrap',
-});
+}));
 
 const NavItem = styled('li')({
   marginRight: '20px',
@@ -230,7 +240,6 @@ const EducationCard = styled('div')({
   mixBlendMode: 'multiply', 
   backgroundColor: 'transparent', 
 },
-
 });
 
 const Dots = styled('div')`
@@ -262,6 +271,7 @@ const Arrow = styled('div')`
     transform: scale(1.1);
   }
 `;
+
 const Timeline = styled('div')({
   display: 'flex',
   flexDirection: 'column',
@@ -868,12 +878,12 @@ const CompletePage = () => {
 
   return (
     <>
-      <StyledAppBar position="sticky">
+      <StyledAppBar position="sticky" isMobile={isMobile}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             DR
           </Typography>
-          <NavLinks>
+          <NavLinks isMobile={isMobile}>
             <NavItem>
               <NavLink onClick={() => scrollToSection(homeRef)}>Home</NavLink>
             </NavItem>
@@ -890,6 +900,11 @@ const CompletePage = () => {
               <NavLink onClick={() => scrollToSection(certificationRef)}>Certifications</NavLink>
             </NavItem>
           </NavLinks>
+          {isMobile && (
+            <IconButton color="inherit" edge="end">
+              <MenuIcon />
+            </IconButton>
+          )}
         </Toolbar>
       </StyledAppBar>
       {loading ? (
@@ -920,21 +935,21 @@ const CompletePage = () => {
           <h2 ref={educationRef}> Education</h2>
           <EducationGrid>
             <EducationCard>
-  <h3>
-    {userData.educations[activeIndex].degree} in {userData.educations[activeIndex].fieldOfStudy}
-  </h3>
-  <img
-  src={`/education/${encodeURIComponent(userData.educations[activeIndex].institution)}.png`}
-  alt={`${userData.educations[activeIndex].institution} logo`}
-  onError={(e) => {
-    if (e.target.src !== `${window.location.origin}/education/default.png`) {
-      e.target.src = '/education/default.png'; // Ensure this file exists
-    }
-  }}
-/>
-  <p>{userData.educations[activeIndex].institution}</p>
-  <p>{userData.educations[activeIndex].description}</p>
-</EducationCard>
+              <h3>
+                {userData.educations[activeIndex].degree} in {userData.educations[activeIndex].fieldOfStudy}
+              </h3>
+              <img
+                src={`/education/${encodeURIComponent(userData.educations[activeIndex].institution)}.png`}
+                alt={`${userData.educations[activeIndex].institution} logo`}
+                onError={(e) => {
+                  if (e.target.src !== `${window.location.origin}/education/default.png`) {
+                    e.target.src = '/education/default.png'; // Ensure this file exists
+                  }
+                }}
+              />
+              <p>{userData.educations[activeIndex].institution}</p>
+              <p>{userData.educations[activeIndex].description}</p>
+            </EducationCard>
             <Dots>
               {userData.educations.map((_, index) => (
                 <Dot key={index} active={index === activeIndex} onClick={() => setActiveIndex(index)} />
