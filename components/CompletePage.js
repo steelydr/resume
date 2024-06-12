@@ -647,18 +647,19 @@ const List = styled('div')({
   },
 });
 
-const FooterContainer = styled('footer')({
+
+const FooterContainer = styled('footer')(({ isMobile }) => ({
   position: 'relative',
   width: '100%',
   background: '#274c77',
-  minHeight: '200px',
+  minHeight: isMobile ? '100px' : '200px',
   padding: '20px 50px',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
   overflow: 'hidden',
-});
+}));
 
 const Waves = styled('div')({
   position: 'absolute',
