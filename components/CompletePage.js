@@ -10,6 +10,10 @@ const StyledAppBar = styled(AppBar)({
   fontFamily: 'Montserrat, sans-serif',
   color: '#ecf0f1',
   opacity: '0.75',
+  display: 'flex',
+  alignItems: 'left',
+  justifyContent: 'space-between',
+  padding: '0 20px',
 });
 
 const NavLinks = styled('ul')({
@@ -20,13 +24,17 @@ const NavLinks = styled('ul')({
   padding: 0,
   color: '#ecf0f1',
   fontFamily: 'Montserrat, sans-serif',
+  flexWrap: 'wrap',
 });
 
 const NavItem = styled('li')({
   marginRight: '20px',
   color: '#ecf0f1',
   fontFamily: 'Montserrat, sans-serif',
+  display: 'flex',
+  alignItems: 'center',
 });
+
 
 const NavLink = styled('a')({
   color: '#ecf0f1',
@@ -57,57 +65,29 @@ const HomeSection = styled('div')({
   gridTemplateColumns: '1fr',
   gap: '20px',
   fontFamily: 'Montserrat, sans-serif',
-
-  '@media (max-width: 1200px)': {
-    margin: '0 8%',
-  },
-
-  '@media (max-width: 992px)': {
-    margin: '0 5%',
-  },
-
-  '@media (max-width: 768px)': {
-    margin: '0 2%',
-  },
-
-  '@media (max-width: 576px)': {
-    margin: '0 1%',
-  },
 });
 
 const UserGrid = styled('div')({
-  display: 'grid',
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between', // Space between elements
+  alignItems: 'center',
   marginTop: '100px',
   marginBottom: '120px',
-  gridTemplateColumns: '70% 30%',
-  gap: '20px',
-  alignItems: 'center',
   fontFamily: 'Montserrat, sans-serif',
 
-  '@media (max-width: 1200px)': {
-    gridTemplateColumns: '1fr',
-    marginTop: '80px',
-    marginBottom: '100px',
+  '& > *': {
+    flexBasis: '50%',
+    textAlign: 'left', // Align text to the left within its container
   },
 
-  '@media (max-width: 992px)': {
-    gridTemplateColumns: '1fr',
-    marginTop: '60px',
-    marginBottom: '80px',
-  },
-
-  '@media (max-width: 768px)': {
-    gridTemplateColumns: '1fr',
-    marginTop: '40px',
-    marginBottom: '60px',
-  },
-
-  '@media (max-width: 576px)': {
-    gridTemplateColumns: '1fr',
-    marginTop: '20px',
-    marginBottom: '40px',
+  '& > img': {
+    maxWidth: '40%', // Ensure the image does not overflow
+    borderRadius: '50%', // Keep the circular shape
   },
 });
+
+
 
 const StyledImage = styled('img')({
   width: '100%',
@@ -124,32 +104,13 @@ const StyledImage = styled('img')({
 
 const EducationGrid = styled('div')({
   margin: '0 10%',
-  display: 'grid',
-  gridTemplateColumns: '5% 90% 5%',
+  display: 'flex',
+  flexDirection: 'column',
   gap: '10px',
-  position: 'relative',
   alignItems: 'center',
   fontFamily: 'Montserrat, sans-serif',
-
-  '@media (max-width: 1200px)': {
-    margin: '0 8%',
-  },
-
-  '@media (max-width: 992px)': {
-    margin: '0 5%',
-    gridTemplateColumns: '1fr',
-  },
-
-  '@media (max-width: 768px)': {
-    margin: '0 2%',
-    gridTemplateColumns: '1fr',
-  },
-
-  '@media (max-width: 576px)': {
-    margin: '0 1%',
-    gridTemplateColumns: '1fr',
-  },
 });
+
 
 const LoaderWrapper = styled('div')({
   position: 'fixed',
@@ -644,23 +605,8 @@ const Certificates = styled('div')({
   position: 'relative',
   alignItems: 'center',
   fontFamily: 'Montserrat, sans-serif',
-
-  '@media (max-width: 1200px)': {
-    margin: '0 8%',
-  },
-
-  '@media (max-width: 992px)': {
-    margin: '0 5%',
-  },
-
-  '@media (max-width: 768px)': {
-    margin: '0 2%',
-  },
-
-  '@media (max-width: 576px)': {
-    margin: '0 1%',
-  },
 });
+
 
 const List = styled('div')({
   fontFamily: 'Montserrat, sans-serif',
@@ -984,9 +930,6 @@ const CompletePage = () => {
           </UserGrid>
           <h2 ref={educationRef}> Education</h2>
           <EducationGrid>
-            <Arrow left onClick={handlePrevClick}>
-              &#8249;
-            </Arrow>
             <EducationCard>
   <h3>
     {userData.educations[activeIndex].degree} in {userData.educations[activeIndex].fieldOfStudy}
@@ -1003,10 +946,6 @@ const CompletePage = () => {
   <p>{userData.educations[activeIndex].institution}</p>
   <p>{userData.educations[activeIndex].description}</p>
 </EducationCard>
-
-            <Arrow right onClick={handleNextClick}>
-              &#8250;
-            </Arrow>
             <Dots>
               {userData.educations.map((_, index) => (
                 <Dot key={index} active={index === activeIndex} onClick={() => setActiveIndex(index)} />
