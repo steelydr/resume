@@ -251,18 +251,6 @@ const Dot = styled('div')`
   font-family: 'Montserrat, sans-serif';
 `;
 
-const Arrow = styled('div')`
-  font-size: 24px;
-  color: #3498db;
-  cursor: pointer;
-  text-align: center;
-  font-family: 'Montserrat, sans-serif';
-
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
-
 const Timeline = styled('div')({
   display: 'flex',
   flexDirection: 'column',
@@ -647,7 +635,6 @@ const List = styled('div')({
   },
 });
 
-
 const FooterContainer = styled('footer')(({ isMobile }) => ({
   position: 'relative',
   width: '100%',
@@ -661,55 +648,6 @@ const FooterContainer = styled('footer')(({ isMobile }) => ({
   overflow: 'hidden',
 }));
 
-const Waves = styled('div')({
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  top: '-100px',
-  width: '100%',
-  height: '200px',
-  overflow: 'hidden',
-  lineHeight: 0,
-  '& .wave': {
-    position: 'absolute',
-    width: '200%',
-    height: '200px',
-    background: 'url("https://i.ibb.co/wQZVxxk/wave.png") repeat-x',
-    backgroundSize: '50% 200px',
-  },
-  '& #wave1': {
-    zIndex: 1000,
-    opacity: 1,
-    bottom: 0,
-    animation: 'moveWaves 4s linear infinite',
-  },
-  '& #wave2': {
-    zIndex: 999,
-    opacity: 0.5,
-    bottom: '10px',
-    animation: 'moveWaves 4s linear infinite reverse',
-  },
-  '& #wave3': {
-    zIndex: 1000,
-    opacity: 0.2,
-    bottom: '20px',
-    animation: 'moveWaves 3s linear infinite',
-  },
-  '& #wave4': {
-    zIndex: 999,
-    opacity: 0.7,
-    bottom: '30px',
-    animation: 'moveWaves 3s linear infinite reverse',
-  },
-  '@keyframes moveWaves': {
-    '0%': {
-      transform: 'translateX(0)',
-    },
-    '100%': {
-      transform: 'translateX(-50%)',
-    },
-  },
-});
 
 const SocialIconList = styled('ul')({
   display: 'flex',
@@ -732,33 +670,6 @@ const SocialIconLink = styled('a')({
   transition: '0.5s',
   '&:hover': {
     transform: 'translateY(-10px)',
-  },
-});
-
-const MenuList = styled('ul')({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  margin: '10px 0',
-  flexWrap: 'wrap',
-  listStyle: 'none',
-  padding: 0,
-});
-
-const MenuItem = styled('li')({
-  margin: '0 10px',
-});
-
-const MenuLink = styled('a')({
-  fontSize: '1.2rem',
-  color: '#fff',
-  display: 'inline-block',
-  transition: '0.5s',
-  textDecoration: 'none',
-  opacity: 0.75,
-  fontWeight: 300,
-  '&:hover': {
-    opacity: 1,
   },
 });
 
