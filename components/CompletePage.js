@@ -7,15 +7,6 @@ import { IoLogoGithub, IoLogoLinkedin } from 'react-icons/io';
 import { useMediaQuery } from 'react-responsive';
 import imageUrl from './myimageraj.jpg';
 
-// Adding viewport meta tag to disable zoom/pinch actions
-const addViewportMetaTag = () => {
-  const meta = document.createElement('meta');
-  meta.name = 'viewport';
-  meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
-  document.getElementsByTagName('head')[0].appendChild(meta);
-};
-addViewportMetaTag();
-
 const StyledAppBar = styled(AppBar)(({ isMobile }) => ({
   background: '#274c77',
   fontFamily: 'Montserrat, sans-serif',
