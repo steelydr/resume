@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  background-color:#eef4f7;
+  font-family: Montserrat, sans-serif;
+  overflow-x: hidden;
+}
+
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 15px; /* Width of the scrollbar */
+}
+
+/* Scrollbar track */
+::-webkit-scrollbar-track {
+  background: #c2c3c0; /* Match the background color */
+}
+
+/* Scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #bfbfbf, #a6a6a6); /* Darker grey gradient on hover */
+  border-radius: 5px; /* Rounded corners */
+  transition: background 0.3s ease; /* Smooth animation */
+}
+
+/* Scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #bfbfbf, #a6a6a6); /* Darker grey gradient on hover */
+}
