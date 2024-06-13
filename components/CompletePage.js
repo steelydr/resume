@@ -256,9 +256,9 @@ const JobTitle = styled('p')(({ isMobile }) => ({
 const EducationGrid = styled('div')(({ isMobile }) => ({
   margin: isMobile ? '2%' : '5%',  // Adjust margin for mobile
   display: 'flex',
-  flexDirection: isMobile ? 'column' : 'row', // Change layout direction for mobile
+  flexDirection: isMobile ? 'row' : 'row', // Change layout direction for mobile
   gap: isMobile ? '5px' : '10px',  // Adjust gap for mobile
-  alignItems: 'center',
+  alignItems: isMobile ? 'right' : 'center',
   fontFamily: 'Montserrat, sans-serif',
 }));
 
