@@ -22,7 +22,7 @@ const Image = styled('img')`
 
 const ModalContent = styled('div')`
   background: white;
-  padding: 2rem;
+  padding: 1.5rem;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -32,17 +32,18 @@ const ModalContent = styled('div')`
   max-height: 90%;
   width: 500px;  // Set the width for small overlay
   height: 300px; // Set the height for small overlay
-  border-radius: 5px;
+  border-radius: 8px;
 `;
 
 const CloseButton = styled('button')`
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: none;
+  background: red;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
+  border-radius: 25px;
 `;
 
 const Modal = ({ show, onClose, imagePath }) => {

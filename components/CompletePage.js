@@ -159,10 +159,10 @@ const borderRing = (colors, border, gap) => {
 };
 
 const StyledImage = styled('img')`
-  width: 100%;
+  width: 60%;
   border-radius: 50%;
   display: block;
-  height: 100%;
+  height: 80%;
   font-family: 'Montserrat, sans-serif';
   filter: hue-rotate(15deg);
   transition: filter 0.3s ease;
@@ -173,9 +173,6 @@ const StyledImage = styled('img')`
 
   ${(props) => borderRing(['#6c84cb', '#7d93d2', '#8fa2d9'], '0.60em', '0.35em')}
 `;
-
-
-
 const SummaryText = styled('p')(({ isMobile }) => ({
   fontSize: isMobile ? '1rem' : '1rem',
   lineHeight: 1.6,
@@ -791,7 +788,7 @@ const CompletePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://rajeswari-depala.netlify.app/api/users?firstName=Depala&lastName=Rajeswari');
+        const response = await axios.get('http://localhost:3001//api/users?firstName=Depala&lastName=Rajeswari');
         setUserData(response.data);
         console.log('Image URL:', imageUrl);
         setLoading(false);
