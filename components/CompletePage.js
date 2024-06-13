@@ -6,6 +6,46 @@ import axios from 'axios';
 import { IoLogoGithub, IoLogoLinkedin } from 'react-icons/io';
 import { useMediaQuery } from 'react-responsive';
 import imageUrl from './myimageraj.jpg';
+import Modal from './Modal'; // Import the modal component
+
+import { hsl, parseToHsl } from 'polished';
+
+const LoaderWrapper = styled('div')({
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  fontFamily: 'Montserrat, sans-serif',
+});
+
+const Loader = styled('div')({
+  width: '50px',
+  aspectRatio: '1',
+  display: 'grid',
+  border: '4px solid #ecf0f1',
+  borderRadius: '50%',
+  borderRightColor: '#3498db',
+  animation: 'l15 1s infinite linear',
+  fontFamily: 'Montserrat, sans-serif',
+
+  '&::before, &::after': {
+    content: '""',
+    gridArea: '1/1',
+    margin: '2px',
+    border: 'inherit',
+    borderRadius: '50%',
+    animation: 'l15 2s infinite',
+  },
+
+  '&::after': {
+    margin: '8px',
+    animationDuration: '3s',
+  },
+
+  '@keyframes l15': {
+    '100%': { transform: 'rotate(1turn)' },
+  },
+});
 
 const StyledAppBar = styled(AppBar)(({ isMobile }) => ({
   background: '#274c77',
@@ -88,17 +128,95 @@ const UserGrid = styled('div')(({ isMobile }) => ({
   },
 }));
 
-const StyledImage = styled('img')({
-  width: '100%',
-  borderRadius: '50%',
-  display: 'block',
-  height: '100%',
-  animation: 'hue-rotate 10s linear infinite',
-  transition: 'transform 0.3s ease',
-  '&:hover': {
-    transform: 'scale(1.01)',
-  },
+const borderRing = (colors, border, gap) => {
+  const numColors = colors.length;
+  const borderRadius = `calc(0.5 * ${border})`;
+  const borderAngle = `calc(360deg / ${numColors})`;
+  let stops = '';
+  let gradients = '';
+
+  colors.forEach((color, index) => {
+    const currentAngle = `calc(${index + 1} * ${borderAngle})`;
+    stops += `${color} 0% ${currentAngle}, `;
+
+    const adjustedAngle = `calc(${currentAngle} - 90deg)`;
+    const x = `calc(50% + (50% - ${borderRadius}) * ${Math.cos(adjustedAngle)})`;
+    const y = `calc(50% + (50% - ${borderRadius}) * ${Math.sin(adjustedAngle)})`;
+    gradients += `radial-gradient(circle at ${x} ${y}, ${color} calc(${borderRadius} - 1px), transparent ${borderRadius}), `;
+  });
+
+  return `
+    border: solid ${border} transparent;
+    padding: ${gap};
+    border-radius: 50%;
+    background: ${gradients.slice(0, -2)}, conic-gradient(${stops.slice(0, -2)});
+    background-origin: border-box;
+    --mask: radial-gradient(closest-side, red calc(100% - ${border} - ${gap} - 1px), transparent calc(100% - ${border} - ${gap}) calc(100% - ${border}), red calc(100% - ${border} + 1px) calc(100% - 1px), transparent);
+    -webkit-mask: var(--mask);
+    mask: var(--mask);
+  `;
+
+};
+
+const StyledImage = styled('img')`
+  width: 100%;
+  border-radius: 50%;
+  display: block;
+  height: 100%;
+  font-family: 'Montserrat, sans-serif';
+  filter: hue-rotate(15deg);
+  transition: filter 0.3s ease;
+
+  &:hover {
+    filter: none;
+  }
+
+  ${(props) => borderRing(['#6c84cb', '#7d93d2', '#8fa2d9'], '0.60em', '0.35em')}
+`;
+
+
+
+const SummaryText = styled('p')(({ isMobile }) => ({
+  fontSize: isMobile ? '1rem' : '1rem',
+  lineHeight: 1.6,
+  color: '#111a24',
+  marginTop: '20px',
   fontFamily: 'Montserrat, sans-serif',
+  whiteSpace: 'normal',    // Example whitespace property
+}));
+
+
+const Section = styled('div')({
+  position: 'relative',
+  marginLeft: '120px',
+  textAlign: 'left',
+
+  '& p': {
+    position: 'relative',
+    paddingLeft: '1.2em',  // Adjust this value as needed for spacing
+    fontSize: '1.95rem',
+    fontWeight: 'bold',
+    color: '#274c77',
+    lineHeight: '1.95rem',  // Ensure the line height matches the font size
+    
+    '&::before': {
+      content: '"<"',  // Use a checkmark instead of a bullet point
+      position: 'absolute',
+      left: '0',
+      color: '#274c77',  // Match the symbol color with the text color
+      fontSize: '2.95rem',  // Match the symbol size with the text size
+      lineHeight: '1',  // Ensure the symbol is vertically aligned
+      top: '50%',
+      transform: 'translateY(-50%)',  // Center the symbol vertically
+    },
+    '&::after': {
+      content: '"/>"',  // Add the closing symbol
+      color: '#274c77',  // Match the symbol color with the text color
+      fontSize: '2.95rem',  // Match the symbol size with the text size
+      lineHeight: '1',  // Ensure the symbol is vertically aligned
+      marginLeft: '0.2em',  // Add a little space between text and closing symbol
+    }
+  },
 });
 
 const EducationGrid = styled('div')({
@@ -108,43 +226,6 @@ const EducationGrid = styled('div')({
   gap: '10px',
   alignItems: 'center',
   fontFamily: 'Montserrat, sans-serif',
-});
-
-const LoaderWrapper = styled('div')({
-  position: 'fixed',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  fontFamily: 'Montserrat, sans-serif',
-});
-
-const Loader = styled('div')({
-  width: '50px',
-  aspectRatio: '1',
-  display: 'grid',
-  border: '4px solid #ecf0f1',
-  borderRadius: '50%',
-  borderRightColor: '#3498db',
-  animation: 'l15 1s infinite linear',
-  fontFamily: 'Montserrat, sans-serif',
-
-  '&::before, &::after': {
-    content: '""',
-    gridArea: '1/1',
-    margin: '2px',
-    border: 'inherit',
-    borderRadius: '50%',
-    animation: 'l15 2s infinite',
-  },
-
-  '&::after': {
-    margin: '8px',
-    animationDuration: '3s',
-  },
-
-  '@keyframes l15': {
-    '100%': { transform: 'rotate(1turn)' },
-  },
 });
 
 const StyledH1 = styled('h1')(({ isMobile }) => ({
@@ -163,7 +244,7 @@ const StyledH1 = styled('h1')(({ isMobile }) => ({
 }));
 
 const JobTitle = styled('p')(({ isMobile }) => ({
-  margin: '3px 3px 3px 0px',
+  margin: '9px 3px 3px 0px',
   fontSize: isMobile ? '20px' : '40px',
   fontWeight: 'bold',
   color: '#2c3e50',
@@ -707,15 +788,6 @@ const CompletePage = () => {
       [index]: !prevState[index],
     }));
   };
-
-  const handlePrevClick = () => {
-    setActiveIndex(activeIndex === 0 ? userData.educations.length - 1 : activeIndex - 1);
-  };
-
-  const handleNextClick = () => {
-    setActiveIndex(activeIndex === userData.educations.length - 1 ? 0 : activeIndex + 1);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -749,6 +821,27 @@ const CompletePage = () => {
       });
     }
   }, [activeTab, userData]);
+  const sectionRef = useRef(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsScrolled(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (userData) {
@@ -777,6 +870,14 @@ const CompletePage = () => {
 
   const scrollToSection = (ref) => {
     ref.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('');
+
+  const handleClick = (image) => {
+    setSelectedImage(image);
+    setShowModal(true);
   };
 
   return (
@@ -827,7 +928,7 @@ const CompletePage = () => {
                 {userData.firstName} {userData.lastName}
               </StyledH1>
               <JobTitle isMobile={isMobile}>A {userData.jobTitle}</JobTitle>
-              <p>{userData.summary}</p>
+              <SummaryText isMobile={isMobile}>{userData.summary}</SummaryText>
             </div>
             <StyledImage
               src={imageUrl.src}
@@ -835,7 +936,7 @@ const CompletePage = () => {
               onError={(e) => console.error('Error loading image:', e.target.src, e)}
             />
           </UserGrid>
-          <h2 ref={educationRef}> Education</h2>
+          <Section ref={educationRef}><p >Academics</p></Section>
           <EducationGrid>
             <EducationCard>
               <h3>
@@ -859,7 +960,8 @@ const CompletePage = () => {
               ))}
             </Dots>
           </EducationGrid>
-          <Timeline ref={experienceRef}>
+          <Section ref={experienceRef}><p >Where I've worked</p></Section>
+          <Timeline>
             {userData.experiences.map((experience, index) => (
               <div key={index} className="timeline__event animated fadeInUp delay-3s timeline__event--type1">
                 <div className="timeline__event__icon"></div>
@@ -882,7 +984,8 @@ const CompletePage = () => {
               </div>
             ))}
           </Timeline>
-          <ProjectsTab ref={projectsRef}>
+          <Section ref={projectsRef}><p >Skills I've applied</p></Section>
+          <ProjectsTab>
             <div className="popup">
               <div className="tabs">
                 {userData.projects.map((project, index) => (
@@ -909,27 +1012,29 @@ const CompletePage = () => {
               </div>
             </div>
           </ProjectsTab>
-          <Certificates ref={certificationRef}>
+          <Section ref={certificationRef}><p >Credentials Acquired</p></Section>
+          <Certificates>
             {userData.certifications.map((certification, index) => (
               <List key={index}>
-                <div className="num">
-                  <div className="number">{index + 1}</div>
+                <div className="num" onClick={() => handleClick(`/certs/${certification.authority}.png`)}>
+                   {/* <div className="number">{index + 1}</div>*/}
                   <h3>{certification.name}</h3>
                 </div>
               </List>
             ))}
           </Certificates>
+          <Modal show={showModal} onClose={() => setShowModal(false)} imagePath={selectedImage} />
         </HomeSection>
       )}
       <FooterContainer>
         <SocialIconList>
           <SocialIconItem>
-            <SocialIconLink href="#">
+            <SocialIconLink href="https://www.linkedin.com/in/rajeswarid/" target="_blank" rel="noopener noreferrer">
               <IoLogoLinkedin />
             </SocialIconLink>
           </SocialIconItem>
           <SocialIconItem>
-            <SocialIconLink href="#">
+            <SocialIconLink href="https://github.com/steelydr" target="_blank" rel="noopener noreferrer">
               <IoLogoGithub />
             </SocialIconLink>
           </SocialIconItem>
