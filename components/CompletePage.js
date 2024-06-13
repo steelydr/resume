@@ -6,13 +6,8 @@ import axios from 'axios';
 import { IoLogoGithub, IoLogoLinkedin } from 'react-icons/io';
 import { useMediaQuery } from 'react-responsive';
 import imageUrl from './myimageraj.jpg';
-import Modal from './Modal'; // Import the modal component
+import Modal from './Modal'; 
 
-import { SiPytorch, SiAnaconda, SiPython, SiSpringboot, SiReact, SiExpress, SiC, SiLinux, SiOracle, SiR } from 'react-icons/si';
-import { FaDog } from 'react-icons/fa'; // Using FontAwesome for API Dog
-
-import { hsl, parseToHsl } from 'polished';
-import zIndex from '@mui/material/styles/zIndex';
 
 const LoaderWrapper = styled('div')({
   position: 'fixed',
@@ -57,7 +52,7 @@ const StyledAppBar = styled(AppBar)(({ isMobile }) => ({
   color: '#ecf0f1',
   opacity: '0.75',
   display: 'flex',
-  alignItems: 'left',
+  alignItems: 'right',
   justifyContent: isMobile ? 'space-between' : 'space-around',
   padding: isMobile ? '0 10px' : '0 20px',
 }));
@@ -78,7 +73,7 @@ const NavItem = styled('li')({
   color: '#ecf0f1',
   fontFamily: 'Montserrat, sans-serif',
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'right',
 });
 
 const NavLink = styled('a')({
@@ -116,18 +111,18 @@ const UserGrid = styled('div')(({ isMobile }) => ({
   display: 'flex',
   flexDirection: isMobile ? 'column' : 'row',
   justifyContent: 'space-between',
-  alignItems: 'center',
+  alignItems:isMobile ? 'left':'center',
   marginTop: '100px',
   marginBottom: '120px',
   fontFamily: 'Montserrat, sans-serif',
 
   '& > *': {
     flexBasis: isMobile ? '100%' : '50%',
-    textAlign: isMobile ? 'center' : 'left',
+    textAlign: isMobile ? 'left' : 'left',
   },
 
   '& > img': {
-    maxWidth: isMobile ? '60%' : '40%',
+    maxWidth: isMobile ? '80%' : '40%',
     borderRadius: '50%',
   },
 }));
@@ -163,7 +158,7 @@ const borderRing = (colors, border, gap) => {
 };
 
 const StyledImage = styled('img')`
-width: 150px; // Adjust width as needed
+width: 100px; // Adjust width as needed
   height: 430px; // Adjust height as needed
   border-radius: 50%;
   display: block;
@@ -177,17 +172,23 @@ width: 150px; // Adjust width as needed
 
   ${(props) => borderRing(['#6c84cb', '#7d93d2', '#8fa2d9'], '0.60em', '0.35em')}
 `;
+
 const SummaryText = styled('p')(({ isMobile }) => ({
-  fontSize: isMobile ? '1rem' : '1rem',
-  lineHeight: 1.6,
+  display: 'flex', // Use flexbox
+  justifyContent: 'flex-start', // Start text from left
+  alignItems: 'center', // Vertically center the text
+  fontSize: isMobile ? '0.875rem' : '1rem', // Adjust font size for mobile
+  lineHeight: isMobile ? 1.4 : 1.6, // Adjust line height for mobile
   color: '#111a24',
-  marginTop: '20px',
+  marginTop: isMobile ? '10px' : '20px', // Adjust margin top for mobile
+  marginRight: isMobile ? '100px' : '0', // Add right margin for mobile
   fontFamily: 'Montserrat, sans-serif',
-  whiteSpace: 'normal',    // Example whitespace property
+  whiteSpace: 'normal',
+  width: isMobile ? '35%' : '100%', // Adjust width for mobile
+  wordBreak: 'break-word', // Ensure long words break into next line
 }));
 
-
-const Section = styled('div')({
+const Section = styled('div')(({ isMobile }) => ({
   position: 'relative',
   marginLeft: '20px',
   textAlign: 'left',
@@ -196,11 +197,11 @@ const Section = styled('div')({
   '& p': {
     display: 'inline-block',
     position: 'relative',
-    paddingLeft: '1.2em',  // Adjust this value as needed for spacing
-    fontSize: '1.95rem',
+    paddingLeft: isMobile ? '0.8em' : '1.2em',  // Adjust padding for mobile
+    fontSize: isMobile ? '1.5rem' : '1.95rem', // Adjust font size for mobile
     fontWeight: 'bold',
     color: '#274c77',
-    lineHeight: '1.95rem',  // Ensure the line height matches the font size
+    lineHeight: isMobile ? '1.5rem' : '1.95rem',  // Adjust line height for mobile
     margin: '0',  // Remove default margin
     
     '&::before': {
@@ -208,7 +209,7 @@ const Section = styled('div')({
       position: 'absolute',
       left: '0',
       color: '#274c77',  // Match the symbol color with the text color
-      fontSize: '2.95rem',  // Match the symbol size with the text size
+      fontSize: isMobile ? '2rem' : '2.95rem',  // Adjust symbol size for mobile
       lineHeight: '1',  // Ensure the symbol is vertically aligned
       top: '50%',
       transform: 'translateY(-50%)',  // Center the symbol vertically
@@ -216,18 +217,18 @@ const Section = styled('div')({
     '&::after': {
       content: '"/>"',  // Add the closing symbol
       color: '#274c77',  // Match the symbol color with the text color
-      fontSize: '2.95rem',  // Match the symbol size with the text size
+      fontSize: isMobile ? '2rem' : '2.95rem',  // Adjust symbol size for mobile
       lineHeight: '1',  // Ensure the symbol is vertically aligned
-      marginLeft: '0.2em',  // Add a little space between text and closing symbol
+      marginLeft: isMobile ? '0.1em' : '0.2em',  // Adjust space between text and closing symbol
     }
   },
   '& svg': {
     marginLeft: '20px', // Add some space between the text and the line
     flexShrink: 0, // Prevent the line from shrinking
-    width: '100%',
-    opacity : '2',
+    width: isMobile ? '20%' : '100%', // Adjust the width based on isMobile
+    opacity: '1',
   }
-});
+}));
 
 const StyledH1 = styled('h1')(({ isMobile }) => ({
   padding: '0px',
@@ -252,14 +253,15 @@ const JobTitle = styled('p')(({ isMobile }) => ({
   fontFamily: 'Montserrat, sans-serif',
 }));
 
-const EducationGrid = styled('div')({
-  margin: '5%',
+const EducationGrid = styled('div')(({ isMobile }) => ({
+  margin: isMobile ? '2%' : '5%',  // Adjust margin for mobile
   display: 'flex',
-  flexDirection: 'column',
-  gap: '10px',
+  flexDirection: isMobile ? 'column' : 'row', // Change layout direction for mobile
+  gap: isMobile ? '5px' : '10px',  // Adjust gap for mobile
   alignItems: 'center',
   fontFamily: 'Montserrat, sans-serif',
-});
+}));
+
 
 const EducationCard = styled('div')({
   backgroundColor: '#d5deed',
@@ -603,11 +605,11 @@ const ProjectsTab = styled('div')`
   .popup {
     width: 100%;
     height: 100%;
-    min-height: 480px;
-    max-height: 480px;
+    min-height: 660px;
+    max-height: 660px;
     border-radius: 48px;
     box-sizing: border-box;
-    margin: 50px 0;
+    margin: 100px 0;
     overflow: hidden;
     display: flex;
   }
@@ -679,7 +681,7 @@ const ProjectsTab = styled('div')`
   }
 
   .active-tab-indicator #bottom {
-    height: calc(50% - 72px);
+    height: calc(50% - 75px);
     border-radius: 0 32px 0 0;
   }
 `;
@@ -689,7 +691,6 @@ const TechLogo = styled('img')`
   height: 60px;
   margin: 10px 20px 10px 10px ;
 `;
-
 const ProjectContent = styled('div')`
   .tech-icons {
     display: flex;
@@ -758,33 +759,54 @@ const ProjectContent = styled('div')`
     opacity: 1;
   }
 
-  .projex {
-    flex-basis: 100%;
-    color: black;
-    overflow: hidden;
-    position: relative;
+  p {
+    --line-height: 0.9;
+    line-height: var(--line-height);
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4; /* Adjust the number of lines as needed */
     -webkit-box-orient: vertical;
+    overflow: hidden;
     text-overflow: ellipsis;
-    transition: max-height 0.3s ease;
-    margin: 10px 0px;
-  }
+    position: relative;
+    max-height: calc(0.9em * 8); /* Adjust based on the number of lines and line-height */
+    transition: max-height 0.3s ease-in-out;
+    padding-top: 10px; /* Add top padding */
+}
 
-  .projex.expanded {
-    webkit-line-clamp: unset;
+p::before {
+    content: ''; /* Optional: add any decoration or visual element */
+    display: block;
+    height: 10px; /* Adjust to your desired top padding value */
+}
+
+p {
+    font-family: Arial, sans-serif;
+}
+
+p::first-letter {
+    font-size: 1.2em; 
+    font-weight: bold;
+    color : blue;
+}
+
+  p:has(+ .expandbtn:checked) {
+    -webkit-line-clamp: unset;
     max-height: none;
   }
-  .show-more {
-    display: block;
-    background-color: transparent;
-    border: none;
-    color: #7f8c8d;
+
+  .expandbtn {
+    appearance: none;
+    padding: .5em;
     cursor: pointer;
-    text-align: left;
-    padding: 0;
-    margin-top: 5px;
-    font-family: Montserrat, sans-serif;
+    margin: 0px 0px;
+  }
+
+  .expandbtn::before {
+    content: "Expand";
+  }
+
+  .expandbtn:checked::before {
+    content: "Show less";
   }
 
   @keyframes scroll {
@@ -933,7 +955,7 @@ const CompletePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://rajeswari-depala.netlify.app/api/users?firstName=Depala&lastName=Rajeswari');
+        const response = await axios.get('https://rajeswari-depala.netlify.app//api/users?firstName=Depala&lastName=Rajeswari');
         setUserData(response.data);
         console.log('Image URL:', imageUrl);
         setLoading(false);
@@ -953,9 +975,9 @@ const CompletePage = () => {
       let percentage;
 
       if (activeTab === tabsCount - 1) {
-        percentage = 56 / tabsCount;
+        percentage = 55.5 / tabsCount;
       } else {
-        percentage = 55 / tabsCount;
+        percentage = 56 / tabsCount;
       }
       const translateYValue = percentage * activeTab;
       setIndicatorStyle({
@@ -1037,22 +1059,40 @@ const CompletePage = () => {
         <img key={`${i}-original`} src={`/projects/${projectTitle}/${i}.jpg`} alt={`${projectTitle} ${i}`} />
       );
     }
-    // Duplicate the images for a seamless loop
     for (let i = 1; i <= imageCount; i++) {
       images.push(
         <img key={`${i}-duplicate`} src={`/projects/${projectTitle}/${i}.jpg`} alt={`${projectTitle} ${i}`} />
       );
     }
     return <div className="carousel__images">{images}</div>;
-};
+  };
 
+  const [text, setText] = useState('');
+
+  const handleChange = (e) => {
+    setText(e.target.value);
+  };
+  
+  
+const highlightNumbers = (text) => {
+  const parts = text.split(/(\d+)/);
+  return (
+    <span>
+      {parts.map((part, index) =>
+        /\d+/.test(part) ? (
+          <span key={index} style={{ color: '#274c77', fontWeight: 'bold' }}>{part}</span>
+        ) : (
+          <span key={index} style={{ color: '#484848', fontWeight: 'normal' }}>{part}</span>
+        )
+      )}
+    </span>
+  );
+};
+  
   return (
     <>
       <StyledAppBar position="sticky" isMobile={isMobile}>
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            DR
-          </Typography>
           <NavLinks isMobile={isMobile}>
             <NavItem>
               <NavLink onClick={() => scrollToSection(homeRef)}>Home</NavLink>
@@ -1190,12 +1230,8 @@ const CompletePage = () => {
                       <TechLogo key={techIndex} src={getTechLogo(tech)} alt={tech} />
                     ))}
                   </div>
-                  <div className={`projex ${showFullDescription[index] ? 'expanded' : ''}`}>
-                    <div dangerouslySetInnerHTML={{ __html: project.description }} />
-                  </div>
-                  <button className="show-more" onClick={() => toggleDescription(index)}>
-                    {showFullDescription[index] ? 'Show Less' : 'Show More'}
-                  </button>
+                  <p>{highlightNumbers(project.description) }</p>
+                  <input type="checkbox" className='expandbtn'></input>
                   <a href={project.glink} target="_blank" rel="noopener noreferrer">
                     View Project
                   </a>
