@@ -791,7 +791,7 @@ const CompletePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://rajeswari-depala.netlify.app/api/users?firstName=Depala&lastName=Rajeswari');
+        const response = await axios.get('http://localhost:3001//api/users?firstName=Depala&lastName=Rajeswari');
         setUserData(response.data);
         console.log('Image URL:', imageUrl);
         setLoading(false);
@@ -821,27 +821,7 @@ const CompletePage = () => {
       });
     }
   }, [activeTab, userData]);
-  const sectionRef = useRef(null);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsScrolled(entry.isIntersecting);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, []);
+  
 
   useEffect(() => {
     if (userData) {
@@ -960,7 +940,7 @@ const CompletePage = () => {
               ))}
             </Dots>
           </EducationGrid>
-          <Section ref={experienceRef}><p >Where I've worked</p></Section>
+          <Section ref={experienceRef}> <p>Where I&apos;ve worked</p></Section>
           <Timeline>
             {userData.experiences.map((experience, index) => (
               <div key={index} className="timeline__event animated fadeInUp delay-3s timeline__event--type1">
@@ -984,7 +964,7 @@ const CompletePage = () => {
               </div>
             ))}
           </Timeline>
-          <Section ref={projectsRef}><p >Skills I've applied</p></Section>
+          <Section ref={projectsRef}><p>Skills I&apos;ve applied</p></Section>
           <ProjectsTab>
             <div className="popup">
               <div className="tabs">
