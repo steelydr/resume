@@ -53,6 +53,7 @@ const StyledAppBar = styled(AppBar)(({ isMobile }) => ({
   opacity: '0.75',
   display: 'flex',
   alignItems: 'right',
+  width:'100%',
   justifyContent: isMobile ? 'space-around' : 'space-around',
 }));
 
