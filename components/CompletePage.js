@@ -788,7 +788,7 @@ const CompletePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3001//api/users?firstName=Depala&lastName=Rajeswari');
+        const response = await axios.get('https://rajeswari-depala.netlify.app/api/users?firstName=Depala&lastName=Rajeswari');
         setUserData(response.data);
         console.log('Image URL:', imageUrl);
         setLoading(false);
