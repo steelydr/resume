@@ -53,8 +53,7 @@ const StyledAppBar = styled(AppBar)(({ isMobile }) => ({
   opacity: '0.75',
   display: 'flex',
   alignItems: 'right',
-  justifyContent: isMobile ? 'space-between' : 'space-around',
-  padding: isMobile ? '0 10px' : '0 20px',
+  justifyContent: isMobile ? 'space-around' : 'space-around',
 }));
 
 const NavLinks = styled('ul')(({ isMobile }) => ({
