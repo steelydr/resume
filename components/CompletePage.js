@@ -714,7 +714,7 @@ const ProjectContent = styled('div')`
   }
 
   .carousel__images img {
-    width: 120px;
+    width: 240px;
     height: 150px;
     object-fit: cover;
     margin: 15px 15px 15px 15px;
@@ -723,7 +723,7 @@ const ProjectContent = styled('div')`
   }
 
   .carousel__images img:hover {
-    transform: scale(1.1);
+    transform: scale(1.2);
     cursor: pointer;
   }
 
