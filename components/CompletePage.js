@@ -1092,10 +1092,10 @@ const highlightNumbers = (text) => {
   return (
     <>
       <StyledAppBar position="sticky" isMobile={isMobile}>
-      <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Toolbar>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             DR
           </Typography>
-        <Toolbar>
           <NavLinks isMobile={isMobile}>
             <NavItem>
               <NavLink onClick={() => scrollToSection(homeRef)}>Home</NavLink>
