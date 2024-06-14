@@ -52,7 +52,7 @@ const StyledAppBar = styled(AppBar)(({ isMobile }) => ({
   color: '#ecf0f1',
   opacity: '0.75',
   display: 'flex',
-  alignItems: 'right',
+  alignItems: 'left',
   width:'100%',
   justifyContent: isMobile ? 'space-around' : 'space-around',
 }));
@@ -256,7 +256,7 @@ const JobTitle = styled('p')(({ isMobile }) => ({
 const EducationGrid = styled('div')(({ isMobile }) => ({
   margin: isMobile ? '2%' : '5%',  // Adjust margin for mobile
   display: 'flex',
-  flexDirection: isMobile ? 'column' : 'column', // Change layout direction for mobile
+  flexDirection: isMobile ? 'column' : 'column', 
   gap: isMobile ? '5px' : '10px',  // Adjust gap for mobile
   alignItems: isMobile ? 'right' : 'center',
   fontFamily: 'Montserrat, sans-serif',
