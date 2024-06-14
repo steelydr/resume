@@ -919,11 +919,16 @@ const SocialIconLink = styled('a')({
 
 const FooterText = styled(Typography)({
   color: '#fff',
-  margin: '15px 0 10px 0',
+  margin: '10px 0 7px 0',
   fontSize: '1rem',
   fontWeight: 300,
 });
-
+const FooterDes = styled(Typography)({
+  color: '#fff',
+  margin: '5px 0 5px 0',
+  fontSize: '1rem',
+  fontWeight: 300,
+});
 const CompletePage = () => {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
@@ -1272,6 +1277,7 @@ const highlightNumbers = (text) => {
             </SocialIconLink>
           </SocialIconItem>
         </SocialIconList>
+        <FooterDes>Built with Next.js and MongoDB</FooterDes>
         <FooterText>&copy;2024 Depala Rajeswari | All Rights Reserved</FooterText>
       </FooterContainer>
     </>
