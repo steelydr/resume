@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import { IoLogoGithub, IoLogoLinkedin } from 'react-icons/io';
 import MenuIcon from '@mui/icons-material/Menu';
-import Modal from '../components/Modal.js/index.js';
+import Modal from '../components/Modal.js';
 import CloseIcon from '@mui/icons-material/Close';
 
 const colors = {
