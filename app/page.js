@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import { IoLogoGithub, IoLogoLinkedin } from 'react-icons/io';
 import MenuIcon from '@mui/icons-material/Menu';
-import Modal from './Modal.js';
+import Modal from '../components/Modal.js/index.js';
 import CloseIcon from '@mui/icons-material/Close';
 
 const colors = {
@@ -1296,6 +1296,7 @@ export default function Home() {
               backgroundColor: alpha(colors.accent, 0.9),
               backdropFilter: 'blur(10px)',
               boxShadow: 'none',
+              width: '100%',
             }}
           >
             <Toolbar>

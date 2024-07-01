@@ -30,6 +30,7 @@ const ModalContent = styled('div')`
   align-items: center;
   max-width: 90%;
   max-height: 90%;
+  height: auto;
   width: 500px;  // Set the width for small overlay
   height: 300px; // Set the height for small overlay
   border-radius: 8px;
