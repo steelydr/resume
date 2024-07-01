@@ -996,7 +996,6 @@ export default function Home() {
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
-        setError('Error fetching user data');
       }
     };
 
