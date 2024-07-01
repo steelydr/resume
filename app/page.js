@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import Image from 'next/image';
 import {
   AppBar,
   Toolbar,
@@ -991,7 +992,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3001///api/users?firstName=Depala&lastName=Rajeswari');
+        const response = await axios.get('https://rajeswari-depala.netlify.app//api/users?firstName=Depala&lastName=Rajeswari');
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -1229,12 +1230,24 @@ export default function Home() {
     const images = [];
     for (let i = 1; i <= imageCount; i++) {
       images.push(
-        <img key={`${i}-original`} src={`/projects/${projectTitle}/${i}.jpg`} alt={`${projectTitle} ${i}`} />
+        <Image
+          key={`${i}-original`}
+          src={`/projects/${projectTitle}/${i}.jpg`}
+          alt={`${projectTitle} ${i}`}
+          width={240}
+          height={150}
+        />
       );
     }
     for (let i = 1; i <= imageCount; i++) {
       images.push(
-        <img key={`${i}-duplicate`} src={`/projects/${projectTitle}/${i}.jpg`} alt={`${projectTitle} ${i}`} />
+        <Image
+          key={`${i}-duplicate`}
+          src={`/projects/${projectTitle}/${i}.jpg`}
+          alt={`${projectTitle} ${i}`}
+          width={240}
+          height={150}
+        />
       );
     }
     return <div className="carousel__images">{images}</div>;
@@ -1365,9 +1378,11 @@ export default function Home() {
           <EducationGrid>
             <EducationCard>
               <h3>{userData.educations[activeIndex].degree} in {userData.educations[activeIndex].fieldOfStudy}</h3>
-              <img
+              <Image
                 src={`/education/${encodeURIComponent(userData.educations[activeIndex].institution)}.png`}
                 alt={`${userData.educations[activeIndex].institution} logo`}
+                width={200}
+                height={150}
                 onError={(e) => {
                   if (e.target.src !== `${window.location.origin}/education/default.png`) {
                     e.target.src = '/education/default.png'; // Ensure this file exists
@@ -1384,7 +1399,7 @@ export default function Home() {
             </Dots>
           </EducationGrid>
           <Section ref={experienceRef}>
-            <p>Where I've worked</p>
+            <p>Where I&apos;ve worked</p>
             <svg height="2" width="100%">
               <line x1="0" y1="1" x2="100%" y2="1" style={{ stroke: '#274c77', strokeWidth: 1 }} />
             </svg>
@@ -1413,7 +1428,7 @@ export default function Home() {
             ))}
           </Timeline>
           <Section ref={projectsRef}>
-            <p>Skills I've applied</p>
+            <p>Skills I&apos;ve applied</p>
             <svg height="2" width="100%">
               <line x1="0" y1="1" x2="100%" y2="1" style={{ stroke: '#274c77', strokeWidth: 1 }} />
             </svg>
@@ -1440,7 +1455,7 @@ export default function Home() {
                     </div>
                     {overlayImage && (
                       <div className="overlay active" onClick={() => setOverlayImage(null)}>
-                        <img src={overlayImage} alt="Overlay" />
+                        <Image src={overlayImage} alt="Overlay" width={800} height={600} />
                       </div>
                     )}
                     <div className="tech-icons">
