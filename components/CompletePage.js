@@ -5,8 +5,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import axios from 'axios';
 import { IoLogoGithub, IoLogoLinkedin } from 'react-icons/io';
 import { useMediaQuery } from 'react-responsive';
-import imageUrl from './myimageraj.jpg';
-import Modal from './Modal'; 
+import imageUrl from './image.jpg';
+import Modal from '../app/Modal'; 
 
 
 const LoaderWrapper = styled('div')({
@@ -960,7 +960,7 @@ const CompletePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://rajeswari-depala.netlify.app//api/users?firstName=Depala&lastName=Rajeswari');
+        const response = await axios.get('http://localhost:3000///api/users?firstName=Depala&lastName=Rajeswari');
         setUserData(response.data);
         console.log('Image URL:', imageUrl);
         setLoading(false);
