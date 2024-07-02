@@ -1373,9 +1373,10 @@ export default function Home() {
               height: 'calc(100vh - 64px)',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: colors.primary,
+              color: colors.background
             }}
           >
+            <div style={{ textAlign: 'center', color: colors.background , width: '100%', }}>
               <h1 style={{ fontFamily: 'Montserrat, sans-serif', marginBottom: '0.5rem' }}>Hi there! I am</h1>
               {userData && (
                 <>
@@ -1392,6 +1393,7 @@ export default function Home() {
               )}
               {error && <p style={{ color: colors.accent }}>{error}</p>}
             </div>
+          </div>
           <Section ref={educationRef}>
             <p>Knowledge from</p>
             <svg height="2" width="100%">
