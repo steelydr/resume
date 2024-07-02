@@ -992,7 +992,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000//api/users?firstName=Depala&lastName=Rajeswari');
+        const response = await axios.get('https://rajeswari-depala.netlify.app/api/users?firstName=Depala&lastName=Rajeswari');
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
