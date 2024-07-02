@@ -1322,7 +1322,8 @@ export default function Home() {
               backdropFilter: 'blur(10px)',
               boxShadow: 'none',
               width: '100%',
-              paddingTop :'5px'
+              paddingTop :'5px',
+              paddingRight: '20px'
             }}
           >
             <Toolbar sx={{width: '100%',backgroundColor: alpha(colors.accent, 0.9),}}>
