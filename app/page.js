@@ -1324,7 +1324,7 @@ export default function Home() {
               width: '100%',
             }}
           >
-            <Toolbar sx={{width: '100%',}}>
+            <Toolbar sx={{width: '100%',backgroundColor: alpha(colors.accent, 0.9),}}>
               <Polygon small={smallLoader}>
                 <Text small={smallLoader} className="show">
                   R
@@ -1373,10 +1373,10 @@ export default function Home() {
               height: 'calc(100vh - 64px)',
               justifyContent: 'center',
               alignItems: 'center',
-              color: colors.background,
+              color: colors.primary,
             }}
           >
-            <div style={{ textAlign: 'center', color: colors.background , width: '100%', }}>
+            <div style={{ textAlign: 'center', color: colors.primary , width: '100%', }}>
               <h1 style={{ fontFamily: 'Montserrat, sans-serif', marginBottom: '0.5rem' }}>Hi there! I am</h1>
               {userData && (
                 <>
