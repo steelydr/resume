@@ -993,7 +993,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://rajeswari-depala.netlify.app/api/users?firstName=Depala&lastName=Rajeswari');
+        const response = await axios.get('http://localhost:3000//api/users?firstName=Depala&lastName=Rajeswari');
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -1322,6 +1322,7 @@ export default function Home() {
               backdropFilter: 'blur(10px)',
               boxShadow: 'none',
               width: '100%',
+              paddingTop :'5px'
             }}
           >
             <Toolbar sx={{width: '100%',backgroundColor: alpha(colors.accent, 0.9),}}>
@@ -1345,8 +1346,8 @@ export default function Home() {
                 HOME
               </Typography>
               {isMobile && (
-                <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
-                  {drawerOpen ? <></> : <StyledMenuIcon style={{ color: colors.secondary }} />}
+                <IconButton edge="start" color="inherit" aria-label="menu"  onClick={toggleDrawer(true)}>
+                  {drawerOpen ? <></> : <StyledMenuIcon style={{ color: colors.secondary , paddingRight: '20px'}} />}
                 </IconButton>
               )}
               {!isMobile && appBarActions}
@@ -1373,10 +1374,11 @@ export default function Home() {
               height: 'calc(100vh - 64px)',
               justifyContent: 'center',
               alignItems: 'center',
-              color: colors.primary,
+              width: '100%',
+              backgroundColor :colors.primary
             }}
           >
-            <div style={{ textAlign: 'center', color: colors.primary , width: '100%', }}>
+            <div style={{ textAlign: 'center', color: colors.background , width: '100%', }}>
               <h1 style={{ fontFamily: 'Montserrat, sans-serif', marginBottom: '0.5rem' }}>Hi there! I am</h1>
               {userData && (
                 <>
