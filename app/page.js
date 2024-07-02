@@ -992,7 +992,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://rajeswari-depala.netlify.app//api/users?firstName=Depala&lastName=Rajeswari');
+        const response = await axios.get('http://localhost:3000//api/users?firstName=Depala&lastName=Rajeswari');
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -1278,6 +1278,30 @@ export default function Home() {
       </span>
     );
   };
+
+  useEffect(() => {
+    const disableZoom = (event) => {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+      }
+    };
+
+    const disablePinchZoom = (event) => {
+      if (event.scale !== 1) {
+        event.preventDefault();
+      }
+    };
+
+    document.addEventListener('touchmove', disableZoom, { passive: false });
+    document.addEventListener('touchstart', disableZoom, { passive: false });
+    document.addEventListener('gesturestart', disablePinchZoom);
+
+    return () => {
+      document.removeEventListener('touchmove', disableZoom);
+      document.removeEventListener('touchstart', disableZoom);
+      document.removeEventListener('gesturestart', disablePinchZoom);
+    };
+  }, []);
 
   return (
     <React.Fragment>
