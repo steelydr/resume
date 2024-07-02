@@ -1373,7 +1373,7 @@ export default function Home() {
               height: 'calc(100vh - 64px)',
               justifyContent: 'center',
               alignItems: 'center',
-              color: colors.background
+              color: colors.background,
             }}
           >
             <div style={{ textAlign: 'center', color: colors.background , width: '100%', }}>
