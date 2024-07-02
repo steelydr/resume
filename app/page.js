@@ -89,6 +89,7 @@ const EducationGrid = styled('div')(({ isMobile }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: '10px',
+  width: '100%',
   alignItems: 'center',
   fontFamily: 'Montserrat, sans-serif',
 }));
@@ -1373,6 +1374,7 @@ export default function Home() {
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: colors.primary,
+              width: '100%',
             }}
           >
             <div style={{ textAlign: 'center', color: colors.background }}>
