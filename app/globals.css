@@ -1,9 +1,15 @@
 body {
   margin: 0;
-  background-color:#eef4f7;
+  background-color:#FFFFFF;
   overflow-x: hidden;
 }
 
+.fixedNavbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
 
 /* Scrollbar styles */
 ::-webkit-scrollbar {
