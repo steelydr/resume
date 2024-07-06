@@ -1,17 +1,17 @@
 import React from 'react';
 import { styled } from '@mui/material';
-
 const colors = {
-  primary: '#00704A', // Starbucks Green
-  secondary: '#005241', // Deep Green
-  accent: '#D4E9E2', // Light Mint Green
-  text: '#1E3932', // Almost Black
-  background: '#FFFFFF', // White
+  primary: '#8A2BE2', // Violet
+  secondary: '#4B0082', // Indigo
+  accent: '#DA70D6', // Orchid
+  text: '#E9E9E9', // Light Grey
+  background: '#1F1F1F', // Almost Black
+  white: '#FFFFFF', // White
 };
-
 const SectionWrapper = styled('div')(({ isMobile }) => ({
   position: 'relative',
-  margin: '20px auto',
+  margin: '40px auto',
+  marginTop:'100px',
   maxWidth: '1200px',
   textAlign: 'left',
   display: 'flex',
@@ -33,18 +33,18 @@ const SectionWrapper = styled('div')(({ isMobile }) => ({
     lineHeight: isMobile ? '1.5rem' : '1.95rem',
     margin: '0 0 1rem 0',
     '&::before': {
-      content: '"<"',
+      content: '"{"',
       position: 'absolute',
       left: '0',
-      color: colors.primary,
+      color: colors.accent,
       fontSize: isMobile ? '2rem' : '2.95rem',
       lineHeight: '1',
       top: '50%',
       transform: 'translateY(-50%)',
     },
     '&::after': {
-      content: '"/>"',
-      color: colors.primary,
+      content: '" }"',
+      color: colors.accent,
       fontSize: isMobile ? '2rem' : '2.95rem',
       lineHeight: '1',
       marginLeft: isMobile ? '0.1em' : '0.2em',
@@ -81,6 +81,7 @@ const SectionWrapper = styled('div')(({ isMobile }) => ({
   },
 
   '@media (max-width: 768px)': {
+    marginLeft:'50px',
     paddingLeft: '0.5rem',
     paddingRight: '0.5rem',
 

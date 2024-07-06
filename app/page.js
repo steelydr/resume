@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
@@ -9,26 +10,45 @@ import Projects from "../components/Projects";
 import Certificates from "../components/Certificates";
 import Section from "../components/Section";
 import Footer from "../components/Footer";
-import { List, ListItemButton, ListItemText, useMediaQuery, useTheme } from "@mui/material";
+import {
+  List,
+  ListItemButton,
+  ListItemText,
+  useMediaQuery,
+  useTheme,
+  Button,
+} from "@mui/material";
 import { alpha } from "@mui/system";
-import { styled } from '@mui/material';
+import { styled } from "@mui/material";
+import { GrContact } from "react-icons/gr";
 
 const colors = {
-  primary: "#00704A",
-  secondary: "#27251F",
-  background: "#F1F8F6",
-};
-const NoLineSection = styled(Section)({
-  '& svg': {
-    display: 'none',
-  },
-});
-const fonts = {
-  primary: "Helvetica, Arial, sans-serif",  // Primary font
-  secondary: "Georgia, serif",  // Secondary font for quotes or highlights
+  primary: '#8A2BE2',
+  secondary: '#4B0082',
+  accent: '#DA70D6',
+  text: '#E9E9E9',
+  background: '#1F1F1F',
+  white: '#FFFFFF',
 };
 
-// Styled components
+const fonts = {
+  primary: "Helvetica, Arial, sans-serif",
+  secondary: "Georgia, serif",
+};
+
+const ResumeButton = styled(Button)({
+  color: colors.text,
+  borderColor: colors.accent,
+  fontWeight: 300,
+  fontFamily: "Montserrat, sans-serif",
+  fontSize: "1rem",
+  textTransform: 'none',
+  '&:hover': {
+    borderColor: colors.accent,
+    backgroundColor: alpha(colors.accent, 0.1),
+  },
+});
+
 const HomeContainer = styled('div')({
   display: "flex",
   flexDirection: "column",
@@ -43,45 +63,30 @@ const HomeContainer = styled('div')({
   position: "relative",
 });
 
-const Heading = styled('h1')({
-  fontSize: "3rem",
-  fontWeight: "bold",
-  color: colors.accent,
-  marginBottom: "0.5rem",
-});
-
-const SubText = styled('p')({
-  fontSize: "1.5rem",
-  fontWeight: "normal",
-  color: "inherit",
-  marginBottom: "2rem",
-});
-
-const DetailText = styled('p')({
-  fontSize: "1rem",
-  fontWeight: "normal",
-  color: "inherit",
-  textAlign: "center",
-  maxWidth: "600px", // Max width for the paragraph
-  margin: "0 auto", // Centering the paragraph horizontally
-  lineHeight: "1.6" // Line height for better readability
-});
-
-const ErrorText = styled('p')({
-  fontSize: "1rem",
-  color: colors.accent, // Accent color for error messages
-  textAlign: "center",
-  width: "100%", // Full width to ensure it occupies its own line
-  marginTop: "20px" // Space above the error message
-});
-
 const Container = styled('div')({
   display: 'flex',
-  flexDirection: 'row', // Default flex direction is row
+  flexDirection: 'row',
   width: '100%',
   '@media (max-width: 768px)': {
-    flexDirection: 'column', // On mobile devices, set flex direction to column
+    flexDirection: 'column',
   },
+});
+
+const SectionText = styled('p')({
+  color: colors.white,
+});
+
+const ContactIconContainer = styled('div')({
+  position: 'fixed',
+  bottom: '30px',
+  right: '30px',
+  zIndex: 1000,
+  cursor: 'pointer',
+});
+
+const ContactIcon = styled(GrContact)({
+  color: colors.accent,
+  fontSize: '2rem',
 });
 
 export default function Home() {
@@ -100,6 +105,7 @@ export default function Home() {
   const experienceRef = useRef(null);
   const projectsRef = useRef(null);
   const certificationRef = useRef(null);
+  const contactRef = useRef(null);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -108,8 +114,8 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          //"http://localhost:3000/api/users?firstName=Depala&lastName=Rajeswari"
-          "https://rajeswari-depala.netlify.app/api/users?firstName=Depala&lastName=Rajeswari"
+          //"http://localhost:3001/api/users?firstName=Depala&lastName=Rajeswari"
+          "https://rajeswari-depala.netlify.app//api/users?firstName=Depala&lastName=Rajeswari"
         );
         setUserData(response.data);
       } catch (error) {
@@ -155,8 +161,8 @@ export default function Home() {
           primary="HOME"
           primaryTypographyProps={{
             style: {
-              fontWeight: 700,
-              color: colors.primary,
+              fontWeight: 400,
+              color: colors.accent,
               fontFamily: "Montserrat, sans-serif",
               fontSize: "1rem",
               textAlign: "center",
@@ -166,11 +172,11 @@ export default function Home() {
       </ListItemButton>
       <ListItemButton onClick={() => { toggleDrawer(false)(); scrollToSection(educationRef); }} sx={{ justifyContent: "center" }}>
         <ListItemText
-          primary="EDUCATION"
+          primary="Background"
           primaryTypographyProps={{
-            style: {
-              fontWeight: 700,
-              color: colors.primary,
+            sx: {
+              fontWeight: 300,
+              color: colors.text,
               fontFamily: "Montserrat, sans-serif",
               fontSize: "1rem",
               textAlign: "center",
@@ -180,11 +186,11 @@ export default function Home() {
       </ListItemButton>
       <ListItemButton onClick={() => { toggleDrawer(false)(); scrollToSection(experienceRef); }} sx={{ justifyContent: "center" }}>
         <ListItemText
-          primary="EXPERIENCE"
+          primary="Career"
           primaryTypographyProps={{
-            style: {
-              fontWeight: 700,
-              color: colors.primary,
+            sx: {
+              fontWeight: 300,
+              color: colors.text,
               fontFamily: "Montserrat, sans-serif",
               fontSize: "1rem",
               textAlign: "center",
@@ -194,11 +200,11 @@ export default function Home() {
       </ListItemButton>
       <ListItemButton onClick={() => { toggleDrawer(false)(); scrollToSection(projectsRef); }} sx={{ justifyContent: "center" }}>
         <ListItemText
-          primary="PROJECTS"
+          primary="Endeavors"
           primaryTypographyProps={{
-            style: {
-              fontWeight: 700,
-              color: colors.primary,
+            sx: {
+              fontWeight: 300,
+              color: colors.text,
               fontFamily: "Montserrat, sans-serif",
               fontSize: "1rem",
               textAlign: "center",
@@ -208,11 +214,11 @@ export default function Home() {
       </ListItemButton>
       <ListItemButton onClick={() => { toggleDrawer(false)(); scrollToSection(certificationRef); }} sx={{ justifyContent: "center" }}>
         <ListItemText
-          primary="CERTIFICATION"
+          primary="Credentials"
           primaryTypographyProps={{
-            style: {
-              fontWeight: 700,
-              color: colors.primary,
+            sx: {
+              fontWeight: 300,
+              color: colors.text,
               fontFamily: "Montserrat, sans-serif",
               fontSize: "1rem",
               textAlign: "center",
@@ -220,6 +226,7 @@ export default function Home() {
           }}
         />
       </ListItemButton>
+      <ResumeButton variant="outlined" sx={{ marginLeft: '77px', marginTop: '50px', }}>Resume</ResumeButton>
     </List>
   );
 
@@ -227,11 +234,11 @@ export default function Home() {
     <List component="nav" sx={{ display: "flex" }}>
       <ListItemButton onClick={() => scrollToSection(educationRef)}>
         <ListItemText
-          primary="EDUCATION"
+          primary="Background"
           primaryTypographyProps={{
             sx: {
-              fontWeight: 770,
-              color: colors.primary,
+              fontWeight: 300,
+              color: colors.text,
               fontFamily: "Montserrat, sans-serif",
               fontSize: "1rem",
             },
@@ -240,11 +247,11 @@ export default function Home() {
       </ListItemButton>
       <ListItemButton onClick={() => scrollToSection(experienceRef)}>
         <ListItemText
-          primary="EXPERIENCE"
+          primary="Career"
           primaryTypographyProps={{
             sx: {
-              fontWeight: 770,
-              color: colors.primary,
+              fontWeight: 300,
+              color: colors.text,
               fontFamily: "Montserrat, sans-serif",
               fontSize: "1rem",
             },
@@ -253,11 +260,11 @@ export default function Home() {
       </ListItemButton>
       <ListItemButton onClick={() => scrollToSection(projectsRef)}>
         <ListItemText
-          primary="PROJECTS"
+          primary="Endeavors"
           primaryTypographyProps={{
             sx: {
-              fontWeight: 790,
-              color: colors.primary,
+              fontWeight: 300,
+              color: colors.text,
               fontFamily: "Montserrat, sans-serif",
               fontSize: "1rem",
             },
@@ -266,11 +273,11 @@ export default function Home() {
       </ListItemButton>
       <ListItemButton onClick={() => scrollToSection(certificationRef)}>
         <ListItemText
-          primary="CERTIFICATION"
+          primary="Credentials"
           primaryTypographyProps={{
             sx: {
-              fontWeight: 790,
-              color: colors.primary,
+              fontWeight: 300,
+              color: colors.text,
               fontFamily: "Montserrat, sans-serif",
               fontSize: "1rem",
             },
@@ -286,41 +293,39 @@ export default function Home() {
       {showContent && (
         <>
           <Navbar
-            sx={{ position: 'sticky', top: 0, width: '100%', zIndex: 1000 }} // Apply fixed positioning
+            sx={{ position: 'sticky', top: 0, width: '100%', zIndex: 1000 }}
             isMobile={isMobile}
             drawerOpen={drawerOpen}
             toggleDrawer={toggleDrawer}
             appBarActions={appBarActions}
             drawerContent={drawerContent}
           />
-           <HomeContainer>
-      <Heading>Hi there! I am</Heading>
-      {userData ? (
-        <>
-          <Heading>
-            {userData.firstName} {userData.lastName}
-          </Heading>
-          <SubText>A {userData.jobTitle}</SubText>
-          <DetailText>{userData.summary}</DetailText>
-        </>
-      ) : (
-        <ErrorText>{error || "Loading..."}</ErrorText>
-      )}
-    </HomeContainer>
-          <p ref={educationRef}></p>
-          <Education userData={userData} activeIndex={activeIndex} setActiveIndex={setActiveIndex} sx={{width: '100%'}}/>
+          <HomeContainer>
+            <p style={{ color: colors.text, fontFamily: fonts.primary, fontSize: "1.5rem", textAlign: "center" }}>Hi, my name is</p>
+            <h1 style={{ fontSize: "4rem", fontWeight: "bold", color: colors.accent, textAlign: "center",marginTop:'0px' }}>{userData.firstName} {userData.lastName}</h1>
+            <h2 style={{ fontSize: "3rem", fontWeight: "normal", color: colors.text, textAlign: "center",  marginLeft:'2rem',marginRight:'2rem' ,marginTop:'10px'}}> A  {userData.jobTitle}</h2>
+            <p style={{ fontSize: "1rem", fontWeight: "normal", color: colors.text, textAlign: "center", maxWidth: "600px", margin: "0 auto", lineHeight: "1.6" }}>
+            {userData.summary}
+            </p>
+          </HomeContainer>
+          <ContactIconContainer onClick={() => scrollToSection(contactRef)}>
+            <ContactIcon />
+          </ContactIconContainer>
+          <p sx={{ color: colors.background }} ref={educationRef}></p>
+          <Education userData={userData} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
           <Section ref={experienceRef}>
-            <p>Where I&apos;ve worked</p>
+            <SectionText>Where I&apos;ve Worked</SectionText>
           </Section>
-          <Experience userData={userData} />
+          <Experience userData={userData} sx={{ color: colors.white }} />
           <Section ref={projectsRef}>
-            <p>Skills I&apos;ve applied</p>
+            <SectionText>Skills I&apos;ve Applied</SectionText>
           </Section>
-          <Projects userData={userData} />
+          <Projects userData={userData} sx={{ color: colors.white }} />
           <Section ref={certificationRef}>
-            <p>Credentials earned</p>
+            <SectionText>Credentials Earned</SectionText>
           </Section>
-          <Certificates userData={userData} handleClick={() => {}} />
+          <Certificates userData={userData} handleClick={() => {}} sx={{ color: colors.white }} />
+          <p ref={contactRef}></p>
           <Footer />
         </>
       )}

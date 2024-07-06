@@ -3,10 +3,12 @@ import { styled } from '@mui/material';
 import Modal from './Modal.js';
 
 const colors = {
-  primary: '#00704A',
-  secondary: '#27251F',
-  accent: '#D4E9E2',
-  text: '#1E3932',
+  primary: '#8A2BE2', // Violet
+  secondary: '#4B0082', // Indigo
+  accent: '#DA70D6', // Orchid
+  text: '#E9E9E9', // Light Grey
+  background: '#1F1F1F', // Almost Black
+  white: '#FFFFFF', // White
 };
 
 const CertificatesWrapper = styled('div')({
@@ -57,7 +59,7 @@ const CList = styled('div')({
   },
 
   '.num:hover': {
-    backgroundColor: colors.accent,
+    background: 'linear-gradient(to right, rgba(234,173,231, 0.8), rgba(234,173,231, 0))',
     cursor: 'pointer',
   },
 
@@ -68,7 +70,7 @@ const CList = styled('div')({
 
   '.num:hover h3': {
     left: '1rem',
-    color: colors.text,
+    color: colors.background,
   },
 
   '@media (max-width: 1200px)': {

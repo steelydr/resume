@@ -1,16 +1,96 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, IconButton, List, ListItemButton, ListItemText, Drawer, alpha, styled } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Drawer, alpha, styled, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import { IoLogoGithub, IoLogoLinkedin } from 'react-icons/io';
+import Button from '@mui/material/Button';
+import { keyframes } from '@mui/material';
 
 const colors = {
-  primary: '#00704A',
-  secondary: '#27251F',
-  accent: '#D4E9E2',
-  background: '#F1F8F6',
-  text: '#1E3932',
+  primary: '#8A2BE2', // Violet
+  secondary: '#4B0082', // Indigo
+  accent: '#DA70D6', // Orchid
+  text: '#E9E9E9', // Light Grey
+  background: '#1F1F1F', // Almost Black
+  white: '#FFFFFF', // White
 };
+
+const LoaderWrapper = styled('div')({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100%',
+  backgroundColor: colors.background,
+  position: 'relative',
+  overflow: 'hidden',
+});
+
+const scaleIn = keyframes`
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+`;
+
+const draw = keyframes`
+  0% {
+    stroke-dasharray: 0, 400;
+  }
+  100% {
+    stroke-dasharray: 400, 0;
+  }
+`;
+
+const Polygon = styled('svg')({
+  width: '56px', // Adjusted size
+  height: '56px', // Adjusted size
+  animation: `${scaleIn} 0.5s ease-out`,
+});
+
+const PolygonPath = styled('polygon')({
+  fill: 'none',
+  stroke: colors.primary,
+  strokeWidth: 5,
+  strokeDasharray: 400,
+  animation: `${draw} 2s ease-in-out`,
+});
+
+const Text = styled('div')({
+  fontSize: '1.6rem', // Adjusted size
+  fontWeight: 700,
+  fontFamily: "'Roboto', sans-serif",
+  color: colors.accent,
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
+  letterSpacing: '0.05rem',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '56px', // Adjusted size
+  height: '56px', // Adjusted size
+});
+
+const Loader = ({ showR }) => (
+  <LoaderWrapper>
+    <Polygon viewBox="0 0 100 100">
+      <PolygonPath points="50,5 90,25 90,75 50,95 10,75 10,25" />
+    </Polygon>
+    {showR && <Text>R</Text>}
+  </LoaderWrapper>
+);
+
+const ResumeButton = styled(Button)({
+  color: colors.text,
+  borderColor: colors.accent,
+  fontWeight: 300,
+  fontFamily: "Montserrat, sans-serif",
+  fontSize: "1rem",
+  textTransform: 'none',
+  '&:hover': {
+    borderColor: colors.accent,
+    backgroundColor: alpha(colors.accent, 0.1),
+  },
+});
 
 const StyledMenuIcon = styled(MenuIcon)(({ open }) => ({
   transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
@@ -23,13 +103,23 @@ const StyledCloseIcon = styled(CloseIcon)(({ open }) => ({
   transition: 'transform 0.3s ease-in-out',
   color: colors.secondary,
 }));
+
+const LoaderContainer = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  cursor: 'pointer',
+  height: '56px',
+  width: '56px',
+  marginRight: '20px', // Add margin to separate from other elements
+});
+
 const Navbar = ({ isMobile, drawerOpen, toggleDrawer, appBarActions, drawerContent }) => {
-  
   return (
     <AppBar
       position="fixed"
       sx={{
-        backgroundColor: alpha(colors.accent, 0.9),
+        backgroundColor: alpha(colors.background, 0.9),
         backdropFilter: 'blur(10px)',
         boxShadow: 'none',
         width: '100%',
@@ -37,30 +127,23 @@ const Navbar = ({ isMobile, drawerOpen, toggleDrawer, appBarActions, drawerConte
         paddingRight: '20px',
       }}
     >
-      <Toolbar sx={{ width: '100%', backgroundColor: alpha(colors.accent, 0.9) }}>
-        <Typography
-          variant="h6"
-          component="div"
-          onClick={() => window.scrollTo(0, 0)}
-          sx={{
-            flexGrow: 1,
-            fontWeight: 700,
-            color: colors.primary,
-            fontFamily: 'Montserrat, sans-serif',
-            fontSize: '1rem',
-            marginLeft: '10px',
-            cursor: 'pointer',
-          }}
-        >
-          HOME
-        </Typography>
-        {isMobile ? (
-          <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
-            {drawerOpen ? <StyledCloseIcon open={drawerOpen} /> : <StyledMenuIcon open={drawerOpen} />}
-          </IconButton>
-        ) : (
-          appBarActions // This ensures appBarActions are visible on non-mobile devices
-        )}
+      <Toolbar sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', backgroundColor: alpha(colors.background, 0.9) }}>
+        <LoaderContainer onClick={() => window.scrollTo(0, 0)}>
+          <Loader showR={true} />
+        </LoaderContainer>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {!isMobile && appBarActions}
+          {!isMobile && (
+            <ResumeButton variant="outlined" sx={{ marginRight: '20px' }}>
+              Resume
+            </ResumeButton>
+          )}
+          {isMobile && (
+            <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
+              {drawerOpen ? <StyledCloseIcon open={drawerOpen} /> : <StyledMenuIcon open={drawerOpen} />}
+            </IconButton>
+          )}
+        </Box>
       </Toolbar>
       <Drawer
         anchor="right"
@@ -74,7 +157,7 @@ const Navbar = ({ isMobile, drawerOpen, toggleDrawer, appBarActions, drawerConte
           },
         }}
       >
-        <StyledCloseIcon style={{ color: colors.secondary, fontSize: '35px', padding: '35px' }} onClick={toggleDrawer(false)} />
+        <StyledCloseIcon style={{ color: colors.white, fontSize: '35px', padding: '35px' }} onClick={toggleDrawer(false)} />
         {drawerContent}
       </Drawer>
     </AppBar>

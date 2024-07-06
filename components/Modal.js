@@ -11,6 +11,7 @@ const ModalBackground = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 5;
 `;
 
 const Image = styled('img')`
@@ -21,7 +22,7 @@ const Image = styled('img')`
 
 
 const ModalContent = styled('div')`
-  background: white;
+  background: transparent;
   padding: 1.5rem;
   position: relative;
   display: flex;
@@ -44,7 +45,7 @@ const CloseButton = styled('button')`
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  border-radius: 25px;
+  border-radius: 50%;
 `;
 
 const Modal = ({ show, onClose, imagePath }) => {

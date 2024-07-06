@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material';
 import Image from 'next/image';
+import { FiGithub } from "react-icons/fi";
 
 const colors = {
-  primary: '#00704A', // Starbucks Green
-  secondary: '#005241', // Deep Green
-  accent: '#D4E9E2', // Light Mint Green
-  text: '#1E3932', // Almost Black
-  background: '#FFFFFF', // White
+  primary: '#8A2BE2', // Violet
+  secondary: '#4B0082', // Indigo
+  accent: '#DA70D6', // Orchid
+  text: '#E9E9E9', // Light Grey
+  background: '#1F1F1F', // Almost Black
+  white: '#FFFFFF', // White
 };
 
 const Container = styled('div')`
@@ -53,7 +55,7 @@ const Container = styled('div')`
     background-color: ${colors.background};
     padding: 0;
     box-sizing: border-box;
-    border-bottom: 2px solid ${colors.accent};
+    border-bottom: 2px solid ${colors.text};
 
     @media (max-width: 768px) {
       flex-wrap: wrap;
@@ -83,8 +85,7 @@ const Container = styled('div')`
   }
 
   label:hover, input[type="radio"]:checked + label {
-    color: ${colors.primary};
-    background-color: ${colors.accent};
+    color: ${colors.accent};
   }
 
   label::before {
@@ -94,7 +95,7 @@ const Container = styled('div')`
     left: 0;
     width: 100%;
     height: 4px;
-    background-color: ${colors.secondary};
+    background-color: ${colors.accent};
     transform: scaleX(0);
     transition: transform 0.4s ease-in-out;
   }
@@ -156,56 +157,48 @@ const Container = styled('div')`
     }
   }
 
-  .view-project-link {
+  .action-row {
     display: flex;
-    margin-top: 10px;
     justify-content: end;
+    align-items: center;
+    margin-top: -10px;
     margin-right: 190px;
     flex-wrap: wrap;
 
     @media (max-width: 768px) {
-      justify-content: end;
+      justify-content: space-between;
       margin-right: 20px;
     }
   }
 
   .view-project-link a {
-    background-color: ${colors.primary};
-    color: ${colors.background};
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s;
-    font-weight: bold;
+    color: ${colors.white};
+    font-size: 40px;
+    transition: color 0.3s;
+
+    &:hover {
+      color: ${colors.accent};
+    }
 
     @media (max-width: 768px) {
-      padding: 8px 15px;
+      font-size: 30px;
     }
-  }
-
-  .view-project-link a:hover {
-    background-color: ${colors.secondary};
   }
 
   .tech-logos {
     display: flex;
-    justify-content: end;
-    margin-top: 0px;
-    margin-right: 200px;
-    gap: 10px;
+    gap: 13px;
     flex-wrap: wrap;
 
     @media (max-width: 768px) {
-      justify-content: end;
-      margin-right: 20px;
       margin-top: -20px;
     }
   }
 `;
 
 const TechLogo = styled('img')`
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
 
   @media (max-width: 768px) {
     width: 30px;
@@ -302,6 +295,17 @@ const ProjectContent = styled('div')`
   }
 `;
 
+const GitHubIcon = styled(FiGithub)`
+  margin-left : 20px;
+  color: ${colors.text}; /* Default color */
+  font-size: 26px; /* Adjust the size as needed */
+  transition: color 0.3s; /* Smooth transition for color change */
+
+  &:hover {
+    color: ${colors.accent}; /* Color on hover */
+  }
+`;
+
 const Projects = ({ userData }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [overlayImage, setOverlayImage] = useState(null);
@@ -363,24 +367,53 @@ const Projects = ({ userData }) => {
   };
 
   const highlightNumbers = (text) => {
-    const parts = text.split(/(\d+)/);
+    const phrases = ["1 million", "SHA-256"];
+  
+    const escapeRegExp = (string) =>
+      string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  
+    const regex = new RegExp(
+      `(${phrases.map(escapeRegExp).join('|')})|(\\d+)`,
+      'g'
+    );
+    const parts = text.split(regex);
+  
+    const capitalizeFirstLetter = (string) => {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+  
     return (
       <span>
-        {parts.map((part, index) =>
-          /\d+/.test(part) ? (
-            <span key={index} style={{ color: colors.primary, fontWeight: 'bold' }}>
-              {part}
-            </span>
-          ) : (
-            <span key={index} style={{ color: colors.text, fontWeight: 'normal' }}>
-              {part}
-            </span>
-          )
-        )}
+        {parts.map((part, index) => {
+          if (index === 0 && part) {
+            // Capitalize and color only the first letter of the entire text
+            return (
+              <span key={index}>
+                <span style={{ color: colors.accent, fontWeight: 'bold',fontSize:'1.3rem' }}>
+                  {capitalizeFirstLetter(part.charAt(0))}
+                </span>
+                {part.slice(1)}
+              </span>
+            );
+          } else if (part && phrases.includes(part.trim())) {
+            return (
+              <span key={index} style={{ color: colors.accent, fontWeight: 'normal' , }}>
+                {part}
+              </span>
+            );
+          } else {
+            return (
+              <span key={index} style={{ color: colors.text, fontWeight: 'normal',letterSpacing: '0.19px' }}>
+                {part}
+              </span>
+            );
+          }
+        })}
       </span>
     );
   };
-
+  
+  
   const handleClick = (image) => {
     setOverlayImage(image);
   };
@@ -412,15 +445,17 @@ const Projects = ({ userData }) => {
           ))}
         </div>
       </div>
-      <div className="tech-logos">
-        {userData.projects[activeTab].technologies.map((tech, techIndex) => (
-          <TechLogo key={techIndex} src={getTechLogo(tech)} alt={tech} />
-        ))}
-      </div>
-      <div className="view-project-link">
-        <a href={userData.projects[activeTab].glink} target="_blank" rel="noopener noreferrer">
-          View Project
-        </a>
+      <div className="action-row">
+        <div className="tech-logos">
+          {userData.projects[activeTab].technologies.map((tech, techIndex) => (
+            <TechLogo key={techIndex} src={getTechLogo(tech)} alt={tech} />
+          ))}
+        </div>
+        <div className="view-project-link">
+          <a href={userData.projects[activeTab].glink} target="_blank" rel="noopener noreferrer">
+            <GitHubIcon />
+          </a>
+        </div>
       </div>
     </Container>
   );

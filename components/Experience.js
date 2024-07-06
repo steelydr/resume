@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material';
 
 const colors = {
-  primary: '#00704A',
-  secondary: '#27251F',
-  background: '#F1F8F6',
+  accent: '#8A2BE2', // Violet
+  secondary: '#4B0082', // Indigo
+  primary: '#DA70D6', // Orchid
+  text: '#E9E9E9', // Light Grey
+  background: '#1F1F1F', // Almost Black
+  white: '#FFFFFF', // White
 };
 
 const Timeline = styled('div')({
@@ -77,8 +80,6 @@ const Timeline = styled('div')({
     '& .timeline__event__content': {
       padding: '20px',
       backgroundColor: colors.background,
-      boxShadow:
-        '0 30px 60px -12px rgba(50, 50, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3), 0 -12px 36px -8px rgba(0, 0, 0, 0.025)',
       width: 'calc(100% - 84px)',
       borderRadius: '0 6px 6px 0',
       overflow: 'hidden',
@@ -113,7 +114,7 @@ const Timeline = styled('div')({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      color: colors.background,
+      color: colors.white,
       padding: '20px',
       alignSelf: 'center',
       margin: '0 20px',
@@ -150,7 +151,7 @@ const Timeline = styled('div')({
     },
     '& .timeline__event__description': {
       flexBasis: '100%',
-      color: colors.secondary,
+      color: colors.text,
       position: 'relative',
       textOverflow: 'ellipsis',
       overflow: 'hidden',
@@ -168,7 +169,7 @@ const Timeline = styled('div')({
       display: 'block',
       backgroundColor: 'transparent',
       border: 'none',
-      color: colors.secondary,
+      color: colors.primary,
       cursor: 'pointer',
       textAlign: 'left',
       padding: '0',
