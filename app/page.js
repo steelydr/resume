@@ -115,7 +115,7 @@ export default function Home() {
       try {
         const response = await axios.get(
           //"http://localhost:3001/api/users?firstName=Depala&lastName=Rajeswari"
-          "https://rajeswari-depala.netlify.app//api/users?firstName=Depala&lastName=Rajeswari"
+          "https://rajeswaridepalav.netlify.app//api/users?firstName=Depala&lastName=Rajeswari"
         );
         setUserData(response.data);
       } catch (error) {
