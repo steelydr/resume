@@ -134,6 +134,11 @@ const Certificates = ({ userData }) => {
     setShowModal(true);
   };
 
+  
+  if (!userData || !userData.certifications) {
+    return null;
+  }
+
   return (
     <CertificatesWrapper>
       {userData.certifications.map((certification, index) => (

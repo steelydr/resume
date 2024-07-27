@@ -17,7 +17,7 @@ const Timeline = styled('div')({
   position: 'relative',
   width: '100%',
   fontFamily: 'Montserrat, sans-serif',
-  paddingBottom:'40px',
+  paddingBottom: '40px',
 
   '& .timeline__event': {
     marginBottom: '20px',
@@ -29,7 +29,7 @@ const Timeline = styled('div')({
     width: '90vw',
     maxWidth: '800px',
 
-    '&:nth-child(2n + 1)': {
+    '&:nth-of-type(2n + 1)': {
       flexDirection: 'row-reverse',
 
       '& .timeline__event__date': {
@@ -103,10 +103,10 @@ const Timeline = styled('div')({
       '& p': {
         margin: 0,
       },
-      '& p:first-child': {
+      '& p:first-of-type': { // Updated to :first-of-type
         fontSize: '1.2rem',
       },
-      '& p:last-child': {
+      '& p:last-of-type': { // Updated to :last-of-type
         fontSize: '1rem',
       },
     },
@@ -201,7 +201,7 @@ const Timeline = styled('div')({
       alignItems: 'center',
       boxShadow: 'none',
 
-      '&:nth-child(2n + 1)': {
+      '&:nth-of-type(2n + 1)': {
         flexDirection: 'column',
 
         '& .timeline__event__date': {
@@ -252,13 +252,15 @@ const Experience = ({ userData }) => {
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
   useEffect(() => {
-    // Initialize expanded state for each experience
-    const initialExpandedState = {};
-    userData.experiences.forEach((_, index) => {
-      initialExpandedState[index] = false;
-    });
-    setExpandedDescriptions(initialExpandedState);
-  }, [userData.experiences]);
+    if (userData && userData.experiences) {
+      // Initialize expanded state for each experience
+      const initialExpandedState = {};
+      userData.experiences.forEach((_, index) => {
+        initialExpandedState[index] = false;
+      });
+      setExpandedDescriptions(initialExpandedState);
+    }
+  }, [userData]);
 
   const formatDescription = (description, isExpanded) => {
     const lines = description.split(/(?<=\.)\s+|\n/);
@@ -276,6 +278,10 @@ const Experience = ({ userData }) => {
       [index]: !prev[index],
     }));
   };
+
+  if (!userData || !userData.experiences) {
+    return null;
+  }
 
   return (
     <Timeline>

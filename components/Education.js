@@ -195,6 +195,10 @@ const ArrowRightButton = styled(ArrowButton)`
 `;
 
 const Education = ({ userData, activeIndex, setActiveIndex }) => {
+  if (!userData || !userData.educations) {
+    return null;
+  }
+
   const handlePrevious = () => {
     setActiveIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : userData.educations.length - 1));
   };
@@ -210,7 +214,7 @@ const Education = ({ userData, activeIndex, setActiveIndex }) => {
           position: 'sticky',
           top: 0,
           width: '100%',
-          zIndex: 1000,
+          zIndex: 1,
           paddingLeft: '200px',
           color: colors.text,
           '@media (max-width: 768px)': {

@@ -418,6 +418,10 @@ const Projects = ({ userData }) => {
     setOverlayImage(image);
   };
 
+  if (!userData || !userData.projects) {
+    return null;
+  }
+
   return (
     <Container>
       <div className="popup">
