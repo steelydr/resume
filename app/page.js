@@ -114,12 +114,15 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          //"http://localhost:3001/api/users?firstName=Depala&lastName=Rajeswari"
-          "https://rajeswari-depala.netlify.app//api/users?firstName=Depala&lastName=Rajeswari"
+          "http://localhost:3002/api/users?firstName=Depala&lastName=Rajeswari"
+          //"https://rajeswaridepalav.netlify.app/api/users?firstName=Depala&lastName=Rajeswari"
         );
         setUserData(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
+        setError(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -301,12 +304,18 @@ export default function Home() {
             drawerContent={drawerContent}
           />
           <HomeContainer>
-            <p style={{ color: colors.text, fontFamily: fonts.primary, fontSize: "1.5rem", textAlign: "center" }}>Hi, my name is</p>
-            <h1 style={{ fontSize: "4rem", fontWeight: "bold", color: colors.accent, textAlign: "center",marginTop:'0px' }}>{userData.firstName} {userData.lastName}</h1>
-            <h2 style={{ fontSize: "3rem", fontWeight: "normal", color: colors.text, textAlign: "center",  marginLeft:'2rem',marginRight:'2rem' ,marginTop:'10px'}}> A  {userData.jobTitle}</h2>
-            <p style={{ fontSize: "1rem", fontWeight: "normal", color: colors.text, textAlign: "center", maxWidth: "600px", margin: "0 auto", lineHeight: "1.6" }}>
-            {userData.summary}
-            </p>
+            {userData ? (
+              <>
+                <p style={{ color: colors.text, fontFamily: fonts.primary, fontSize: "1.5rem", textAlign: "center" }}>Hi, my name is</p>
+                <h1 style={{ fontSize: "4rem", fontWeight: "bold", color: colors.accent, textAlign: "center", marginTop: '0px' }}>{userData.firstName} {userData.lastName}</h1>
+                <h2 style={{ fontSize: "3rem", fontWeight: "normal", color: colors.text, textAlign: "center", marginLeft: '2rem', marginRight: '2rem', marginTop: '10px' }}> A {userData.jobTitle}</h2>
+                <p style={{ fontSize: "1rem", fontWeight: "normal", color: colors.text, textAlign: "center", maxWidth: "600px", margin: "0 auto", lineHeight: "1.6" }}>
+                  {userData.summary}
+                </p>
+              </>
+            ) : (
+              <p style={{ color: colors.text, fontFamily: fonts.primary, fontSize: "1.5rem", textAlign: "center" }}>Loading user data...</p>
+            )}
           </HomeContainer>
           <ContactIconContainer onClick={() => scrollToSection(contactRef)}>
             <ContactIcon />
@@ -324,7 +333,7 @@ export default function Home() {
           <Section ref={certificationRef}>
             <SectionText>Credentials Earned</SectionText>
           </Section>
-          <Certificates userData={userData} handleClick={() => {}} sx={{ color: colors.white }} />
+          <Certificates userData={userData} handleClick={() => { }} sx={{ color: colors.white }} />
           <p ref={contactRef}></p>
           <Footer />
         </>
