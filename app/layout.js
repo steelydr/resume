@@ -1,23 +1,20 @@
 "use client";
 
-import { useEffect } from "react";
 import { Inter } from "next/font/google";
-import { CacheProvider, Global, css } from "@emotion/react";
-import createCache from "@emotion/cache";
+import { useEffect } from "react";
+import Head from "next/head";
+import { css, Global } from "@emotion/react";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const globalStyles = css`
-  html, body {
+  body, html {
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
-
+    overflow-x: hidden; /* Prevent horizontal scrolling */
   }
 `;
-
-const cache = createCache({ key: "css" });
 
 export default function RootLayout({ children }) {
   useEffect(() => {
@@ -36,35 +33,29 @@ export default function RootLayout({ children }) {
       }
     };
 
-    window.addEventListener("touchstart", preventZoom, { passive: false });
-    window.addEventListener("touchmove", preventZoom, { passive: false });
     window.addEventListener("wheel", preventZoom, { passive: false });
     window.addEventListener("keydown", preventZoomKeys);
 
     return () => {
-      window.removeEventListener("touchstart", preventZoom);
-      window.removeEventListener("touchmove", preventZoom);
       window.removeEventListener("wheel", preventZoom);
       window.removeEventListener("keydown", preventZoomKeys);
     };
   }, []);
 
   return (
-    <html lang="en" className={inter.className}>
-      <head>
-        <title>Rajeswari Depala</title>
-        <meta name="description" content="My Resume Application" />
+    <html lang="en">
+      <Head>
+        <title>Depala Rajeswari</title>
+        <meta name="description" content="This is the description of Depala Rajeswari's website." />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
-      </head>
-      <CacheProvider value={cache}>
+      </Head>
+      <body className={inter.className}>
         <Global styles={globalStyles} />
-        <body className={inter.className}>
-          {children}
-        </body>
-      </CacheProvider>
+        <div className="content-wrapper">{children}</div>
+      </body>
     </html>
   );
 }
