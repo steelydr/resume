@@ -19,10 +19,6 @@ const globalStyles = css`
     --theme: light;
   }
 
-  body {
-    background-color: var(--theme, white);
-    color: var(--theme, black);
-  }
 `;
 
 const cache = createCache({ key: "css" });

@@ -509,7 +509,7 @@ export default function ResumePage() {
                 <></> // Removed the loading text
               )}
             </HomeContainer>
-            <ContactIconContainer onClick={() => scrollToSection(contactRef)}>
+            <ContactIconContainer sx={{ color: colors.background }} onClick={() => scrollToSection(contactRef)}>
               <ContactIcon />
             </ContactIconContainer>
             <p sx={{ color: colors.background }} ref={educationRef}></p>
@@ -520,8 +520,8 @@ export default function ResumePage() {
                 setActiveIndex={setActiveIndex}
               />
             </Suspense>
-            <Suspense fallback={<Loader showR={showR} />}>
-              <Section ref={experienceRef}>
+            <Suspense fallback={<Loader showR={showR} sx={{ color: colors.background }}/>}>
+              <Section sx={{ color: colors.background }} ref={experienceRef}>
                 <SectionText>Where I&apos;ve Worked</SectionText>
               </Section>
               <Experience userData={userData} sx={{ color: colors.white }} />
