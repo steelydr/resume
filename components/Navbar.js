@@ -95,7 +95,7 @@ const ResumeButton = styled(Button)({
 const StyledMenuIcon = styled(MenuIcon)(({ open }) => ({
   transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
   transition: 'transform 0.3s ease-in-out',
-  color: colors.accent,
+  color: colors.secondary,
 }));
 
 const StyledCloseIcon = styled(CloseIcon)(({ open }) => ({
