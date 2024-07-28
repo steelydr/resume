@@ -1,21 +1,31 @@
 "use client";
 
-import { Inter } from "next/font/google";
 import { useEffect } from "react";
-import Head from "next/head";
-import { css, Global } from "@emotion/react";
+import { Inter } from "next/font/google";
+import { CacheProvider, Global, css } from "@emotion/react";
+import createCache from "@emotion/cache";
 import "./globals.css";
-import { metadata } from "./metadata"; // Adjust the path if needed
 
 const inter = Inter({ subsets: ["latin"] });
 
 const globalStyles = css`
-  body, html {
+  html, body {
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-x: hidden;
+  }
+
+  :root {
+    --theme: light;
+  }
+
+  body {
+    background-color: var(--theme, white);
+    color: var(--theme, black);
   }
 `;
+
+const cache = createCache({ key: "css" });
 
 export default function RootLayout({ children }) {
   useEffect(() => {
@@ -44,19 +54,21 @@ export default function RootLayout({ children }) {
   }, []);
 
   return (
-    <html lang="en">
-      <Head>
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
+    <html lang="en" className={inter.className}>
+      <head>
+        <title>Rajeswari Depala</title>
+        <meta name="description" content="My Resume Application" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
-      </Head>
-      <body className={inter.className}>
+      </head>
+      <CacheProvider value={cache}>
         <Global styles={globalStyles} />
-        <div className="content-wrapper">{children}</div>
-      </body>
+        <body className={inter.className}>
+          {children}
+        </body>
+      </CacheProvider>
     </html>
   );
 }
