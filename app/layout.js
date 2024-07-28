@@ -13,9 +13,7 @@ const globalStyles = css`
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    width: 100%;
-    max-width: 100%;
-    touch-action: pan-x pan-y;
+
   }
 `;
 
