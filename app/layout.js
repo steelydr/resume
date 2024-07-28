@@ -15,6 +15,7 @@ const globalStyles = css`
     overflow-x: hidden;
     width: 100%;
     max-width: 100%;
+    touch-action: pan-x pan-y;
   }
 
   body {
@@ -35,6 +36,9 @@ const cache = createCache({ key: "css" });
 export default function RootLayout({ children }) {
   useEffect(() => {
     const preventZoom = (event) => {
+      if (event.touches && event.touches.length > 1) {
+        event.preventDefault();
+      }
       if (event.ctrlKey || event.metaKey) {
         event.preventDefault();
       }
@@ -49,10 +53,14 @@ export default function RootLayout({ children }) {
       }
     };
 
+    window.addEventListener("touchstart", preventZoom, { passive: false });
+    window.addEventListener("touchmove", preventZoom, { passive: false });
     window.addEventListener("wheel", preventZoom, { passive: false });
     window.addEventListener("keydown", preventZoomKeys);
 
     return () => {
+      window.removeEventListener("touchstart", preventZoom);
+      window.removeEventListener("touchmove", preventZoom);
       window.removeEventListener("wheel", preventZoom);
       window.removeEventListener("keydown", preventZoomKeys);
     };
