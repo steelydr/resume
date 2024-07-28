@@ -18,7 +18,6 @@ const globalStyles = css`
   :root {
     --theme: light;
   }
-
 `;
 
 const cache = createCache({ key: "css" });
