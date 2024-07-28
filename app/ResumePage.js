@@ -115,8 +115,8 @@ export default function ResumePage() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          //"http://localhost:3001/api/users?firstName=Depala&lastName=Rajeswari",
-          "https://rajeswaridepalav.netlify.app/api/users?firstName=Depala&lastName=Rajeswari",
+          "http://localhost:3001/api/users?firstName=Depala&lastName=Rajeswari",
+          //"https://rajeswaridepalav.netlify.app/api/users?firstName=Depala&lastName=Rajeswari",
           {
             headers: {
               'Cache-Control': 'no-cache'
@@ -487,10 +487,20 @@ export default function ResumePage() {
                           .intro-text {
                             margin-right: 1rem; /* adjusted for smaller screens */
                           }
+                          .main-title {
+                            font-size: 2.5rem; /* smaller font size for smaller screens */
+                            margin-right: 1rem; /* adjusted for smaller screens */
+                          }
                           .job-title {
-                            font-size: 2rem; /* smaller font size for smaller screens */
+                            font-size: 1.5rem; /* smaller font size for smaller screens */
                             margin-right: 1rem; /* adjusted for smaller screens */
                             margin-left: 1rem;
+                          }
+                          .summary-text {
+                            font-size: 0.875rem; /* smaller font size for smaller screens */
+                             line-height: 1.5; /* improved readability */
+    padding: 0 1rem; /* added padding for better spacing */
+    text-align: justify; 
                           }
                         }
                       `}

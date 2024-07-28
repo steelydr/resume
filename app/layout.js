@@ -17,18 +17,6 @@ const globalStyles = css`
     max-width: 100%;
     touch-action: pan-x pan-y;
   }
-
-  body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  @media (max-width: 600px) {
-    body {
-      padding: 0 15px;
-    }
-  }
 `;
 
 const cache = createCache({ key: "css" });
@@ -36,9 +24,6 @@ const cache = createCache({ key: "css" });
 export default function RootLayout({ children }) {
   useEffect(() => {
     const preventZoom = (event) => {
-      if (event.touches && event.touches.length > 1) {
-        event.preventDefault();
-      }
       if (event.ctrlKey || event.metaKey) {
         event.preventDefault();
       }
