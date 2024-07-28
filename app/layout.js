@@ -13,10 +13,20 @@ const globalStyles = css`
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
   }
 
-  :root {
-    --theme: light;
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media (max-width: 600px) {
+    body {
+      padding: 0 15px;
+    }
   }
 `;
 
