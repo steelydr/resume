@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const colors = {
   accent: '#8A2BE2', // Violet
@@ -103,10 +104,10 @@ const Timeline = styled('div')({
       '& p': {
         margin: 0,
       },
-      '& p:first-of-type': { // Updated to :first-of-type
+      '& p:first-of-type': {
         fontSize: '1.2rem',
       },
-      '& p:last-of-type': { // Updated to :last-of-type
+      '& p:last-of-type': {
         fontSize: '1rem',
       },
     },
@@ -119,7 +120,7 @@ const Timeline = styled('div')({
       alignSelf: 'center',
       margin: '0 20px',
       backgroundColor: colors.primary,
-      borderRadius: '50%',
+      borderRadius: '90%',
       width: '40px',
       height: '40px',
       position: 'relative',
@@ -159,6 +160,15 @@ const Timeline = styled('div')({
       WebkitLineClamp: 3,
       WebkitBoxOrient: 'vertical',
       transition: 'max-height 0.3s ease',
+
+      '& ul': {
+        paddingLeft: '20px',
+        margin: '0',
+      },
+      '& li': {
+        listStyle: 'disc',
+        marginBottom: '0.5rem',
+      },
     },
 
     '& .timeline__event__description.expanded': {
@@ -173,7 +183,8 @@ const Timeline = styled('div')({
       cursor: 'pointer',
       textAlign: 'left',
       padding: '0',
-      marginTop: '5px',
+      marginTop: '10px',
+      marginLeft: '20px',
       fontFamily: 'Montserrat, sans-serif',
     },
   },
@@ -212,10 +223,7 @@ const Timeline = styled('div')({
         },
 
         '& .timeline__event__icon': {
-          marginBottom: '10px',
-          '&:before, &:after': {
-            display: 'none',
-          },
+          display: 'none',
         },
       },
 
@@ -233,9 +241,7 @@ const Timeline = styled('div')({
         borderRadius: '6px 6px 0 0',
       },
       '& .timeline__event__icon': {
-        margin: '10px 0',
-        width: '30px',
-        height: '30px',
+        display: 'none',
       },
       '& .timeline__event__description': {
         maxHeight: 'none',
@@ -265,11 +271,15 @@ const Experience = ({ userData }) => {
   const formatDescription = (description, isExpanded) => {
     const lines = description.split(/(?<=\.)\s+|\n/);
     const visibleLines = isExpanded ? lines : lines.slice(0, 3);
-    return visibleLines.map((sentence, index) => (
-      <p key={index} className="bulleted-paragraph">
-        • {sentence}
-      </p>
-    ));
+    return (
+      <ul>
+        {visibleLines.map((sentence, index) => (
+          <li key={index} className="bulleted-paragraph">
+            {sentence}
+          </li>
+        ))}
+      </ul>
+    );
   };
 
   const handleShowMore = (index) => {
@@ -286,25 +296,68 @@ const Experience = ({ userData }) => {
   return (
     <Timeline>
       {userData.experiences.map((experience, index) => (
-        <div key={index} className="timeline__event animated fadeInUp delay-3s timeline__event--type1">
-          <div className="timeline__event__icon"></div>
-          <div className="timeline__event__date">
+        <motion.div
+          key={index}
+          className="timeline__event animated fadeInUp delay-3s timeline__event--type1"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.2 }}
+        >
+          <motion.div
+            className="timeline__event__icon"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.3 }}
+          />
+          <motion.div
+            className="timeline__event__date"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: index * 0.2 }}
+          >
             <p>{new Date(experience.startDate).toLocaleDateString('en-US', { month: 'long' })}</p>
             <p>{new Date(experience.startDate).getFullYear()}</p>
-          </div>
-          <div className="timeline__event__content">
+          </motion.div>
+          <motion.div
+            className="timeline__event__content"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: index * 0.2 }}
+          >
             <div className="timeline__event__title">
-              <h3>{experience.title}</h3>
-              <p>{experience.company}</p>
+              <p>{experience.company} - {experience.jobTitle}</p>
             </div>
-            <div className={`timeline__event__description ${expandedDescriptions[index] ? 'expanded' : ''}`}>
-              {formatDescription(experience.description, expandedDescriptions[index])}
-            </div>
+            <AnimatePresence>
+              {expandedDescriptions[index] && (
+                <motion.div
+                  key="description"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="timeline__event__description expanded"
+                >
+                  {formatDescription(experience.description, expandedDescriptions[index])}
+                </motion.div>
+              )}
+            </AnimatePresence>
+            {!expandedDescriptions[index] && (
+              <motion.div
+                key="description-collapsed"
+                initial={{ height: 'auto', opacity: 1 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="timeline__event__description"
+              >
+                {formatDescription(experience.description, expandedDescriptions[index])}
+              </motion.div>
+            )}
             <button className="show-more" onClick={() => handleShowMore(index)}>
               {expandedDescriptions[index] ? 'Show Less' : 'Show More'}
             </button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       ))}
     </Timeline>
   );

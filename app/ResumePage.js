@@ -83,6 +83,11 @@ const ContactIconContainer = styled("div")({
   right: "30px",
   zIndex: 1000,
   cursor: "pointer",
+  transition: "opacity 0.3s",
+  "&.hidden": {
+    opacity: 0,
+    pointerEvents: "none",
+  },
 });
 
 const ContactIcon = styled(GrContact)({
@@ -107,6 +112,8 @@ export default function ResumePage() {
   const projectsRef = useRef(null);
   const certificationRef = useRef(null);
   const contactRef = useRef(null);
+  const footerRef = useRef(null);
+  const contactIconRef = useRef(null);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -149,8 +156,25 @@ export default function ResumePage() {
       document.body.appendChild(container);
       createBubbles();
     }, 2000);
+
+    const handleScroll = () => {
+      if (footerRef.current && contactIconRef.current) {
+        const footerRect = footerRef.current.getBoundingClientRect();
+        const contactIconRect = contactIconRef.current.getBoundingClientRect();
+        if (footerRect.top < window.innerHeight && contactIconRect.top < footerRect.top) {
+          contactIconRef.current.classList.add("hidden");
+        } else {
+          contactIconRef.current.classList.remove("hidden");
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
-  
+
   const toggleDrawer = (open) => (event) => {
     if (
       event &&
@@ -399,7 +423,7 @@ export default function ResumePage() {
               appBarActions={appBarActions}
               drawerContent={drawerContent}
             />
-            <HomeContainer>
+            <HomeContainer ref={homeRef}>
               {userData ? (
                 <>
                   <div>
@@ -502,6 +526,10 @@ export default function ResumePage() {
     padding: 0 1rem; /* added padding for better spacing */
     text-align: justify; 
                           }
+                          .bubble {
+                            width: 40px; /* smaller size for smaller screens */
+                            height: 40px; /* smaller size for smaller screens */
+                          }
                         }
                       `}
                     </style>
@@ -520,7 +548,7 @@ export default function ResumePage() {
                 <></> // Removed the loading text
               )}
             </HomeContainer>
-            <ContactIconContainer sx={{ color: colors.background }} onClick={() => scrollToSection(contactRef)}>
+            <ContactIconContainer ref={contactIconRef} sx={{ color: colors.background }} onClick={() => scrollToSection(contactRef)}>
               <ContactIcon />
             </ContactIconContainer>
             <p sx={{ color: colors.background }} ref={educationRef}></p>
@@ -555,7 +583,7 @@ export default function ResumePage() {
             </Suspense>
             <p ref={contactRef}></p>
             <Suspense fallback={<Loader showR={showR} />}>
-              <Footer />
+              <Footer ref={footerRef} />
             </Suspense>
           </>
         )}

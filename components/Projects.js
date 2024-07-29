@@ -159,15 +159,20 @@ const Container = styled('div')`
 
   .action-row {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
-    margin-top: -10px;
-    margin-right: 190px;
+    margin-top: 20px;
+    margin-right: 160px;
+    padding: 0 20px;
+    gap: 20px;
     flex-wrap: wrap;
 
     @media (max-width: 768px) {
-      justify-content: space-between;
-      margin-right: 20px;
+      margin-top: 10px;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 0px;
+      gap: 10px;
     }
   }
 
@@ -189,9 +194,13 @@ const Container = styled('div')`
     display: flex;
     gap: 13px;
     flex-wrap: wrap;
+    margin-left: 10px;
+    justify-content: flex-start;
 
     @media (max-width: 768px) {
-      margin-top: -20px;
+      justify-content: center;
+      margin-top: 10px;
+      gap: 10px;
     }
   }
 `;
@@ -296,7 +305,6 @@ const ProjectContent = styled('div')`
 `;
 
 const GitHubIcon = styled(FiGithub)`
-  margin-left : 20px;
   color: ${colors.text}; /* Default color */
   font-size: 26px; /* Adjust the size as needed */
   transition: color 0.3s; /* Smooth transition for color change */

@@ -1,7 +1,8 @@
 import React from 'react';
 import { styled } from '@mui/system';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const ModalBackground = styled('div')`
+const ModalBackground = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
@@ -20,8 +21,7 @@ const Image = styled('img')`
   object-fit: contain;
 `;
 
-
-const ModalContent = styled('div')`
+const ModalContent = styled(motion.div)`
   background: transparent;
   padding: 1.5rem;
   position: relative;
@@ -32,8 +32,8 @@ const ModalContent = styled('div')`
   max-width: 90%;
   max-height: 90%;
   height: auto;
-  width: 500px;  // Set the width for small overlay
-  height: 300px; // Set the height for small overlay
+  width: 500px;
+  height: 300px;
   border-radius: 8px;
 `;
 
@@ -49,15 +49,28 @@ const CloseButton = styled('button')`
 `;
 
 const Modal = ({ show, onClose, imagePath }) => {
-  if (!show) return null;
-
   return (
-    <ModalBackground onClick={onClose}>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
-        <CloseButton onClick={onClose}>&times;</CloseButton>
-        <Image src={imagePath} alt="Certificate" />
-      </ModalContent>
-    </ModalBackground>
+    <AnimatePresence>
+      {show && (
+        <ModalBackground
+          onClick={onClose}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <ModalContent
+            onClick={(e) => e.stopPropagation()}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <CloseButton onClick={onClose}>&times;</CloseButton>
+            <Image src={imagePath} alt="Certificate" />
+          </ModalContent>
+        </ModalBackground>
+      )}
+    </AnimatePresence>
   );
 };
 

@@ -101,7 +101,8 @@ const StyledMenuIcon = styled(MenuIcon)(({ open }) => ({
 const StyledCloseIcon = styled(CloseIcon)(({ open }) => ({
   transform: open ? 'rotate(0deg)' : 'rotate(180deg)',
   transition: 'transform 0.3s ease-in-out',
-  color: colors.secondary,
+  color: colors.white,
+  fontSize: '35px',
 }));
 
 const LoaderContainer = styled('div')({
@@ -109,8 +110,8 @@ const LoaderContainer = styled('div')({
   alignItems: 'center',
   justifyContent: 'center',
   cursor: 'pointer',
-  height: '56px',
-  width: '56px',
+  height: '50px',
+  width: '50px',
   marginRight: '20px', // Add margin to separate from other elements
 });
 
@@ -124,7 +125,7 @@ const Navbar = ({ isMobile, drawerOpen, toggleDrawer, appBarActions, drawerConte
         boxShadow: 'none',
         width: '100%',
         paddingTop: '5px',
-        paddingRight: '20px',
+        paddingRight: '2px',
       }}
     >
       <Toolbar sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', backgroundColor: alpha(colors.background, 0.9) }}>
@@ -134,7 +135,7 @@ const Navbar = ({ isMobile, drawerOpen, toggleDrawer, appBarActions, drawerConte
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {!isMobile && appBarActions}
           {!isMobile && (
-            <ResumeButton variant="outlined" sx={{ marginRight: '20px' }}>
+            <ResumeButton variant="outlined" sx={{ marginRight: '0px' }}>
               Resume
             </ResumeButton>
           )}
@@ -154,10 +155,16 @@ const Navbar = ({ isMobile, drawerOpen, toggleDrawer, appBarActions, drawerConte
             transition: 'width 0.3s ease',
             boxShadow: '4px 0 12px rgba(0,0,0,0.1)',
             backgroundColor: colors.background,
+            color: colors.white,
+            padding: '10px',
           },
         }}
       >
-        <StyledCloseIcon style={{ color: colors.white, fontSize: '35px', padding: '35px' }} onClick={toggleDrawer(false)} />
+        <Box sx={{ display: 'flex',padding: '40px', justifyContent: 'start' }}>
+          <IconButton onClick={toggleDrawer(false)}>
+            <StyledCloseIcon open={drawerOpen} />
+          </IconButton>
+        </Box>
         {drawerContent}
       </Drawer>
     </AppBar>

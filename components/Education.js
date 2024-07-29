@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material';
 import Image from 'next/image';
 import Section from "../components/Section";
@@ -62,6 +62,7 @@ const Container = styled('div')({
   backgroundColor: colors.background,
   '@media (max-width: 768px)': {
     flexDirection: 'column',
+    padding: '0 20px',
   },
 });
 
@@ -79,9 +80,14 @@ const EducationGrid = styled('div')({
     margin: '2%',
     paddingRight: '0',
   },
+  animation: 'fadeIn 0.5s ease-in-out',
+  '@keyframes fadeIn': {
+    '0%': { opacity: 0, transform: 'translateY(20px)' },
+    '100%': { opacity: 1, transform: 'translateY(0)' },
+  },
 });
 
-const EducationItem = styled('div')({
+const EducationItem = styled('div')(({ animationClass }) => ({
   color: colors.text,
   width: '100%',
   display: 'flex',
@@ -91,6 +97,23 @@ const EducationItem = styled('div')({
   backgroundColor: colors.background, // Background set to almost black
   padding: '20px',
   borderRadius: '0', // No rounded corners
+  animation: `${animationClass} 0.5s ease-in-out`,
+  '@keyframes fade-in-left': {
+    '0%': { opacity: 0, transform: 'translateX(-20px)' },
+    '100%': { opacity: 1, transform: 'translateX(0)' },
+  },
+  '@keyframes fade-in-right': {
+    '0%': { opacity: 0, transform: 'translateX(20px)' },
+    '100%': { opacity: 1, transform: 'translateX(0)' },
+  },
+  '@keyframes fade-out-left': {
+    '0%': { opacity: 1, transform: 'translateX(0)' },
+    '100%': { opacity: 0, transform: 'translateX(-20px)' },
+  },
+  '@keyframes fade-out-right': {
+    '0%': { opacity: 1, transform: 'translateX(0)' },
+    '100%': { opacity: 0, transform: 'translateX(20px)' },
+  },
 
   '& h3': {
     fontSize: '2rem',
@@ -158,7 +181,7 @@ const EducationItem = styled('div')({
       textAlign: 'left',
     },
   },
-});
+}));
 
 const Navigation = styled('div')`
   display: flex;
@@ -188,23 +211,45 @@ const ArrowButton = styled('div')`
 
 const ArrowLeftButton = styled(ArrowButton)`
   left: -50px; /* Adjust this value to position the left arrow */
+  @media (max-width: 600px) {
+    left: -5px;
+  }
 `;
 
 const ArrowRightButton = styled(ArrowButton)`
   right: -50px; /* Adjust this value to position the right arrow */
+  @media (max-width: 600px) {
+    right: -5px;
+  }
 `;
 
 const Education = ({ userData, activeIndex, setActiveIndex }) => {
+  const [animationClass, setAnimationClass] = useState('fade-in-left');
+
+  useEffect(() => {
+    if (animationClass.includes('fade-out')) {
+      setTimeout(() => setAnimationClass(''), 500); // Remove animation class after animation duration
+    }
+  }, [animationClass]);
+
   if (!userData || !userData.educations) {
     return null;
   }
 
   const handlePrevious = () => {
-    setActiveIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : userData.educations.length - 1));
+    setAnimationClass('fade-out-left');
+    setTimeout(() => {
+      setActiveIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : userData.educations.length - 1));
+      setAnimationClass('fade-in-right');
+    }, 500);
   };
 
   const handleNext = () => {
-    setActiveIndex((prevIndex) => (prevIndex < userData.educations.length - 1 ? prevIndex + 1 : 0));
+    setAnimationClass('fade-out-right');
+    setTimeout(() => {
+      setActiveIndex((prevIndex) => (prevIndex < userData.educations.length - 1 ? prevIndex + 1 : 0));
+      setAnimationClass('fade-in-left');
+    }, 500);
   };
 
   return (
@@ -230,7 +275,7 @@ const Education = ({ userData, activeIndex, setActiveIndex }) => {
           <ArrowLeftButton onClick={handlePrevious}>
             <ArrowBackIosIcon fontSize="large" />
           </ArrowLeftButton>
-          <EducationItem>
+          <EducationItem animationClass={animationClass}>
             <h3>{userData.educations[activeIndex].degree} in {userData.educations[activeIndex].fieldOfStudy}</h3>
             <div className="image-container">
               <Image
