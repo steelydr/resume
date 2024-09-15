@@ -7,7 +7,7 @@ const colors = {
   secondary: '#4B0082', // Indigo
   accent: '#DA70D6', // Orchid
   text: '#E9E9E9', // Light Grey
-  background: '#1F1F1F', // Almost Black
+  background: '#1F1F1F', 
   white: '#FFFFFF', 
 };
 
