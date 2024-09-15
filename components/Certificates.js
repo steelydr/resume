@@ -8,7 +8,7 @@ const colors = {
   accent: '#DA70D6', // Orchid
   text: '#E9E9E9', // Light Grey
   background: '#1F1F1F', // Almost Black
-  white: '#FFFFFF', // White
+  white: '#FFFFFF', 
 };
 
 const CertificatesWrapper = styled('div')({
