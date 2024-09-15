@@ -241,7 +241,7 @@ export default function ResumePage() {
         }}
         sx={{ justifyContent: "center" }}
       >
-        <StyledListItemText primary="Background" />
+        
       </ListItemButton>
       <ListItemButton
         onClick={() => {
