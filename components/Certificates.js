@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material';
 import Modal from './Modal.js';
 
@@ -21,7 +21,7 @@ const CertificatesWrapper = styled('div')({
   marginBottom: '5rem',
 });
 
-const CList = styled('div')({
+const CList = styled('div')(({ isOdd, isAnimated }) => ({
   fontFamily: 'Montserrat, sans-serif',
   marginRight: '10rem',
   marginLeft: '10rem',
@@ -31,23 +31,11 @@ const CList = styled('div')({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-  },
-  '.number': {
-    fontSize: '4rem',
-    fontWeight: 'bold',
-    color: colors.background,
-    width: '2rem',
-    opacity: '0.1',
-    transition: '0.25s',
-  },
-
-  '.num:before': {
-    fontSize: '4rem',
-    fontWeight: 'bold',
-    color: colors.primary,
-    width: '2rem',
-    opacity: '0.05',
-    transition: '0.25s',
+    opacity: isAnimated ? 1 : 0,
+    transform: isAnimated 
+      ? 'translateX(0)' 
+      : `translateX(${isOdd ? '-100%' : '100%'})`,
+    transition: 'opacity 1.5s ease-out, transform 1.5s ease-out',
   },
 
   '.num h3': {
@@ -63,11 +51,6 @@ const CList = styled('div')({
     cursor: 'pointer',
   },
 
-  '.num:hover:before': {
-    opacity: '0.2',
-    color: colors.text,
-  },
-
   '.num:hover h3': {
     left: '1rem',
     color: colors.background,
@@ -80,61 +63,38 @@ const CList = styled('div')({
     '.num': {
       padding: '0.5rem 1.5rem',
     },
-
-    '.number': {
-      width: '1.5rem',
-    },
-
-    '.num:before': {
-      width: '1.5rem',
-    },
   },
 
   '@media (max-width: 768px)': {
     marginRight: '2.5rem',
     marginLeft: '2.5rem',
-
-    '.num': {
-
-    },
-
-    '.number': {
-      width: '1rem',
-    },
-
-    '.num:before': {
-      width: '1rem',
-    },
   },
 
   '@media (max-width: 480px)': {
     marginRight: '2.5rem',
     marginLeft: '2.5rem',
-
-    '.num': {
-
-    },
-
-    '.number': {
-      width: '0.75rem',
-    },
-
-    '.num:before': {
-      width: '0.75rem',
-    },
   },
-});
+}));
 
 const Certificates = ({ userData }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
+  const [animatedItems, setAnimatedItems] = useState([]);
 
   const handleClick = (imagePath) => {
     setSelectedImage(imagePath);
     setShowModal(true);
   };
-
   
+  useEffect(() => {
+    if (userData && userData.certifications) {
+      const timer = setTimeout(() => {
+        setAnimatedItems(userData.certifications.map((_, index) => index));
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [userData]);
+
   if (!userData || !userData.certifications) {
     return null;
   }
@@ -142,9 +102,8 @@ const Certificates = ({ userData }) => {
   return (
     <CertificatesWrapper>
       {userData.certifications.map((certification, index) => (
-        <CList key={index}>
+        <CList key={index} isOdd={index % 2 === 0} isAnimated={animatedItems.includes(index)}>
           <div className="num" onClick={() => handleClick(`/certs/${certification.authority}.png`)}>
-            {/* <div className="number">{index + 1}</div> */}
             <h3>{certification.name}</h3>
           </div>
         </CList>

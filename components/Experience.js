@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { styled } from '@mui/material';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, useInView, useAnimation } from 'framer-motion';
 
 const colors = {
   accent: '#8A2BE2', // Violet
@@ -254,19 +254,36 @@ const Timeline = styled('div')({
   },
 });
 
-const Experience = ({ userData }) => {
-  const [expandedDescriptions, setExpandedDescriptions] = useState({});
+const AnimatedTimelineEvent = ({ experience, index, expandedDescriptions, handleShowMore }) => {
+  const controls = useAnimation();
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const isEven = index % 2 === 0;
 
   useEffect(() => {
-    if (userData && userData.experiences) {
-      // Initialize expanded state for each experience
-      const initialExpandedState = {};
-      userData.experiences.forEach((_, index) => {
-        initialExpandedState[index] = false;
-      });
-      setExpandedDescriptions(initialExpandedState);
+    if (isInView) {
+      controls.start("visible");
     }
-  }, [userData]);
+  }, [isInView, controls]);
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.5, delay: 0.2, when: "beforeChildren", staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+
+  const contentVariants = {
+    hidden: { opacity: 0, x: isEven ? -50 : 50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } }
+  };
 
   const formatDescription = (description, isExpanded) => {
     const lines = description.split(/(?<=\.)\s+|\n/);
@@ -282,6 +299,66 @@ const Experience = ({ userData }) => {
     );
   };
 
+  return (
+    <motion.div
+      ref={ref}
+      className="timeline__event animated fadeInUp delay-3s timeline__event--type1"
+      variants={containerVariants}
+      initial="hidden"
+      animate={controls}
+    >
+      <motion.div
+        className="timeline__event__icon"
+        variants={itemVariants}
+      />
+      <motion.div
+        className="timeline__event__date"
+        variants={itemVariants}
+      >
+        <p>{new Date(experience.startDate).toLocaleDateString('en-US', { month: 'long' })}</p>
+        <p>{new Date(experience.startDate).getFullYear()}</p>
+      </motion.div>
+      <motion.div
+        className="timeline__event__content"
+        variants={contentVariants}
+      >
+        <motion.div
+          className="timeline__event__title"
+          variants={itemVariants}
+        >
+          <p>{experience.company} - {experience.jobTitle}</p>
+        </motion.div>
+        <motion.div
+          variants={itemVariants}
+          className={`timeline__event__description ${expandedDescriptions[index] ? 'expanded' : ''}`}
+        >
+          {formatDescription(experience.description, expandedDescriptions[index])}
+        </motion.div>
+        <motion.button
+          className="show-more"
+          onClick={() => handleShowMore(index)}
+          variants={itemVariants}
+        >
+          {expandedDescriptions[index] ? 'Show Less' : 'Show More'}
+        </motion.button>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+const Experience = ({ userData }) => {
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
+
+  useEffect(() => {
+    if (userData && userData.experiences) {
+      const initialExpandedState = {};
+      userData.experiences.forEach((_, index) => {
+        initialExpandedState[index] = false;
+      });
+      setExpandedDescriptions(initialExpandedState);
+    }
+  }, [userData]);
+
   const handleShowMore = (index) => {
     setExpandedDescriptions((prev) => ({
       ...prev,
@@ -296,68 +373,13 @@ const Experience = ({ userData }) => {
   return (
     <Timeline>
       {userData.experiences.map((experience, index) => (
-        <motion.div
+        <AnimatedTimelineEvent
           key={index}
-          className="timeline__event animated fadeInUp delay-3s timeline__event--type1"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: index * 0.2 }}
-        >
-          <motion.div
-            className="timeline__event__icon"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.3 }}
-          />
-          <motion.div
-            className="timeline__event__date"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: index * 0.2 }}
-          >
-            <p>{new Date(experience.startDate).toLocaleDateString('en-US', { month: 'long' })}</p>
-            <p>{new Date(experience.startDate).getFullYear()}</p>
-          </motion.div>
-          <motion.div
-            className="timeline__event__content"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: index * 0.2 }}
-          >
-            <div className="timeline__event__title">
-              <p>{experience.company} - {experience.jobTitle}</p>
-            </div>
-            <AnimatePresence>
-              {expandedDescriptions[index] && (
-                <motion.div
-                  key="description"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="timeline__event__description expanded"
-                >
-                  {formatDescription(experience.description, expandedDescriptions[index])}
-                </motion.div>
-              )}
-            </AnimatePresence>
-            {!expandedDescriptions[index] && (
-              <motion.div
-                key="description-collapsed"
-                initial={{ height: 'auto', opacity: 1 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="timeline__event__description"
-              >
-                {formatDescription(experience.description, expandedDescriptions[index])}
-              </motion.div>
-            )}
-            <button className="show-more" onClick={() => handleShowMore(index)}>
-              {expandedDescriptions[index] ? 'Show Less' : 'Show More'}
-            </button>
-          </motion.div>
-        </motion.div>
+          experience={experience}
+          index={index}
+          expandedDescriptions={expandedDescriptions}
+          handleShowMore={handleShowMore}
+        />
       ))}
     </Timeline>
   );

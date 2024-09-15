@@ -11,17 +11,18 @@ import {
   Button,
 } from "@mui/material";
 import { alpha } from "@mui/system";
-import { styled } from "@mui/material";
+import styled from "@emotion/styled";
 import { GrContact } from "react-icons/gr";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = React.lazy(() => import("../components/Navbar"));
 const Loader = React.lazy(() => import("../components/Loader"));
-const Education = React.lazy(() => import("../components/Education"));
 const Experience = React.lazy(() => import("../components/Experience"));
 const Projects = React.lazy(() => import("../components/Projects"));
 const Certificates = React.lazy(() => import("../components/Certificates"));
 const Section = React.lazy(() => import("../components/Section"));
 const Footer = React.lazy(() => import("../components/Footer"));
+const HomeContainer = React.lazy(() => import("./HomeContainer"));
 
 const colors = {
   primary: "#8A2BE2",
@@ -32,68 +33,103 @@ const colors = {
   white: "#FFFFFF",
 };
 
-const fonts = {
-  primary: "Helvetica, Arial, sans-serif",
-  secondary: "Georgia, serif",
+const fadeInVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeInOut" } },
 };
 
-const ResumeButton = styled(Button)({
-  color: colors.text,
-  borderColor: colors.accent,
-  fontWeight: 300,
-  fontFamily: "Montserrat, sans-serif",
-  fontSize: "1rem",
-  textTransform: "none",
-  "&:hover": {
-    borderColor: colors.accent,
-    backgroundColor: alpha(colors.accent, 0.1),
-  },
-});
+const slideInLeft = {
+  hidden: { opacity: 0, x: -100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 1, ease: "easeInOut" } },
+};
 
-const HomeContainer = styled("div")({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100vh",
-  backgroundColor: colors.background,
-  color: colors.primary,
-  fontFamily: fonts.primary,
-  padding: "20px",
-  boxSizing: "border-box",
-  position: "relative",
-});
+const slideInRight = {
+  hidden: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 1, ease: "easeInOut" } },
+};
 
-const Container = styled("div")({
-  display: "flex",
-  flexDirection: "row",
-  width: "100%",
-  "@media (max-width: 768px)": {
-    flexDirection: "column",
-  },
-});
+const slideUpVariants = {
+  hidden: { opacity: 0, y: 100 },
+  visible: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeInOut" } },
+};
 
-const SectionText = styled("p")({
-  color: colors.white,
-});
+const ResumeButton = styled(Button)`
+  color: ${colors.text};
+  border-color: ${colors.accent};
+  font-weight: 300;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  text-transform: none;
+  &:hover {
+    border-color: ${colors.accent};
+    background-color: ${alpha(colors.accent, 0.1)};
+  }
+`;
 
-const ContactIconContainer = styled("div")({
-  position: "fixed",
-  bottom: "30px",
-  right: "30px",
-  zIndex: 1000,
-  cursor: "pointer",
-  transition: "opacity 0.3s",
-  "&.hidden": {
-    opacity: 0,
-    pointerEvents: "none",
-  },
-});
+const Container = styled(motion.div)`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
 
-const ContactIcon = styled(GrContact)({
-  color: colors.accent,
-  fontSize: "2rem",
-});
+const SectionText = styled(motion.p)`
+  color: ${colors.white};
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+`;
+
+const ContactIconContainer = styled(motion.div)`
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 1000;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+`;
+
+const ContactIcon = styled(GrContact)`
+  color: ${colors.accent};
+  font-size: 2rem;
+`;
+
+const StyledList = styled(List)`
+  width: 250px;
+  background-color: ${colors.background};
+  & .MuiListItemButton-root:hover {
+    background-color: ${alpha(colors.primary, 0.25)};
+  }
+`;
+
+const StyledListItemText = styled(ListItemText)`
+  & .MuiTypography-root {
+    font-weight: ${(props) => (props.primary === "HOME" ? 400 : 300)};
+    color: ${(props) => (props.primary === "HOME" ? colors.accent : colors.text)};
+    font-family: "Montserrat", sans-serif;
+    font-size: 1rem;
+    text-align: center;
+  }
+`;
+
+const NavList = styled(List)`
+  display: flex;
+`;
+
+const NavListItemText = styled(ListItemText)`
+  & .MuiTypography-root {
+    font-weight: 300;
+    color: ${colors.text};
+    font-family: "Montserrat", sans-serif;
+    font-size: 1rem;
+  }
+`;
 
 export default function ResumePage() {
   const [userData, setUserData] = useState(null);
@@ -126,14 +162,13 @@ export default function ResumePage() {
           "https://rajeswaridepalav.netlify.app/api/users?firstName=Depala&lastName=Rajeswari",
           {
             headers: {
-              'Cache-Control': 'no-cache'
-            }
+              "Cache-Control": "no-cache",
+            },
           }
         );
         if (response.status === 200) {
           setUserData(response.data);
         } else if (response.status === 304) {
-          // Handle the 304 status code
           console.log("Data not modified, using cached data.");
         }
       } catch (error) {
@@ -143,18 +178,14 @@ export default function ResumePage() {
         setLoading(false);
       }
     };
-  
+
     fetchData();
-  
+
     setTimeout(() => setShowD(true), 500);
     setTimeout(() => setShowR(true), 1000);
     setTimeout(() => {
       setShowContent(true);
       setSmallLoader(true);
-      const container = document.createElement('div');
-      container.className = 'bubble-container';
-      document.body.appendChild(container);
-      createBubbles();
     }, 2000);
 
     const handleScroll = () => {
@@ -193,15 +224,7 @@ export default function ResumePage() {
   };
 
   const drawerContent = (
-    <List
-      sx={{
-        width: 250,
-        bgcolor: colors.background,
-        "& .MuiListItemButton-root:hover": {
-          bgcolor: alpha(colors.primary, 0.25),
-        },
-      }}
-    >
+    <StyledList>
       <ListItemButton
         onClick={() => {
           toggleDrawer(false)();
@@ -209,18 +232,7 @@ export default function ResumePage() {
         }}
         sx={{ justifyContent: "center" }}
       >
-        <ListItemText
-          primary="HOME"
-          primaryTypographyProps={{
-            style: {
-              fontWeight: 400,
-              color: colors.accent,
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: "1rem",
-              textAlign: "center",
-            },
-          }}
-        />
+        <StyledListItemText primary="HOME" />
       </ListItemButton>
       <ListItemButton
         onClick={() => {
@@ -229,18 +241,7 @@ export default function ResumePage() {
         }}
         sx={{ justifyContent: "center" }}
       >
-        <ListItemText
-          primary="Background"
-          primaryTypographyProps={{
-            sx: {
-              fontWeight: 300,
-              color: colors.text,
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: "1rem",
-              textAlign: "center",
-            },
-          }}
-        />
+        <StyledListItemText primary="Background" />
       </ListItemButton>
       <ListItemButton
         onClick={() => {
@@ -249,18 +250,7 @@ export default function ResumePage() {
         }}
         sx={{ justifyContent: "center" }}
       >
-        <ListItemText
-          primary="Career"
-          primaryTypographyProps={{
-            sx: {
-              fontWeight: 300,
-              color: colors.text,
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: "1rem",
-              textAlign: "center",
-            },
-          }}
-        />
+        <StyledListItemText primary="Career" />
       </ListItemButton>
       <ListItemButton
         onClick={() => {
@@ -269,18 +259,7 @@ export default function ResumePage() {
         }}
         sx={{ justifyContent: "center" }}
       >
-        <ListItemText
-          primary="Endeavors"
-          primaryTypographyProps={{
-            sx: {
-              fontWeight: 300,
-              color: colors.text,
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: "1rem",
-              textAlign: "center",
-            },
-          }}
-        />
+        <StyledListItemText primary="Endeavors" />
       </ListItemButton>
       <ListItemButton
         onClick={() => {
@@ -289,304 +268,111 @@ export default function ResumePage() {
         }}
         sx={{ justifyContent: "center" }}
       >
-        <ListItemText
-          primary="Credentials"
-          primaryTypographyProps={{
-            sx: {
-              fontWeight: 300,
-              color: colors.text,
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: "1rem",
-              textAlign: "center",
-            },
-          }}
-        />
+        <StyledListItemText primary="Credentials" />
       </ListItemButton>
-      <ResumeButton variant="outlined" sx={{ marginLeft: "77px", marginTop: "50px" }}>
+      <ResumeButton
+        variant="outlined"
+        sx={{ marginLeft: "77px", marginTop: "50px" }}
+      >
         Resume
       </ResumeButton>
-    </List>
+    </StyledList>
   );
 
   const appBarActions = (
-    <List component="nav" sx={{ display: "flex" }}>
+    <NavList component="nav">
       <ListItemButton onClick={() => scrollToSection(educationRef)}>
-        <ListItemText
-          primary="Background"
-          primaryTypographyProps={{
-            sx: {
-              fontWeight: 300,
-              color: colors.text,
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: "1rem",
-            },
-          }}
-        />
+        <NavListItemText primary="Background" />
       </ListItemButton>
       <ListItemButton onClick={() => scrollToSection(experienceRef)}>
-        <ListItemText
-          primary="Career"
-          primaryTypographyProps={{
-            sx: {
-              fontWeight: 300,
-              color: colors.text,
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: "1rem",
-            },
-          }}
-        />
+        <NavListItemText primary="Career" />
       </ListItemButton>
       <ListItemButton onClick={() => scrollToSection(projectsRef)}>
-        <ListItemText
-          primary="Endeavors"
-          primaryTypographyProps={{
-            sx: {
-              fontWeight: 300,
-              color: colors.text,
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: "1rem",
-            },
-          }}
-        />
+        <NavListItemText primary="Endeavors" />
       </ListItemButton>
       <ListItemButton onClick={() => scrollToSection(certificationRef)}>
-        <ListItemText
-          primary="Credentials"
-          primaryTypographyProps={{
-            sx: {
-              fontWeight: 300,
-              color: colors.text,
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: "1rem",
-            },
-          }}
-        />
+        <NavListItemText primary="Credentials" />
       </ListItemButton>
-    </List>
+    </NavList>
   );
-
-  function createBubbles() {
-    const bubbleContainer = document.querySelector(".bubble-container");
-    if (!bubbleContainer) {
-      console.error("Bubble container not found");
-      return;
-    }
-
-    // Clear existing bubbles to avoid accumulation
-    while (bubbleContainer.firstChild && bubbleContainer.children.length >= 3) {
-      bubbleContainer.removeChild(bubbleContainer.lastChild);
-    }
-
-    const numBubbles = 2 + Math.floor(Math.random() * 5); // Generates between 2 and 6 bubbles
-    for (let i = 0; i < numBubbles; i++) {
-      const isCluster = Math.random() > 0.7; // 30% chance to start a cluster
-      const clusterSize = isCluster ? Math.floor(Math.random() * 2) + 2 : 1; // Cluster size 2 or 3
-
-      for (let j = 0; j < clusterSize; j++) {
-        const bubble = document.createElement("div");
-        bubble.className = "bubble";
-        const size = Math.random() * (60 - 40) + 40; // Bubble size between 40px and 60px
-        bubble.style.width = `${size}px`;
-        bubble.style.height = `${size}px`;
-
-        // Clustered bubbles are closer together
-        const offset = j * 10; // Slight horizontal offset for clusters
-        bubble.style.left = `${Math.random() * (window.innerWidth - size) + offset}px`; // Adjust for clusters
-
-        // Adjust bubble appearance
-        bubble.style.borderRadius = "50%";
-
-        // Animation timing
-        const animationDelay = Math.random() * 1; // Delay between 0 and 1 seconds
-        bubble.style.animationDelay = `${animationDelay}s`;
-        bubble.style.animationDuration = `${5 + Math.random() * 3}s`; // Duration between 5 and 8 seconds
-
-        bubbleContainer.appendChild(bubble);
-      }
-    }
-
-    // Adjust the timing for creating bubbles to synchronize with their animations
-    setTimeout(createBubbles, 6000);
-  }
 
   return (
     <React.Fragment>
       <Suspense fallback={<Loader showR={showR} />}>
-        {!showContent && <Loader showR={showR} />}
-        {showContent && (
-          <>
-            <Navbar
-              sx={{ position: "sticky", top: 0, width: "100%", zIndex: 1000 }}
-              isMobile={isMobile}
-              drawerOpen={drawerOpen}
-              toggleDrawer={toggleDrawer}
-              appBarActions={appBarActions}
-              drawerContent={drawerContent}
-            />
-            <HomeContainer ref={homeRef}>
-              {userData ? (
-                <>
-                  <div>
-                    <style>
-                      {`
-                        .intro-text {
-                          color: ${colors.text};
-                          font-family: ${fonts.primary};
-                          font-size: 1.5rem;
-                          text-align: center;
-                          z-index: 5;
-                          margin-right: 27rem; /* default for large screens */
-                        }
-                        .main-title {
-                          font-size: 4rem;
-                          font-weight: bold;
-                          color: ${colors.accent};
-                          text-align: center;
-                          margin-top: 0;
-                          margin-bottom: 10px;
-                          z-index: 5;
-                          margin-right: 5rem;
-                        }
-                        .job-title {
-                          font-size: 3rem;
-                          font-weight: normal;
-                          color: ${colors.text};
-                          padding-top: 5px;
-                          margin-top: 0px;
-                          text-align: center;
-                          margin-left: 2rem;
-                          z-index: 5;
-                          margin-right: 12.5rem; /* default for large screens */
-                        }
-                        .summary-text {
-                          font-size: 1rem;
-                          font-weight: normal;
-                          color: ${colors.text};
-                          text-align: justify; /* changes alignment to justify */
-                          max-width: 600px;
-                          margin: 0 auto;
-                          line-height: 1.6;
-                          z-index: 2;
-                          margin-left: auto; /* center horizontally */
-                          margin-right: auto; /* center horizontally */
-                        }
-                        .bubble-container {
-                          position: absolute;
-                          top: 0;
-                          left: 0;
-                          padding-left: 100px;
-                          width: 100%;
-                          height: 100%;
-                          overflow: hidden;
-                        }
-                        .bubble {
-                          position: absolute;
-                          bottom: 100%; /* Start from above the view */
-                          width: 100px;
-                          height: 100px; /* Make height larger than width for droplet shape */
-                          background-color: rgba(218, 112, 214, 0.4); /* Use the accent color with transparency */
-                          opacity: 0.6;
-                          border-radius: 50%; /* Adjust border-radius for droplet shape */
-                          animation: fall 8s ease-in-out infinite;
-                          z-index: 1;
-                        }
-
-                        @keyframes fall {
-                          0% {
-                            bottom: 100%;
-                            opacity: 0.7;
-                            transform: scale(0.5);
-                          }
-                          50% {
-                            opacity: 9;
-                          }
-                          100% {
-                            bottom: -100px; /* Fall below the view */
-                            opacity: 0;
-                            transform: scale(1.2);
-                          }
-                        }
-
-                        @media (max-width: 768px) {
-                          .intro-text {
-                            margin-right: 1rem; /* adjusted for smaller screens */
-                          }
-                          .main-title {
-                            font-size: 2.5rem; /* smaller font size for smaller screens */
-                            margin-right: 1rem; /* adjusted for smaller screens */
-                          }
-                          .job-title {
-                            font-size: 1.5rem; /* smaller font size for smaller screens */
-                            margin-right: 1rem; /* adjusted for smaller screens */
-                            margin-left: 1rem;
-                          }
-                          .summary-text {
-                            font-size: 0.875rem; /* smaller font size for smaller screens */
-                             line-height: 1.5; /* improved readability */
-    padding: 0 1rem; /* added padding for better spacing */
-    text-align: justify; 
-                          }
-                          .bubble {
-                            width: 40px; /* smaller size for smaller screens */
-                            height: 40px; /* smaller size for smaller screens */
-                          }
-                        }
-                      `}
-                    </style>
-                    <div className="bubble-container">
-                      <div className="bubble"></div>
-                    </div>
-                    <p className="intro-text">Hi, my name is</p>
-                    <h1 className="main-title">
-                      {userData.firstName} {userData.lastName}
-                    </h1>
-                    <h2 className="job-title">A {userData.jobTitle}</h2>
-                    <p className="summary-text">{userData.summary}</p>
-                  </div>
-                </>
-              ) : (
-                <></> // Removed the loading text
-              )}
-            </HomeContainer>
-            <ContactIconContainer ref={contactIconRef} sx={{ color: colors.background }} onClick={() => scrollToSection(contactRef)}>
-              <ContactIcon />
-            </ContactIconContainer>
-            <p sx={{ color: colors.background }} ref={educationRef}></p>
-            <Suspense fallback={<Loader showR={showR} />}>
-              <Education
-                userData={userData}
-                activeIndex={activeIndex}
-                setActiveIndex={setActiveIndex}
+        <AnimatePresence>
+          {!showContent && <Loader showR={showR} />}
+          {showContent && (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={fadeInVariants}
+            >
+              <Navbar
+                sx={{ position: "sticky", top: 0, width: "100%", zIndex: 1000 }}
+                isMobile={isMobile}
+                drawerOpen={drawerOpen}
+                toggleDrawer={toggleDrawer}
+                appBarActions={appBarActions}
+                drawerContent={drawerContent}
               />
-            </Suspense>
-            <Suspense fallback={<Loader showR={showR} sx={{ color: colors.background }}/>}>
-              <Section sx={{ color: colors.background }} ref={experienceRef}>
-                <SectionText>Where I&apos;ve Worked</SectionText>
-              </Section>
-              <Experience userData={userData} sx={{ color: colors.white }} />
-            </Suspense>
-            <Suspense fallback={<Loader showR={showR} />}>
-              <Section ref={projectsRef}>
-                <SectionText>Skills I&apos;ve Applied</SectionText>
-              </Section>
-              <Projects userData={userData} sx={{ color: colors.white }} />
-            </Suspense>
-            <Suspense fallback={<Loader showR={showR} />}>
-              <Section ref={certificationRef}>
-                <SectionText>Credentials Earned</SectionText>
-              </Section>
-              <Certificates
-                userData={userData}
-                handleClick={() => {}}
-                sx={{ color: colors.white }}
-              />
-            </Suspense>
-            <p ref={contactRef}></p>
-            <Suspense fallback={<Loader showR={showR} />}>
-              <Footer ref={footerRef} />
-            </Suspense>
-          </>
-        )}
+              <HomeContainer ref={homeRef} userData={userData} />
+              <ContactIconContainer
+                ref={contactIconRef}
+                onClick={() => scrollToSection(contactRef)}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1 }}
+              >
+                <ContactIcon />
+              </ContactIconContainer>
+
+              {/* SectionText Animation */}
+              <motion.div
+                ref={experienceRef}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={slideInLeft}
+              >
+                <Section>
+                  <SectionText variants={slideInLeft}>
+                    Where I've Worked
+                  </SectionText>
+                </Section>
+              </motion.div>
+
+              {/* Experience Animation */}
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={slideInRight}
+              >
+                <Experience userData={userData} />
+              </motion.div>
+
+              {/* Projects Section */}
+              <motion.div ref={projectsRef} variants={slideUpVariants}>
+                <Section>
+                  <SectionText>Skills I've Applied</SectionText>
+                </Section>
+                <Projects userData={userData} />
+              </motion.div>
+
+              <motion.div ref={certificationRef}  variants={slideInLeft}>
+                <Section>
+                  <SectionText>Credentials Earned</SectionText>
+                </Section>
+                <Certificates userData={userData} handleClick={() => {}} />
+              </motion.div>
+
+              <motion.div ref={contactRef} variants={fadeInVariants}>
+                <Footer ref={footerRef} />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Suspense>
     </React.Fragment>
   );
