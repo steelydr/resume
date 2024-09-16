@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { styled } from "@mui/material";
 
 const colors = {
@@ -15,7 +16,7 @@ const fonts = {
   secondary: "Georgia, serif",
 };
 
-const HomeContainer = styled("div")({
+const HomeContainer = styled(motion.div)({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -30,161 +31,143 @@ const HomeContainer = styled("div")({
   overflow: "hidden",
 });
 
+const IntroText = styled(motion.p)({
+  color: colors.text,
+  fontFamily: fonts.primary,
+  fontSize: "1.5rem",
+  textAlign: "center",
+  zIndex: 5,
+  marginRight: "27rem",
+  "@media (max-width: 768px)": {
+    marginRight: "1rem",
+  },
+});
+
+const MainTitle = styled(motion.h1)({
+  fontSize: "4rem",
+  fontWeight: "bold",
+  color: colors.accent,
+  textAlign: "center",
+  marginTop: 0,
+  marginBottom: "10px",
+  zIndex: 5,
+  marginRight: "5rem",
+  "@media (max-width: 768px)": {
+    fontSize: "2.5rem",
+    marginRight: "1rem",
+  },
+});
+
+const JobTitle = styled(motion.h2)({
+  fontSize: "3rem",
+  fontWeight: "normal",
+  color: colors.text,
+  paddingTop: "5px",
+  marginTop: "0px",
+  textAlign: "center",
+  marginLeft: "2rem",
+  zIndex: 5,
+  marginRight: "12.5rem",
+  "@media (max-width: 768px)": {
+    fontSize: "1.5rem",
+    marginRight: "1rem",
+    marginLeft: "1rem",
+  },
+});
+
+const SummaryText = styled(motion.p)({
+  fontSize: "1rem",
+  fontWeight: "normal",
+  color: colors.text,
+  textAlign: "justify",
+  maxWidth: "600px",
+  margin: "0 auto",
+  lineHeight: 1.6,
+  zIndex: 2,
+  "@media (max-width: 768px)": {
+    fontSize: "0.875rem",
+    lineHeight: 1.5,
+    padding: "0 1rem",
+  },
+});
+
+const BubbleContainer = styled("div")({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  paddingLeft: "100px",
+  width: "100%",
+  height: "100%",
+  overflow: "hidden",
+});
+
+const Bubble = styled(motion.div)({
+  position: "absolute",
+  bottom: "100%",
+  width: "100px",
+  height: "100px",
+  backgroundColor: "rgba(218, 112, 214, 0.4)",
+  opacity: 0.6,
+  borderRadius: "50%",
+  zIndex: 1,
+  "@media (max-width: 768px)": {
+    width: "40px",
+    height: "40px",
+  },
+});
+
 export default function HomeContainerComponent({ userData }) {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.6,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
+  const bubbleVariants = {
+    initial: { y: "100%", opacity: 0.7, scale: 0.5 },
+    animate: {
+      y: "-100%",
+      opacity: [0.7, 0.9, 0],
+      scale: 1.2,
+      transition: {
+        duration: 8,
+        repeat: Infinity,
+        ease: "easeInOut",
+      },
+    },
+  };
+
   return (
-    <HomeContainer>
+    <HomeContainer
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       {userData ? (
         <>
-          <div>
-            <style>
-              {`
-                .intro-text {
-                  color: ${colors.text};
-                  font-family: ${fonts.primary};
-                  font-size: 1.5rem;
-                  text-align: center;
-                  z-index: 5;
-                  margin-right: 27rem;
-                }
-                .main-title {
-                  font-size: 4rem;
-                  font-weight: bold;
-                  color: ${colors.accent};
-                  text-align: center;
-                  margin-top: 0;
-                  margin-bottom: 10px;
-                  z-index: 5;
-                  margin-right: 5rem;
-                  animation: slideFromTop 1.5s ease-out;
-                }
-                @keyframes slideFromTop {
-                  0% {
-                    opacity: 0;
-                    transform: translateY(-100%);
-                  }
-                  100% {
-                    opacity: 1;
-                    transform: translateY(0);
-                  }
-                }
-                .job-title {
-                  font-size: 3rem;
-                  font-weight: normal;
-                  color: ${colors.text};
-                  padding-top: 5px;
-                  margin-top: 0px;
-                  text-align: center;
-                  margin-left: 2rem;
-                  z-index: 5;
-                  margin-right: 12.5rem;
-                  animation: slideFromRight 1.5s ease-out;
-                }
-                @keyframes slideFromRight {
-                  0% {
-                    opacity: 0;
-                    transform: translateX(100%);
-                  }
-                  100% {
-                    opacity: 1;
-                    transform: translateX(0);
-                  }
-                }
-                .summary-text {
-                  font-size: 1rem;
-                  font-weight: normal;
-                  color: ${colors.text};
-                  text-align: justify;
-                  max-width: 600px;
-                  margin: 0 auto;
-                  line-height: 1.6;
-                  z-index: 2;
-                  margin-left: auto;
-                  margin-right: auto;
-                  animation: slideFromLeft 1.5s ease-out;
-                }
-                @keyframes slideFromLeft {
-                  0% {
-                    opacity: 0;
-                    transform: translateX(-100%);
-                  }
-                  100% {
-                    opacity: 1;
-                    transform: translateX(0);
-                  }
-                }
-                .bubble-container {
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  padding-left: 100px;
-                  width: 100%;
-                  height: 100%;
-                  overflow: hidden;
-                }
-                .bubble {
-                  position: absolute;
-                  bottom: 100%;
-                  width: 100px;
-                  height: 100px;
-                  background-color: rgba(218, 112, 214, 0.4);
-                  opacity: 0.6;
-                  border-radius: 50%;
-                  animation: fall 8s ease-in-out infinite;
-                  z-index: 1;
-                }
-
-                @keyframes fall {
-                  0% {
-                    bottom: 100%;
-                    opacity: 0.7;
-                    transform: scale(0.5);
-                  }
-                  50% {
-                    opacity: 9;
-                  }
-                  100% {
-                    bottom: -100px;
-                    opacity: 0;
-                    transform: scale(1.2);
-                  }
-                }
-
-                @media (max-width: 768px) {
-                  .intro-text {
-                    margin-right: 1rem;
-                  }
-                  .main-title {
-                    font-size: 2.5rem;
-                    margin-right: 1rem;
-                  }
-                  .job-title {
-                    font-size: 1.5rem;
-                    margin-right: 1rem;
-                    margin-left: 1rem;
-                  }
-                  .summary-text {
-                    font-size: 0.875rem;
-                    line-height: 1.5;
-                    padding: 0 1rem;
-                    text-align: justify; 
-                  }
-                  .bubble {
-                    width: 40px;
-                    height: 40px;
-                  }
-                }
-              `}
-            </style>
-            <div className="bubble-container">
-              <div className="bubble"></div>
-            </div>
-            <p className="intro-text">Hi, my name is</p>
-            <h1 className="main-title">
-              {userData.firstName} {userData.lastName}
-            </h1>
-            <h2 className="job-title">A {userData.jobTitle}</h2>
-            <p className="summary-text">{userData.summary}</p>
-          </div>
+          <BubbleContainer>
+            <Bubble variants={bubbleVariants} initial="initial" animate="animate" />
+          </BubbleContainer>
+          <IntroText variants={itemVariants}>Hi, my name is</IntroText>
+          <MainTitle variants={itemVariants}>
+            {userData.firstName} {userData.lastName}
+          </MainTitle>
+          <JobTitle variants={itemVariants}>A {userData.jobTitle}</JobTitle>
+          <SummaryText variants={itemVariants}>{userData.summary}</SummaryText>
         </>
       ) : (
         <></>

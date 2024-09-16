@@ -14,7 +14,7 @@ import { alpha } from "@mui/system";
 import styled from "@emotion/styled";
 import { GrContact } from "react-icons/gr";
 import { motion, AnimatePresence } from "framer-motion";
-
+const GitHubContributions = React.lazy(() => import("../components/GitHubContributions"));
 const Navbar = React.lazy(() => import("../components/Navbar"));
 const Loader = React.lazy(() => import("../components/Loader"));
 const Experience = React.lazy(() => import("../components/Experience"));
@@ -141,6 +141,7 @@ export default function ResumePage() {
   const [showContent, setShowContent] = useState(false);
   const [smallLoader, setSmallLoader] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const githubRef = useRef(null);
 
   const homeRef = useRef(null);
   const educationRef = useRef(null);
@@ -158,7 +159,7 @@ export default function ResumePage() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          //"http://localhost:3001/api/users?firstName=Depala&lastName=Rajeswari",
+          //"http://localhost:3000/api/users?firstName=Depala&lastName=Rajeswari",
           "https://rajeswaridepalav.netlify.app/api/users?firstName=Depala&lastName=Rajeswari",
           {
             headers: {
@@ -281,9 +282,10 @@ export default function ResumePage() {
 
   const appBarActions = (
     <NavList component="nav">
-      <ListItemButton onClick={() => scrollToSection(educationRef)}>
-        <NavListItemText primary="Background" />
-      </ListItemButton>
+      
+<ListItemButton onClick={() => scrollToSection(githubRef)}>
+  <NavListItemText primary="GitHub" />
+</ListItemButton>
       <ListItemButton onClick={() => scrollToSection(experienceRef)}>
         <NavListItemText primary="Career" />
       </ListItemButton>
@@ -326,6 +328,16 @@ export default function ResumePage() {
               >
                 <ContactIcon />
               </ContactIconContainer>
+
+              {/* GitHub Contributions Section */}
+<motion.div ref={githubRef} variants={slideUpVariants}>
+  <Section>
+    <SectionText>My GitHub Activity</SectionText>
+  </Section>
+  <Suspense fallback={<div>Loading GitHub contributions...</div>}>
+    <GitHubContributions username="steelydr" />
+  </Suspense>
+</motion.div>
 
               {/* SectionText Animation */}
               <motion.div
