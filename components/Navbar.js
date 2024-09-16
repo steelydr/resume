@@ -53,7 +53,7 @@ const PolygonPath = styled('polygon')({
 });
 
 const Text = styled('div')({
-  fontSize: '1.6rem', // Adjusted size
+  fontSize: '1.25rem', // Adjusted size
   fontWeight: 700,
   fontFamily: "'Roboto', sans-serif",
   color: colors.accent,
@@ -66,8 +66,8 @@ const Text = styled('div')({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  width: '56px', // Adjusted size
-  height: '56px', // Adjusted size
+  width: '36px', // Adjusted size
+  height: '36px', // Adjusted size
 });
 
 const Loader = ({ showR }) => (
@@ -129,8 +129,8 @@ const Navbar = ({ isMobile, drawerOpen, toggleDrawer, appBarActions, drawerConte
       }}
     >
       <Toolbar sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', backgroundColor: alpha(colors.background, 0.9) }}>
-        <LoaderContainer onClick={() => window.scrollTo(0, 0)}>
-          <Loader showR={true} />
+        <LoaderContainer onClick={() => window.scrollTo(0, 0)} sx ={{ width:'40px',height:'40px'}}>
+          <Loader showR={true} sx ={{ width:'30px',height:'30px'}} / >
         </LoaderContainer>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {!isMobile && appBarActions}

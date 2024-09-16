@@ -122,8 +122,8 @@ export default function HomeContainerComponent({ userData }) {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.6,
-        delayChildren: 0.3,
+        staggerChildren: 0.3,
+        delayChildren: 0.2,
       },
     },
   };
