@@ -30,7 +30,7 @@ const itemVariants = {
   }
 };
 
-const GitHubContributions = ({ username }) => {
+const GitHubContributions = ({ username, token }) => {
   const [contributionCount, setContributionCount] = useState(null);
   const [dateRange, setDateRange] = useState('');
   const [error, setError] = useState(null);
@@ -39,40 +39,46 @@ const GitHubContributions = ({ username }) => {
   const isInView = useInView(ref, { once: true, threshold: 0.1 });
   const mainControls = useAnimation();
 
-  // Function to fetch contributions
   const fetchContributions = async () => {
-    try {
-      const corsProxy = 'https://corsproxy.io/?';
-      const githubUrl = `https://github.com/users/${username}/contributions`;
-      const response = await fetch(corsProxy + encodeURIComponent(githubUrl), {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    const query = `
+      query($username: String!) {
+        user(login: $username) {
+          contributionsCollection {
+            contributionCalendar {
+              totalContributions
+              weeks {
+                firstDay
+              }
+            }
+          }
         }
+      }
+    `;
+
+    try {
+      const response = await fetch('https://api.github.com/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ query, variables: { username } })
       });
+
+      if (!response.ok) throw new Error('Failed to fetch contributions');
+
+      const data = await response.json();
+      const contributionData = data.data.user.contributionsCollection.contributionCalendar;
       
-      if (!response.ok) {
-        throw new Error('Failed to fetch contributions');
-      }
+      setContributionCount(contributionData.totalContributions);
 
-      const html = await response.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const contributionElement = doc.querySelector('.f4.text-normal.mb-2'); // Using only the class names
+      const weeks = contributionData.weeks;
+      const startDate = new Date(weeks[0].firstDay);
+      const endDate = new Date(weeks[weeks.length - 1].firstDay);
+      endDate.setDate(endDate.getDate() + 6); // Last day of the last week
 
-      if (contributionElement) {
-        const countText = contributionElement.textContent.trim().split(' ')[0];
-        setContributionCount(countText);
-
-        const currentDate = new Date();
-        const oneYearAgo = new Date(currentDate);
-        oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-        oneYearAgo.setDate(oneYearAgo.getDate() + 1);
-
-        const formatDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-        setDateRange(`${formatDate(oneYearAgo)} to ${formatDate(currentDate)}`);
-      } else {
-        throw new Error('Could not find contribution count');
-      }
+      const formatDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      setDateRange(`${formatDate(startDate)} to ${formatDate(endDate)}`);
     } catch (err) {
       console.error('Error fetching GitHub contributions:', err);
       setError('Failed to load contribution data');
@@ -80,23 +86,21 @@ const GitHubContributions = ({ username }) => {
   };
 
   useEffect(() => {
-    fetchContributions();
-
-    // Poll for new data every 24 hours
-    const dailyIntervalId = setInterval(() => {
+    if (token) {
       fetchContributions();
-    }, 86400000); // 24 hours
 
-    // Check contribution count every 9 seconds
-    const checkIntervalId = setInterval(() => {
-      fetchContributions(); // Re-fetch data to update contribution count
-    }, 9000); // 9 seconds
+      // Poll for new data every hour
+      const hourlyIntervalId = setInterval(() => {
+        fetchContributions();
+      }, 3600000); // 1 hour
 
-    return () => {
-      clearInterval(dailyIntervalId);
-      clearInterval(checkIntervalId);
-    };
-  }, [username]);
+      return () => {
+        clearInterval(hourlyIntervalId);
+      };
+    } else {
+      setError('GitHub token is required');
+    }
+  }, [username, token]);
 
   // Animation control
   useEffect(() => {

@@ -335,7 +335,7 @@ export default function ResumePage() {
     <SectionText>My GitHub Activity</SectionText>
   </Section>
   <Suspense fallback={<div>Loading GitHub contributions...</div>}>
-    <GitHubContributions username="steelydr" />
+    <GitHubContributions username="steelydr" token="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"/>
   </Suspense>
 </motion.div>
 
