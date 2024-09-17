@@ -160,7 +160,7 @@ export default function ResumePage() {
       try {
         const response = await axios.get(
           //"http://localhost:3000/api/users?firstName=Depala&lastName=Rajeswari",
-          "https://rajeswaridepalav.netlify.app/api/users?firstName=Depala&lastName=Rajeswari",
+          "https://rajeswaridepala.netlify.app/api/users?firstName=Depala&lastName=Rajeswari",
           {
             headers: {
               "Cache-Control": "no-cache",
