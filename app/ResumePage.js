@@ -142,7 +142,10 @@ export default function ResumePage() {
   const [smallLoader, setSmallLoader] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const githubRef = useRef(null);
-  const tokeng = process.env.GITHUB_PAT;
+  require('dotenv').config();
+const tokeng = process.env.NEXT_PUBLIC_GITHUB_PAT;
+
+
 
   const homeRef = useRef(null);
   const educationRef = useRef(null);
