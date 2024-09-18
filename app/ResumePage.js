@@ -142,6 +142,7 @@ export default function ResumePage() {
   const [smallLoader, setSmallLoader] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const githubRef = useRef(null);
+  const tokeng = process.env.GITHUB_PAT;
 
   const homeRef = useRef(null);
   const educationRef = useRef(null);
@@ -335,7 +336,7 @@ export default function ResumePage() {
     <SectionText>My GitHub Activity</SectionText>
   </Section>
   <Suspense fallback={<div>Loading GitHub contributions...</div>}>
-    <GitHubContributions username="steelydr" token="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"/>
+    <GitHubContributions username="steelydr" token={tokeng}/>
   </Suspense>
 </motion.div>
 
