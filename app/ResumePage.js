@@ -143,7 +143,7 @@ export default function ResumePage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const githubRef = useRef(null);
   require('dotenv').config();
-const tokeng = process.env.NEXT_PUBLIC_GITHUB_PAT;
+  const tokeng = process.env.NEXT_PUBLIC_GITHUB_PAT;
 
 
 
@@ -163,7 +163,7 @@ const tokeng = process.env.NEXT_PUBLIC_GITHUB_PAT;
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          //"http://localhost:3000/api/users?firstName=Depala&lastName=Rajeswari",
+          //"http://localhost:4000/api/users?firstName=Depala&lastName=Rajeswari",
           "https://rajeswaridepalav.netlify.app/api/users?firstName=Depala&lastName=Rajeswari",
           {
             headers: {
@@ -278,6 +278,7 @@ const tokeng = process.env.NEXT_PUBLIC_GITHUB_PAT;
       <ResumeButton
         variant="outlined"
         sx={{ marginLeft: "77px", marginTop: "50px" }}
+        onClick={() => window.open('https://1drv.ms/b/s!Ar51jB7fiEKQrcsp1q8vT-CYrjfmUQ?e=Z5YTeS', '_blank')}
       >
         Resume
       </ResumeButton>

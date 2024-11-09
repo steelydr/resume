@@ -135,13 +135,17 @@ const Navbar = ({ isMobile, drawerOpen, toggleDrawer, appBarActions, drawerConte
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {!isMobile && appBarActions}
           {!isMobile && (
-            <ResumeButton variant="outlined" sx={{ marginRight: '0px' }}>
-              Resume
-            </ResumeButton>
+            <ResumeButton
+            variant="outlined"
+            sx={{ marginRight: '0px' }}
+            onClick={() => window.open('https://1drv.ms/b/s!Ar51jB7fiEKQrcsp1q8vT-CYrjfmUQ?e=Z5YTeS', '_blank')}
+          >
+            Resume
+          </ResumeButton>          
           )}
           {isMobile && (
-            <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
-              {drawerOpen ? <StyledCloseIcon open={drawerOpen} /> : <StyledMenuIcon open={drawerOpen} />}
+            <IconButton edge="start" color="inherit" aria-label="menu"  sx={{ backgroundColor: colors.background  , color: colors.accent }}  onClick={toggleDrawer(true)}>
+              {drawerOpen ? <StyledCloseIcon open={drawerOpen}  sx={{ color: colors.accent }} /> : <StyledMenuIcon open={drawerOpen}  sx={{ color: colors.accent }} />}
             </IconButton>
           )}
         </Box>
