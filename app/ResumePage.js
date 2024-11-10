@@ -1,5 +1,5 @@
 "use client";
-
+import dynamic from 'next/dynamic';
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import axios from "axios";
 import {
@@ -14,15 +14,16 @@ import { alpha } from "@mui/system";
 import styled from "@emotion/styled";
 import { GrContact } from "react-icons/gr";
 import { motion, AnimatePresence } from "framer-motion";
-const GitHubContributions = React.lazy(() => import("../components/GitHubContributions"));
-const Navbar = React.lazy(() => import("../components/Navbar"));
-const Loader = React.lazy(() => import("../components/Loader"));
-const Experience = React.lazy(() => import("../components/Experience"));
-const Projects = React.lazy(() => import("../components/Projects"));
-const Certificates = React.lazy(() => import("../components/Certificates"));
-const Section = React.lazy(() => import("../components/Section"));
-const Footer = React.lazy(() => import("../components/Footer"));
-const HomeContainer = React.lazy(() => import("./HomeContainer"));
+
+const GitHubContributions = dynamic(() => import("../components/GitHubContributions"), { ssr: false });
+const Navbar = dynamic(() => import("../components/Navbar"), { ssr: false });
+const Loader = dynamic(() => import("../components/Loader"), { ssr: false });
+const Experience = dynamic(() => import("../components/Experience"), { ssr: false });
+const Projects = dynamic(() => import("../components/Projects"), { ssr: false });
+const Certificates = dynamic(() => import("../components/Certificates"), { ssr: false });
+const Section = dynamic(() => import("../components/Section"), { ssr: false });
+const Footer = dynamic(() => import("../components/Footer"), { ssr: false });
+const HomeContainer = dynamic(() => import("./HomeContainer"), { ssr: false });
 
 const colors = {
   primary: "#8A2BE2",

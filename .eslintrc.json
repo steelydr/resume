@@ -2,6 +2,13 @@
   "extends": "next/core-web-vitals",
   "rules": {
     "react-hooks/exhaustive-deps": "off",
-    "react/no-unescaped-entities": "off"
+    "react/no-unescaped-entities": "off",
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "IfStatement[test.raw='typeof window !== \\\"undefined\\\"]",
+        "message": "Avoid using 'typeof window !== undefined' directly. Use 'useEffect' or dynamic imports instead."
+      }
+    ]
   }
 }

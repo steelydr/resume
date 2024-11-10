@@ -17,17 +17,17 @@ const containerVariants = {
     transition: {
       staggerChildren: 0.4,
       delayChildren: 0.3,
-    }
-  }
+    },
+  },
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: "easeOut" }
-  }
+    transition: { duration: 0.8, ease: 'easeOut' },
+  },
 };
 
 const GitHubContributions = ({ username, token }) => {
@@ -40,6 +40,8 @@ const GitHubContributions = ({ username, token }) => {
   const mainControls = useAnimation();
 
   const fetchContributions = async () => {
+    if (typeof window === 'undefined') return; // Prevent SSR from making the fetch call
+
     const query = `
       query($username: String!) {
         user(login: $username) {
@@ -60,24 +62,25 @@ const GitHubContributions = ({ username, token }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ query, variables: { username } })
+        body: JSON.stringify({ query, variables: { username } }),
       });
 
       if (!response.ok) throw new Error('Failed to fetch contributions');
 
       const data = await response.json();
       const contributionData = data.data.user.contributionsCollection.contributionCalendar;
-      
+
       setContributionCount(contributionData.totalContributions);
 
       const weeks = contributionData.weeks;
-      const startDate = new Date(weeks[0].firstDay);
-      const endDate = new Date(weeks[weeks.length - 1].firstDay);
-      endDate.setDate(endDate.getDate() + 6); // Last day of the last week
+      const startDate = new Date(weeks[0]?.firstDay || Date.now());
+      const endDate = new Date(weeks[weeks.length - 1]?.firstDay || Date.now());
+      endDate.setDate(endDate.getDate() + 6);
 
-      const formatDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      const formatDate = (date) =>
+        `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
       setDateRange(`${formatDate(startDate)} to ${formatDate(endDate)}`);
     } catch (err) {
       console.error('Error fetching GitHub contributions:', err);
@@ -89,7 +92,6 @@ const GitHubContributions = ({ username, token }) => {
     if (token) {
       fetchContributions();
 
-      // Poll for new data every hour
       const hourlyIntervalId = setInterval(() => {
         fetchContributions();
       }, 3600000); // 1 hour
@@ -102,10 +104,9 @@ const GitHubContributions = ({ username, token }) => {
     }
   }, [username, token]);
 
-  // Animation control
   useEffect(() => {
     if (isInView) {
-      mainControls.start("visible");
+      mainControls.start('visible');
     }
   }, [isInView, mainControls]);
 
@@ -133,7 +134,9 @@ const GitHubContributions = ({ username, token }) => {
         Version Control Contributions
       </motion.h2>
       {error ? (
-        <motion.p variants={itemVariants} style={{ color: colors.accent }}>{error}</motion.p>
+        <motion.p variants={itemVariants} style={{ color: colors.accent }}>
+          {error}
+        </motion.p>
       ) : contributionCount !== null ? (
         <motion.p
           variants={itemVariants}
@@ -143,7 +146,9 @@ const GitHubContributions = ({ username, token }) => {
           <strong style={{ color: colors.accent }}>{dateRange}</strong>
         </motion.p>
       ) : (
-        <motion.p variants={itemVariants} style={{ color: colors.white }}>Loading contributions...</motion.p>
+        <motion.p variants={itemVariants} style={{ color: colors.white }}>
+          Loading contributions...
+        </motion.p>
       )}
       <motion.img
         variants={itemVariants}
