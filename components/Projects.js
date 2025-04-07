@@ -243,6 +243,7 @@ const ProjectContent = styled('div')`
     margin: 15px;
     border-radius: 8px;
     transition: transform 0.3s ease-in-out;
+    cursor: pointer;
 
     @media (max-width: 768px) {
       width: 200px; /* Adjust the size for smaller screens */
@@ -252,7 +253,6 @@ const ProjectContent = styled('div')`
 
   .carousel__images img:hover {
     transform: scale(1.2);
-    cursor: pointer;
   }
 
   .carousel__images:hover .carousel__track {
@@ -265,8 +265,9 @@ const ProjectContent = styled('div')`
     }
     100% {
       transform: translateX(calc(-240px * 8)); /* Shift left by 8 images' width */
-
-      @media (max-width: 768px) {
+    }
+    @media (max-width: 768px) {
+      100% {
         transform: translateX(calc(-200px * 8)); /* Adjust the translation for smaller screens */
       }
     }
@@ -314,31 +315,58 @@ const GitHubIcon = styled(FiGithub)`
   }
 `;
 
-const Projects = ({ userData }) => {
+// ---------------------
+// Mocked Data
+// ---------------------
+const mockedData = {
+  projects: [
+    {
+      title: 'ProjectOne',
+      description:
+        'This project processes 1 million transactions daily using SHA-256 encryption for security. It is built with modern web technologies.',
+      technologies: ['ReactJS', 'Express.js', 'Python'],
+      glink: 'https://github.com/example/project-one',
+    },
+    {
+      title: 'ProjectTwo',
+      description:
+        'An innovative solution handling complex algorithms and ensuring secure data flow using cutting-edge encryption. A robust and scalable project.',
+      technologies: ['Java SpringBoot', 'Linux', 'Oracle VM VirtualBox'],
+      glink: 'https://github.com/example/project-two',
+    },
+  ],
+};
+
+const Projects = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [overlayImage, setOverlayImage] = useState(null);
+  const projects = mockedData.projects;
 
   const renderCarousel = (projectTitle, imageCount = 8) => {
     const images = [];
     for (let i = 1; i <= imageCount; i++) {
+      const src = `/projects/${projectTitle}/${i}.jpg`;
       images.push(
         <Image
           key={`${i}-original`}
-          src={`/projects/${projectTitle}/${i}.jpg`}
+          src={src}
           alt={`${projectTitle} ${i}`}
           width={240}
           height={150}
+          onClick={() => setOverlayImage(src)}
         />
       );
     }
     for (let i = 1; i <= imageCount; i++) {
+      const src = `/projects/${projectTitle}/${i}.jpg`;
       images.push(
         <Image
           key={`${i}-duplicate`}
-          src={`/projects/${projectTitle}/${i}.jpg`}
+          src={src}
           alt={`${projectTitle} ${i}`}
           width={240}
           height={150}
+          onClick={() => setOverlayImage(src)}
         />
       );
     }
@@ -397,7 +425,7 @@ const Projects = ({ userData }) => {
             // Capitalize and color only the first letter of the entire text
             return (
               <span key={index}>
-                <span style={{ color: colors.accent, fontWeight: 'bold',fontSize:'1.3rem' }}>
+                <span style={{ color: colors.accent, fontWeight: 'bold', fontSize:'1.3rem' }}>
                   {capitalizeFirstLetter(part.charAt(0))}
                 </span>
                 {part.slice(1)}
@@ -405,13 +433,13 @@ const Projects = ({ userData }) => {
             );
           } else if (part && phrases.includes(part.trim())) {
             return (
-              <span key={index} style={{ color: colors.accent, fontWeight: 'normal' , }}>
+              <span key={index} style={{ color: colors.accent, fontWeight: 'normal' }}>
                 {part}
               </span>
             );
           } else {
             return (
-              <span key={index} style={{ color: colors.text, fontWeight: 'normal',letterSpacing: '0.19px' }}>
+              <span key={index} style={{ color: colors.text, fontWeight: 'normal', letterSpacing: '0.19px' }}>
                 {part}
               </span>
             );
@@ -420,32 +448,34 @@ const Projects = ({ userData }) => {
       </span>
     );
   };
-  
-  
-  const handleClick = (image) => {
-    setOverlayImage(image);
-  };
-
-  if (!userData || !userData.projects) {
-    return null;
-  }
 
   return (
     <Container>
       <div className="popup">
         <div className="tabs">
-          {userData.projects.map((project, index) => (
+          {projects.map((project, index) => (
             <React.Fragment key={index}>
-              <input type="radio" id={`tab${index + 1}`} name="tab" onChange={() => setActiveTab(index)} />
+              <input
+                type="radio"
+                id={`tab${index + 1}`}
+                name="tab"
+                onChange={() => setActiveTab(index)}
+                checked={activeTab === index}
+              />
               <label htmlFor={`tab${index + 1}`}>{project.title}</label>
             </React.Fragment>
           ))}
         </div>
         <div className="content-wrapper">
-          {userData.projects.map((project, index) => (
-            <ProjectContent key={index} className={`content ${activeTab === index ? 'active' : ''}`}>
+          {projects.map((project, index) => (
+            <ProjectContent
+              key={index}
+              className={`content ${activeTab === index ? 'active' : ''}`}
+            >
               <div className="carousel">
-                <div className="carousel__track">{renderCarousel(project.title)}</div>
+                <div className="carousel__track">
+                  {renderCarousel(project.title)}
+                </div>
               </div>
               {overlayImage && (
                 <div className="overlay active" onClick={() => setOverlayImage(null)}>
@@ -459,12 +489,12 @@ const Projects = ({ userData }) => {
       </div>
       <div className="action-row">
         <div className="tech-logos">
-          {userData.projects[activeTab].technologies.map((tech, techIndex) => (
+          {projects[activeTab].technologies.map((tech, techIndex) => (
             <TechLogo key={techIndex} src={getTechLogo(tech)} alt={tech} />
           ))}
         </div>
         <div className="view-project-link">
-          <a href={userData.projects[activeTab].glink} target="_blank" rel="noopener noreferrer">
+          <a href={projects[activeTab].glink} target="_blank" rel="noopener noreferrer">
             <GitHubIcon />
           </a>
         </div>

@@ -1,7 +1,6 @@
 "use client";
 import dynamic from 'next/dynamic';
 import React, { useState, useEffect, useRef, Suspense } from "react";
-import axios from "axios";
 import {
   List,
   ListItemButton,
@@ -133,21 +132,15 @@ const NavListItemText = styled(ListItemText)`
 `;
 
 export default function ResumePage() {
-  const [userData, setUserData] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // Ensure that the component renders only on the client
+  const [mounted, setMounted] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [showD, setShowD] = useState(false);
   const [showR, setShowR] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [smallLoader, setSmallLoader] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+
   const githubRef = useRef(null);
-  require('dotenv').config();
-  const tokeng = process.env.NEXT_PUBLIC_GITHUB_PAT;
-
-
-
   const homeRef = useRef(null);
   const educationRef = useRef(null);
   const experienceRef = useRef(null);
@@ -158,35 +151,10 @@ export default function ResumePage() {
   const contactIconRef = useRef(null);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"), { noSsr: true });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          //"http://localhost:4000/api/users?firstName=Depala&lastName=Rajeswari",
-          "https://rajeswaridepalav.netlify.app/api/users?firstName=Depala&lastName=Rajeswari",
-          {
-            headers: {
-              "Cache-Control": "no-cache",
-            },
-          }
-        );
-        if (response.status === 200) {
-          setUserData(response.data);
-        } else if (response.status === 304) {
-          console.log("Data not modified, using cached data.");
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-
+    setMounted(true);
     setTimeout(() => setShowD(true), 500);
     setTimeout(() => setShowR(true), 1000);
     setTimeout(() => {
@@ -213,11 +181,7 @@ export default function ResumePage() {
   }, []);
 
   const toggleDrawer = (open) => (event) => {
-    if (
-      event &&
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
+    if (event && event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
       return;
     }
     setDrawerOpen(open);
@@ -247,7 +211,7 @@ export default function ResumePage() {
         }}
         sx={{ justifyContent: "center" }}
       >
-        
+        {/* Additional text can be added here if needed */}
       </ListItemButton>
       <ListItemButton
         onClick={() => {
@@ -288,10 +252,9 @@ export default function ResumePage() {
 
   const appBarActions = (
     <NavList component="nav">
-      
-<ListItemButton onClick={() => scrollToSection(githubRef)}>
-  <NavListItemText primary="GitHub" />
-</ListItemButton>
+      <ListItemButton onClick={() => scrollToSection(githubRef)}>
+        <NavListItemText primary="GitHub" />
+      </ListItemButton>
       <ListItemButton onClick={() => scrollToSection(experienceRef)}>
         <NavListItemText primary="Career" />
       </ListItemButton>
@@ -304,18 +267,18 @@ export default function ResumePage() {
     </NavList>
   );
 
+  // Do not render any dynamic content until mounting is complete
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <React.Fragment>
       <Suspense fallback={<Loader showR={showR} />}>
         <AnimatePresence>
           {!showContent && <Loader showR={showR} />}
           {showContent && (
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={fadeInVariants}
-            >
+            <motion.div initial="hidden" animate="visible" exit="hidden" variants={fadeInVariants}>
               <Navbar
                 sx={{ position: "sticky", top: 0, width: "100%", zIndex: 1000 }}
                 isMobile={isMobile}
@@ -324,7 +287,7 @@ export default function ResumePage() {
                 appBarActions={appBarActions}
                 drawerContent={drawerContent}
               />
-              <HomeContainer ref={homeRef} userData={userData} />
+              <HomeContainer ref={homeRef} />
               <ContactIconContainer
                 ref={contactIconRef}
                 onClick={() => scrollToSection(contactRef)}
@@ -336,38 +299,23 @@ export default function ResumePage() {
               </ContactIconContainer>
 
               {/* GitHub Contributions Section */}
-<motion.div ref={githubRef} variants={slideUpVariants}>
-  <Section>
-    <SectionText>My GitHub Activity</SectionText>
-  </Section>
-  <Suspense fallback={<div>Loading GitHub contributions...</div>}>
-    <GitHubContributions username="steelydr" token={tokeng}/>
-  </Suspense>
-</motion.div>
-
-              {/* SectionText Animation */}
-              <motion.div
-                ref={experienceRef}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                variants={slideInLeft}
-              >
+              <motion.div ref={githubRef} variants={slideUpVariants}>
                 <Section>
-                  <SectionText variants={slideInLeft}>
-                    Where I've Worked
-                  </SectionText>
+                  <SectionText>My GitHub Activity</SectionText>
                 </Section>
+                <Suspense fallback={<div>Loading GitHub contributions...</div>}>
+                  <GitHubContributions username="steelydr" />
+                </Suspense>
               </motion.div>
 
-              {/* Experience Animation */}
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                variants={slideInRight}
-              >
-                <Experience userData={userData} />
+              {/* Experience Section */}
+              <motion.div ref={experienceRef} initial="hidden" animate="visible" exit="hidden" variants={slideInLeft}>
+                <Section>
+                  <SectionText>Where I've Worked</SectionText>
+                </Section>
+              </motion.div>
+              <motion.div initial="hidden" animate="visible" exit="hidden" variants={slideInRight}>
+                <Experience />
               </motion.div>
 
               {/* Projects Section */}
@@ -375,16 +323,18 @@ export default function ResumePage() {
                 <Section>
                   <SectionText>Skills I've Applied</SectionText>
                 </Section>
-                <Projects userData={userData} />
+                <Projects />
               </motion.div>
 
-              <motion.div ref={certificationRef}  variants={slideInLeft}>
+              {/* Certificates Section */}
+              <motion.div ref={certificationRef} variants={slideInLeft}>
                 <Section>
                   <SectionText>Credentials Earned</SectionText>
                 </Section>
-                <Certificates userData={userData} handleClick={() => {}} />
+                <Certificates />
               </motion.div>
 
+              {/* Footer */}
               <motion.div ref={contactRef} variants={fadeInVariants}>
                 <Footer ref={footerRef} />
               </motion.div>

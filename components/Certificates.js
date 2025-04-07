@@ -7,8 +7,8 @@ const colors = {
   secondary: '#4B0082', // Indigo
   accent: '#DA70D6', // Orchid
   text: '#E9E9E9', // Light Grey
-  background: '#1F1F1F', 
-  white: '#FFFFFF', 
+  background: '#1F1F1F',
+  white: '#FFFFFF',
 };
 
 const CertificatesWrapper = styled('div')({
@@ -76,39 +76,57 @@ const CList = styled('div')(({ isOdd, isAnimated }) => ({
   },
 }));
 
-const Certificates = ({ userData }) => {
+// ---------------------
+// Mocked Data
+// ---------------------
+const mockedData = {
+  certifications: [
+    { name: 'ISTQB', authority: 'Authority1' },
+    { name: 'Microsoft', authority: 'Authority2' },
+    { name: 'Certificate Three', authority: 'Authority3' },
+  ],
+};
+
+const Certificates = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
   const [animatedItems, setAnimatedItems] = useState([]);
 
-  const handleClick = (imagePath) => {
-    setSelectedImage(imagePath);
+  // Updated handler to use the certificate name
+  const handleClick = (certificateName) => {
+    setSelectedImage(certificateName);
     setShowModal(true);
   };
-  
+
   useEffect(() => {
-    if (userData && userData.certifications) {
+    if (mockedData && mockedData.certifications) {
       const timer = setTimeout(() => {
-        setAnimatedItems(userData.certifications.map((_, index) => index));
+        setAnimatedItems(mockedData.certifications.map((_, index) => index));
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [userData]);
+  }, []);
 
-  if (!userData || !userData.certifications) {
+  if (!mockedData || !mockedData.certifications) {
     return null;
   }
 
   return (
     <CertificatesWrapper>
-      {userData.certifications.map((certification, index) => (
+      {mockedData.certifications.map((certification, index) => (
         <CList key={index} isOdd={index % 2 === 0} isAnimated={animatedItems.includes(index)}>
-          <div className="num" onClick={() => handleClick(`/certs/${certification.authority}.png`)}>
+          {/* Use the certificate name for the image path */}
+          <div className="num" onClick={() => handleClick(certification.name)}>
             <h3>{certification.name}</h3>
           </div>
         </CList>
       ))}
-      <Modal show={showModal} onClose={() => setShowModal(false)} imagePath={selectedImage} />
+      {/* Use backticks for template literal interpolation */}
+      <Modal 
+        show={showModal} 
+        onClose={() => setShowModal(false)} 
+        imagePath={`/certs/${selectedImage}.png`}
+      />
     </CertificatesWrapper>
   );
 };

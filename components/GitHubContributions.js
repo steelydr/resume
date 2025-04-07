@@ -31,6 +31,8 @@ const itemVariants = {
 };
 
 const GitHubContributions = ({ username, token }) => {
+  // Always call hooks in the same order:
+  const [mounted, setMounted] = useState(false);
   const [contributionCount, setContributionCount] = useState(null);
   const [dateRange, setDateRange] = useState('');
   const [error, setError] = useState(null);
@@ -39,9 +41,8 @@ const GitHubContributions = ({ username, token }) => {
   const isInView = useInView(ref, { once: true, threshold: 0.1 });
   const mainControls = useAnimation();
 
+  // Function to fetch contributions.
   const fetchContributions = async () => {
-    if (typeof window === 'undefined') return; // Prevent SSR from making the fetch call
-
     const query = `
       query($username: String!) {
         user(login: $username) {
@@ -56,7 +57,6 @@ const GitHubContributions = ({ username, token }) => {
         }
       }
     `;
-
     try {
       const response = await fetch('https://api.github.com/graphql', {
         method: 'POST',
@@ -66,21 +66,19 @@ const GitHubContributions = ({ username, token }) => {
         },
         body: JSON.stringify({ query, variables: { username } }),
       });
-
       if (!response.ok) throw new Error('Failed to fetch contributions');
-
       const data = await response.json();
-      const contributionData = data.data.user.contributionsCollection.contributionCalendar;
-
+      const contributionData =
+        data.data.user.contributionsCollection.contributionCalendar;
       setContributionCount(contributionData.totalContributions);
-
       const weeks = contributionData.weeks;
       const startDate = new Date(weeks[0]?.firstDay || Date.now());
       const endDate = new Date(weeks[weeks.length - 1]?.firstDay || Date.now());
       endDate.setDate(endDate.getDate() + 6);
-
       const formatDate = (date) =>
-        `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(
+          date.getDate()
+        ).padStart(2, '0')}`;
       setDateRange(`${formatDate(startDate)} to ${formatDate(endDate)}`);
     } catch (err) {
       console.error('Error fetching GitHub contributions:', err);
@@ -88,22 +86,27 @@ const GitHubContributions = ({ username, token }) => {
     }
   };
 
+  // Set mounted flag on client (runs on every render, but state update happens only once).
   useEffect(() => {
-    if (token) {
-      fetchContributions();
+    setMounted(true);
+  }, []);
 
+  // Always call this hook, but only fetch when mounted.
+  useEffect(() => {
+    if (token && mounted) {
+      fetchContributions();
       const hourlyIntervalId = setInterval(() => {
         fetchContributions();
       }, 3600000); // 1 hour
-
       return () => {
         clearInterval(hourlyIntervalId);
       };
-    } else {
+    } else if (!token) {
       setError('GitHub token is required');
     }
-  }, [username, token]);
+  }, [username, token, mounted]);
 
+  // Animation control when component comes into view.
   useEffect(() => {
     if (isInView) {
       mainControls.start('visible');
@@ -127,45 +130,63 @@ const GitHubContributions = ({ username, token }) => {
         overflow: 'hidden',
       }}
     >
-      <motion.h2
-        variants={itemVariants}
-        style={{ color: colors.accent, marginBottom: '20px' }}
-      >
-        Version Control Contributions
-      </motion.h2>
-      {error ? (
-        <motion.p variants={itemVariants} style={{ color: colors.accent }}>
-          {error}
-        </motion.p>
-      ) : contributionCount !== null ? (
-        <motion.p
-          variants={itemVariants}
-          style={{ color: colors.white, fontSize: '1.2em', marginBottom: '30px' }}
-        >
-          <strong style={{ color: colors.accent }}>{contributionCount}</strong> contributions from{' '}
-          <strong style={{ color: colors.accent }}>{dateRange}</strong>
-        </motion.p>
+      {mounted ? (
+        <>
+          <motion.h2
+            variants={itemVariants}
+            style={{ color: colors.accent, marginBottom: '20px' }}
+          >
+            Version Control Contributions
+          </motion.h2>
+          {error ? (
+            <motion.p variants={itemVariants} style={{ color: colors.accent }}>
+              {error}
+            </motion.p>
+          ) : contributionCount !== null ? (
+            <motion.p
+              variants={itemVariants}
+              style={{
+                color: colors.white,
+                fontSize: '1.2em',
+                marginBottom: '30px',
+              }}
+            >
+              <strong style={{ color: colors.accent }}>
+                {contributionCount}
+              </strong>{' '}
+              contributions from{' '}
+              <strong style={{ color: colors.accent }}>{dateRange}</strong>
+            </motion.p>
+          ) : (
+            <motion.p variants={itemVariants} style={{ color: colors.white }}>
+              Loading contributions...
+            </motion.p>
+          )}
+          <motion.img
+            variants={itemVariants}
+            src={`https://ghchart.rshah.org/${colors.primary.replace(
+              '#',
+              ''
+            )}/${username}`}
+            alt={`${username}'s GitHub Contribution Chart`}
+            style={{
+              width: '100%',
+              maxWidth: '760px',
+              height: 'auto',
+            }}
+          />
+          <motion.p
+            variants={itemVariants}
+            style={{ marginTop: '20px', color: colors.text }}
+          >
+            GitHub contributions for{' '}
+            <strong style={{ color: colors.accent }}>{username}</strong>
+          </motion.p>
+        </>
       ) : (
-        <motion.p variants={itemVariants} style={{ color: colors.white }}>
-          Loading contributions...
-        </motion.p>
+        // Optionally, render a placeholder while not mounted
+        <div style={{ minHeight: '200px' }} />
       )}
-      <motion.img
-        variants={itemVariants}
-        src={`https://ghchart.rshah.org/${colors.primary.replace('#', '')}/${username}`}
-        alt={`${username}'s GitHub Contribution Chart`}
-        style={{
-          width: '100%',
-          maxWidth: '760px',
-          height: 'auto',
-        }}
-      />
-      <motion.p
-        variants={itemVariants}
-        style={{ marginTop: '20px', color: colors.text }}
-      >
-        GitHub contributions for <strong style={{ color: colors.accent }}>{username}</strong>
-      </motion.p>
     </motion.div>
   );
 };

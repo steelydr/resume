@@ -254,6 +254,38 @@ const Timeline = styled('div')({
   },
 });
 
+// ---------------------
+// Mocked Data
+// ---------------------
+const mockedData = {
+  experiences: [
+    {
+      company: 'TechCorp',
+      jobTitle: 'Frontend Developer',
+      description:
+        'Developed user-friendly interfaces. Improved performance by optimizing React components. Collaborated closely with design and backend teams.',
+      startDate: '2021-05-15',
+    },
+    {
+      company: 'InnovateX',
+      jobTitle: 'Software Engineer',
+      description:
+        'Built scalable applications and led multiple projects. Introduced agile methodologies and enhanced code quality through regular reviews.',
+      startDate: '2019-03-01',
+    },
+    {
+      company: 'DevSolutions',
+      jobTitle: 'Full Stack Developer',
+      description:
+        'Created end-to-end solutions integrating APIs and third-party services. Maintained legacy systems while introducing modern technologies.',
+      startDate: '2017-10-10',
+    },
+  ],
+};
+
+// ---------------------
+// Animated Timeline Event Component
+// ---------------------
 const AnimatedTimelineEvent = ({ experience, index, expandedDescriptions, handleShowMore }) => {
   const controls = useAnimation();
   const ref = useRef(null);
@@ -262,7 +294,7 @@ const AnimatedTimelineEvent = ({ experience, index, expandedDescriptions, handle
 
   useEffect(() => {
     if (isInView) {
-      controls.start("visible");
+      controls.start('visible');
     }
   }, [isInView, controls]);
 
@@ -271,8 +303,8 @@ const AnimatedTimelineEvent = ({ experience, index, expandedDescriptions, handle
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.5, delay: 0.2, when: "beforeChildren", staggerChildren: 0.1 }
-    }
+      transition: { duration: 0.5, delay: 0.2, when: 'beforeChildren', staggerChildren: 0.1 }
+    },
   };
 
   const itemVariants = {
@@ -290,8 +322,8 @@ const AnimatedTimelineEvent = ({ experience, index, expandedDescriptions, handle
     const visibleLines = isExpanded ? lines : lines.slice(0, 3);
     return (
       <ul>
-        {visibleLines.map((sentence, index) => (
-          <li key={index} className="bulleted-paragraph">
+        {visibleLines.map((sentence, idx) => (
+          <li key={idx} className="bulleted-paragraph">
             {sentence}
           </li>
         ))}
@@ -346,39 +378,43 @@ const AnimatedTimelineEvent = ({ experience, index, expandedDescriptions, handle
   );
 };
 
-const Experience = ({ userData }) => {
+// ---------------------
+// Experience Component Using Mocked Data
+// ---------------------
+const Experience = () => {
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
+  // Use mocked data directly
+  const experiences = mockedData.experiences;
+
   useEffect(() => {
-    if (userData && userData.experiences) {
+    if (experiences) {
       const initialExpandedState = {};
-      userData.experiences.forEach((_, index) => {
-        initialExpandedState[index] = false;
+      experiences.forEach((_, idx) => {
+        initialExpandedState[idx] = false;
       });
       setExpandedDescriptions(initialExpandedState);
     }
-  }, [userData]);
+  }, [experiences]);
 
-  const handleShowMore = (index) => {
-    setExpandedDescriptions((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
-  };
-
-  if (!userData || !userData.experiences) {
+  if (!experiences) {
     return null;
   }
 
   return (
     <Timeline>
-      {userData.experiences.map((experience, index) => (
+      {experiences.map((experience, idx) => (
         <AnimatedTimelineEvent
-          key={index}
+          key={idx}
           experience={experience}
-          index={index}
+          index={idx}
           expandedDescriptions={expandedDescriptions}
-          handleShowMore={handleShowMore}
+          handleShowMore={(index) => 
+            setExpandedDescriptions((prev) => ({
+              ...prev,
+              [index]: !prev[index],
+            }))
+          }
         />
       ))}
     </Timeline>

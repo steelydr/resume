@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "next lint"
   },
   "dependencies": {
@@ -31,7 +31,7 @@
     "mapbox-gl": "^3.4.0",
     "mongoose": "^8.3.5",
     "next": "^15.0.3",
-    "pdfjs-dist": "^4.8.69",
+    "pdfjs-dist": "^3.11.174",
     "polished": "^4.3.1",
     "puppeteer": "^23.3.0",
     "react": "^18.3.1",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { styled } from "@mui/material";
 
@@ -18,12 +18,10 @@ const fonts = {
 
 const HomeContainer = styled(motion.div)({
   display: "flex",
-  flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
   height: "100vh",
   backgroundColor: colors.background,
-  color: colors.primary,
   fontFamily: fonts.primary,
   padding: "20px",
   boxSizing: "border-box",
@@ -31,31 +29,55 @@ const HomeContainer = styled(motion.div)({
   overflow: "hidden",
 });
 
+const ContentContainer = styled("div")({
+  display: "flex",
+  flexDirection: "row",
+  width: "100%",
+  maxWidth: "1200px",
+  zIndex: 5,
+  "@media (max-width: 768px)": {
+    flexDirection: "column",
+    alignItems: "center",
+  },
+});
+
+const LeftColumn = styled("div")({
+  flex: 1,
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  paddingRight: "2rem",
+  "@media (max-width: 768px)": {
+    paddingRight: 0,
+    alignItems: "center",
+  },
+});
+
+const RightColumn = styled("div")({
+  flex: "0 0 auto",
+  display: "flex",
+  justifyContent: "left",
+  alignItems: "center",
+  "@media (max-width: 768px)": {
+    marginTop: "1rem",
+  },
+});
+
 const IntroText = styled(motion.p)({
   color: colors.text,
   fontFamily: fonts.primary,
   fontSize: "1.5rem",
-  textAlign: "center",
-  zIndex: 5,
-  marginRight: "27rem",
-  "@media (max-width: 768px)": {
-    marginRight: "1rem",
-  },
+  textAlign: "left",
+  margin: "0 0 1rem 0",
 });
 
 const MainTitle = styled(motion.h1)({
   fontSize: "4rem",
   fontWeight: "bold",
   color: colors.accent,
-  textAlign: "center",
+  textAlign: "left",
   marginTop: 0,
   marginBottom: "10px",
-  zIndex: 5,
-  marginRight: "5rem",
-  "@media (max-width: 768px)": {
-    fontSize: "2.5rem",
-    marginRight: "1rem",
-  },
 });
 
 const JobTitle = styled(motion.h2)({
@@ -64,15 +86,8 @@ const JobTitle = styled(motion.h2)({
   color: colors.text,
   paddingTop: "5px",
   marginTop: "0px",
-  textAlign: "center",
-  marginLeft: "2rem",
-  zIndex: 5,
-  marginRight: "12.5rem",
-  "@media (max-width: 768px)": {
-    fontSize: "1.5rem",
-    marginRight: "1rem",
-    marginLeft: "1rem",
-  },
+  textAlign: "left",
+  marginBottom: "1rem",
 });
 
 const SummaryText = styled(motion.p)({
@@ -81,15 +96,23 @@ const SummaryText = styled(motion.p)({
   color: colors.text,
   textAlign: "justify",
   maxWidth: "600px",
-  margin: "0 auto",
   lineHeight: 1.6,
-  zIndex: 2,
-  "@media (max-width: 768px)": {
-    fontSize: "0.875rem",
-    lineHeight: 1.5,
-    padding: "0 1rem",
-  },
 });
+
+const ProfileImage = styled(motion.img, {
+  shouldForwardProp: (prop) => prop !== 'permanentHover',
+})(({ permanentHover }) => ({
+  height: "350px",
+  width: "500px",
+  objectFit: "cover",
+  border: "5px solid white", // adds a frame
+  borderRadius: "8px",
+  filter: permanentHover
+    ? "contrast(1.3) brightness(1) saturate(1) hue-rotate(0deg) blur(0)"
+    : "contrast(1.5) brightness(0.8) saturate(1.2) hue-rotate(25deg) blur(0px)",
+  transition: "filter 0.3s ease-in-out",
+}));
+
 
 const BubbleContainer = styled("div")({
   position: "absolute",
@@ -109,14 +132,24 @@ const Bubble = styled(motion.div)({
   backgroundColor: "rgba(218, 112, 214, 0.4)",
   opacity: 0.6,
   borderRadius: "50%",
-  zIndex: 1,
   "@media (max-width: 768px)": {
     width: "40px",
     height: "40px",
   },
 });
 
-export default function HomeContainerComponent({ userData }) {
+const mockedData = {
+  firstName: "Rajeswari",
+  lastName: "Depala",
+  jobTitle: "Software Developer",
+  summary:
+    "I am a passionate developer with experience in creating modern, responsive web applications. I love working on challenging projects that require creative problem-solving and collaboration.",
+  imageUrl: "image.jpg",
+};
+
+export default function HomeContainerComponent() {
+  const [hovered, setHovered] = useState(false);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -157,21 +190,30 @@ export default function HomeContainerComponent({ userData }) {
       initial="hidden"
       animate="visible"
     >
-      {userData ? (
-        <>
-          <BubbleContainer>
-            <Bubble variants={bubbleVariants} initial="initial" animate="animate" />
-          </BubbleContainer>
+      <BubbleContainer>
+        <Bubble variants={bubbleVariants} initial="initial" animate="animate" />
+      </BubbleContainer>
+      <ContentContainer>
+        <LeftColumn>
           <IntroText variants={itemVariants}>Hi, my name is</IntroText>
           <MainTitle variants={itemVariants}>
-            {userData.firstName} {userData.lastName}
+            {mockedData.firstName} {mockedData.lastName}
           </MainTitle>
-          <JobTitle variants={itemVariants}>A {userData.jobTitle}</JobTitle>
-          <SummaryText variants={itemVariants}>{userData.summary}</SummaryText>
-        </>
-      ) : (
-        <></>
-      )}
+          <JobTitle variants={itemVariants}>A {mockedData.jobTitle}</JobTitle>
+          <SummaryText variants={itemVariants}>
+            {mockedData.summary}
+          </SummaryText>
+        </LeftColumn>
+        <RightColumn>
+          <ProfileImage
+            src={mockedData.imageUrl}
+            alt="Profile"
+            variants={itemVariants}
+            permanentHover={hovered}
+            onMouseEnter={() => setHovered(true)}
+          />
+        </RightColumn>
+      </ContentContainer>
     </HomeContainer>
   );
 }
