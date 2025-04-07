@@ -252,14 +252,14 @@ export default function ResumePage() {
 
   const appBarActions = (
     <NavList component="nav">
-      <ListItemButton onClick={() => scrollToSection(githubRef)}>
-        <NavListItemText primary="GitHub" />
+      <ListItemButton onClick={() => scrollToSection(projectsRef)}>
+        <NavListItemText primary="Projects" />
       </ListItemButton>
       <ListItemButton onClick={() => scrollToSection(experienceRef)}>
         <NavListItemText primary="Career" />
       </ListItemButton>
-      <ListItemButton onClick={() => scrollToSection(projectsRef)}>
-        <NavListItemText primary="Endeavors" />
+      <ListItemButton onClick={() => scrollToSection(githubRef)}>
+        <NavListItemText primary="Git" />
       </ListItemButton>
       <ListItemButton onClick={() => scrollToSection(certificationRef)}>
         <NavListItemText primary="Credentials" />
@@ -298,6 +298,14 @@ export default function ResumePage() {
                 <ContactIcon />
               </ContactIconContainer>
 
+               {/* Projects Section */}
+               <motion.div ref={projectsRef} variants={slideUpVariants}>
+                <Section>
+                  <SectionText>Skills I've Applied</SectionText>
+                </Section>
+                <Projects />
+              </motion.div>
+
               {/* GitHub Contributions Section */}
               <motion.div ref={githubRef} variants={slideUpVariants}>
                 <Section>
@@ -316,14 +324,6 @@ export default function ResumePage() {
               </motion.div>
               <motion.div initial="hidden" animate="visible" exit="hidden" variants={slideInRight}>
                 <Experience />
-              </motion.div>
-
-              {/* Projects Section */}
-              <motion.div ref={projectsRef} variants={slideUpVariants}>
-                <Section>
-                  <SectionText>Skills I've Applied</SectionText>
-                </Section>
-                <Projects />
               </motion.div>
 
               {/* Certificates Section */}

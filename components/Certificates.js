@@ -81,9 +81,10 @@ const CList = styled('div')(({ isOdd, isAnimated }) => ({
 // ---------------------
 const mockedData = {
   certifications: [
-    { name: 'ISTQB', authority: 'Authority1' },
-    { name: 'Microsoft', authority: 'Authority2' },
-    { name: 'Certificate Three', authority: 'Authority3' },
+    { name: 'Foundation Level Certificate In Software Testing', authority: 'istqb' },
+    { name: 'Microsoft Certified Azure AI Fundamentals', authority: 'ai900' },
+    { name: 'Microsoft Certified Azure Developer Associate', authority: 'az204' },
+    { name: 'Microsoft Certified Azure Fundamentals', authority: 'az900' },
   ],
 };
 
@@ -116,7 +117,7 @@ const Certificates = () => {
       {mockedData.certifications.map((certification, index) => (
         <CList key={index} isOdd={index % 2 === 0} isAnimated={animatedItems.includes(index)}>
           {/* Use the certificate name for the image path */}
-          <div className="num" onClick={() => handleClick(certification.name)}>
+          <div className="num" onClick={() => handleClick(certification.authority)}>
             <h3>{certification.name}</h3>
           </div>
         </CList>

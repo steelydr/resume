@@ -260,25 +260,25 @@ const Timeline = styled('div')({
 const mockedData = {
   experiences: [
     {
-      company: 'TechCorp',
-      jobTitle: 'Frontend Developer',
-      description:
-        'Developed user-friendly interfaces. Improved performance by optimizing React components. Collaborated closely with design and backend teams.',
-      startDate: '2021-05-15',
-    },
-    {
-      company: 'InnovateX',
+      company: 'SoundSafe.Ai',
       jobTitle: 'Software Engineer',
       description:
-        'Built scalable applications and led multiple projects. Introduced agile methodologies and enhanced code quality through regular reviews.',
-      startDate: '2019-03-01',
+        ' Utilized Azure monitoring tools and automated scripts for proactive database health checks and performance optimization. Engineered real-time audio processing pipelines for applications requiring instant feedback, improving user interaction efficiency. Worked cross-functionally with product and engineering teams to deploy Soundsafe.ai solutions at scale, supporting continuous improvement in content safety.',
+      startDate: '2025-04-07',
     },
     {
-      company: 'DevSolutions',
-      jobTitle: 'Full Stack Developer',
+      company: 'Virtusa',
+      jobTitle: 'Software Engineer',
       description:
-        'Created end-to-end solutions integrating APIs and third-party services. Maintained legacy systems while introducing modern technologies.',
-      startDate: '2017-10-10',
+        '	Developed an event-driven fraud detection system using AWS SNS, SQS, and DynamoDB Streams, improving fraud detection speed by 70% and reducing chargebacks by 30%.	Engineered RESTful APIs, enabling seamless client-server communication and improving API response efficiency by 35%.',
+      startDate: '2022-12-01',
+    },
+    {
+      company: 'The Sparks Foundation',
+      jobTitle: 'Data Analytics Intern',
+      description:
+        '	Created SQL-based analytics models to track user spending patterns, increasing targeted marketing efficiency by 35% and boosting revenue. Managed multiple high-priority projects in fast-paced environments, meeting 100% deadlines while maintaining code quality.',
+      startDate: '2021-04-10',
     },
   ],
 };

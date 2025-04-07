@@ -5,7 +5,7 @@ import { FiGithub } from "react-icons/fi";
 
 const colors = {
   primary: '#8A2BE2', // Violet
-  secondary: '#4B0082', // Indigo
+  secondary: 'green', // Indigo
   accent: '#DA70D6', // Orchid
   text: '#E9E9E9', // Light Grey
   background: '#1F1F1F', // Almost Black
@@ -321,18 +321,32 @@ const GitHubIcon = styled(FiGithub)`
 const mockedData = {
   projects: [
     {
-      title: 'ProjectOne',
+      title: 'Stocks App',
       description:
-        'This project processes 1 million transactions daily using SHA-256 encryption for security. It is built with modern web technologies.',
-      technologies: ['ReactJS', 'Express.js', 'Python'],
-      glink: 'https://github.com/example/project-one',
+        'Uses AR to create immersive, interactive stock graphs that enhance data comprehension by approximately 30%, enabling users to visually analyze trends in a 3D space. Provides instant insights with response times under 500ms, delivering timely market updates and analytics with an estimated accuracy rate exceeding 90%. Merges visualization, real-time insights, and predictive modeling into one cohesive tool, empowering investors to make well-informed decisions and potentially increasing investment confidence by up to 20%.',
+      technologies: ['Java SpringBoot', 'Flutter', 'Java','Javascript','Dart','Firebase','Azure','Redis'],
+      glink: 'https://github.com/steelydr/stock_application_app',
     },
     {
-      title: 'ProjectTwo',
+      title: 'Nike ChatBot',
       description:
-        'An innovative solution handling complex algorithms and ensuring secure data flow using cutting-edge encryption. A robust and scalable project.',
-      technologies: ['Java SpringBoot', 'Linux', 'Oracle VM VirtualBox'],
-      glink: 'https://github.com/example/project-two',
+        'Powered by ChatGPT-4, the app delivers highly contextual responses with an estimated accuracy rate exceeding 90% in understanding user queries, ensuring natural and engaging conversations. Designed with a modern, user-friendly interface that has shown to boost engagement by approximately 25%, with usability tests reporting over 95% user satisfaction. Built to handle high traffic, the application supports thousands of concurrent interactions while maintaining an uptime of around 99.9%, making it robust for large-scale deployment.',
+      technologies: ['Nodejs','sql','Reactjs','Express.js'],
+      glink: 'https://github.com/steelydr/NikeChatBotApplication4o',
+    },
+    {
+      title: 'Generate QA',
+      description:
+        'Optimized for performance, the tool can process over 100 documents per minute, ensuring rapid generation of Q&A content for large datasets. Designed as a modular Python package, it easily integrates with existing NLP workflows, potentially reducing development time by up to 30% through its straightforward API and clear documentation.',
+      technologies: ['Python', 'HTML', 'CSS','Flask','Docker','Anaconda'],
+      glink: 'https://github.com/steelydr/generate_qa_nlp',
+    },
+    {
+      title: 'Blogs',
+      description:
+        'Integrates a SERP API to recommend local events and activities, leveraging real-time weather data and IP geolocation, resulting in a 15% increase in user interaction by tailoring suggestions to current conditions and location. Merges multiple data sources to track active readership and optimize content delivery, providing comprehensive insights into user behavior that could potentially uplift overall retention and satisfaction by 20%.',
+      technologies: ['Npm','Reactjs','Express.js','Docker','Nodejs'],
+      glink: 'https://github.com/steelydr/BlogMernStack2025',
     },
   ],
 };
@@ -375,6 +389,7 @@ const Projects = () => {
 
   const getTechLogo = (tech) => {
     switch (tech.toLowerCase()) {
+      // Existing cases
       case 'pytorch':
         return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg';
       case 'anaconda':
@@ -397,10 +412,94 @@ const Projects = () => {
         return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/r/r-original.svg';
       case 'api dog':
         return 'https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg';
+  
+      // New cases for additional technologies
+      case 'html':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg';
+      case 'css':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg';
+      case 'flutter':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg';
+      case 'firebase':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg';
+      case 'quarkus':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/quarkus/quarkus-original.svg';
+      case 'npm':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/npm/npm-original-wordmark.svg';
+      case 'npx':
+        // Using the npm logo for NPX as well
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/npm/npm-original-wordmark.svg';
+      case 'django':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-original.svg';
+      case 'flask':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg';
+  
+      // Programming Languages
+      case 'java':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg';
+      case 'dart':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg';
+      case 'javascript':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg';
+      case 'sql':
+        // Optionally you might use a MySQL or PostgreSQL icon for SQL; this uses MySQL as a generic SQL icon
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg';
+      case 'mongodb':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg';
+      case 'nosql':
+        // No standard icon for NoSQL; consider returning a custom icon or null
+        return null;
+      case 'json':
+        // There isn't a widely recognized icon for JSON in devicons, so return null or a custom icon if available
+        return null;
+      case 'xml':
+        // No standard XML icon in devicons; consider returning null or a custom URL
+        return null;
+  
+      // Frameworks/Tools
+      case 'nodejs':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg';
+      case 'spring boot':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg';
+      case 'angularjs':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg';
+      case 'nextjs':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg';
+      case 'llm’s':
+        // No standard logo; return null or a custom URL
+        return null;
+      case 'gen ai':
+        // No standard logo available; return null or a custom URL
+        return null;
+  
+      // Cloud Technologies
+      case 'aws':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg';
+      case 'azure':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg';
+      case 'google cloud':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg';
+      case 'kubernetes':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg';
+      case 'docker':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg';
+      case 'terraform':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg';
+      case 'ansible':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ansible/ansible-original.svg';
+      case 'openshift':
+        return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/openshift/openshift-original.svg';
+
+      case 'redis':
+          return 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg';
+      case 'apache kafka':
+        return 'https://cdn.worldvectorlogo.com/logos/apache-kafka-1.svg';
+  
       default:
         return null;
     }
   };
+  
 
   const highlightNumbers = (text) => {
     const phrases = ["1 million", "SHA-256"];

@@ -32,8 +32,8 @@ const ModalContent = styled(motion.div)`
   max-width: 90%;
   max-height: 90%;
   height: auto;
-  width: 500px;
-  height: 300px;
+  width: 700px;
+  height: 500px;
   border-radius: 8px;
 `;
 
