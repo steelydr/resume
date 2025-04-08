@@ -67,6 +67,7 @@ export default function RootLayout({ children }) {
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
+        <meta name="google-site-verification" content="o087uF7ht2Coqk9UaqJQlCNuCkTCV3ArmU4av2EtfXU" />
       </head>
       <CacheProvider value={cache}>
         <Global styles={globalStyles} />
