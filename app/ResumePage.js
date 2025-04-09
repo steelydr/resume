@@ -262,7 +262,7 @@ export default function ResumePage() {
         <NavListItemText primary="Git" />
       </ListItemButton>
       <ListItemButton onClick={() => scrollToSection(certificationRef)}>
-        <NavListItemText primary="Credentials" />
+        <NavListItemText primary="Certificates" />
       </ListItemButton>
     </NavList>
   );

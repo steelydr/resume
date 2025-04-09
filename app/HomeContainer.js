@@ -142,8 +142,10 @@ const mockedData = {
   firstName: "Rajeswari",
   lastName: "Depala",
   jobTitle: "Software Developer",
-  summary:
-    "I am a passionate developer with experience in creating modern, responsive web applications. I love working on challenging projects that require creative problem-solving and collaboration.",
+  summary:" I love crafting solutions that bring clarity and impact to complex problems.",
+  about1:"My journey began at Virtusa as a Software Engineer, where I explored frontend, backend, and cloud technologies.",
+  about2:"Curious about data-driven systems, I joined The Sparks Foundation as a Business Analytics Intern, and later worked on AI-powered apps at SoundSafe.AI.",
+  about3:"I earned my Bachelor's in Computer Science from VJIT, India, and am currently pursuing my Master's in CS with AI specialization at Illinois Tech, Chicago.",
   imageUrl: "image.jpg",
 };
 
@@ -202,6 +204,15 @@ export default function HomeContainerComponent() {
           <JobTitle variants={itemVariants}>A {mockedData.jobTitle}</JobTitle>
           <SummaryText variants={itemVariants}>
             {mockedData.summary}
+          </SummaryText>
+          <SummaryText variants={itemVariants}>
+            {mockedData.about1}
+          </SummaryText>
+          <SummaryText variants={itemVariants}>
+            {mockedData.about2}
+          </SummaryText>
+          <SummaryText variants={itemVariants}>
+            {mockedData.about3}
           </SummaryText>
         </LeftColumn>
         <RightColumn>
