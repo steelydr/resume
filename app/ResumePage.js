@@ -256,7 +256,7 @@ export default function ResumePage() {
         <NavListItemText primary="Projects" />
       </ListItemButton>
       <ListItemButton onClick={() => scrollToSection(experienceRef)}>
-        <NavListItemText primary="Career" />
+        <NavListItemText primary="Experience" />
       </ListItemButton>
       <ListItemButton onClick={() => scrollToSection(githubRef)}>
         <NavListItemText primary="Git" />
@@ -267,7 +267,6 @@ export default function ResumePage() {
     </NavList>
   );
 
-  // Do not render any dynamic content until mounting is complete
   if (!mounted) {
     return null;
   }
