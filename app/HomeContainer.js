@@ -143,9 +143,10 @@ const mockedData = {
   lastName: "Depala",
   jobTitle: "Software Developer",
   summary:"I’m passionate about crafting solutions that simplify complexity and create real impact.",
-  about1:"My journey kicked off at Virtusa as a Software Engineer, where I immersed myself in building full-stack applications and exploring the cloud. Driven by curiosity for data-driven decision-making, I took on a Business Analytics Internship at The Sparks Foundation, unlocking insights from data to solve real-world problems.",
-  about2:"Eager to push boundaries, I ventured into the world of AI at SoundSafe.AI, contributing to the development of intelligent, responsive applications.",
-  about3:"I hold a Bachelor’s degree in Computer Science from VJIT, India, and I’m currently pursuing my Master’s in CS with a specialization in Artificial Intelligence at Illinois Tech, Chicago.",
+  about1:"My journey kicked off at The Sparks Foundation as a Business Analytics Intern, uncovering data insights to solve real-world problems with impact.",
+  about2:"At Virtusa, I thrived as a Software Engineer, building full-stack applications and mastering cloud tech to create scalable, functional solutions.",
+  about3:"Then, at SoundSafe.AI, I engineered AI-driven applications as a Software Engineer, crafting intelligent systems that anticipate and innovate.",
+  about4:"With a Bachelor’s from VJIT, India, I completed my Master’s in AI at Illinois Tech, Chicago, ready to transform complexity into solutions.",
   imageUrl: "image.jpg",
 };
 
@@ -210,6 +211,9 @@ export default function HomeContainerComponent() {
             {mockedData.about2}
             <br></br>
             {mockedData.about3}
+            <br></br>
+            {mockedData.about4}
+
           </SummaryText>
         </LeftColumn>
         <RightColumn>
