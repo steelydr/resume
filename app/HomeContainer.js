@@ -142,10 +142,10 @@ const mockedData = {
   firstName: "Rajeswari",
   lastName: "Depala",
   jobTitle: "Software Developer",
-  summary:" I love crafting solutions that bring clarity and impact to complex problems.",
-  about1:"My journey began at Virtusa as a Software Engineer, where I explored frontend, backend, and cloud technologies.",
-  about2:"Curious about data-driven systems, I joined The Sparks Foundation as a Business Analytics Intern, and later worked on AI-powered apps at SoundSafe.AI.",
-  about3:"I earned my Bachelor's in Computer Science from VJIT, India, and am currently pursuing my Master's in CS with AI specialization at Illinois Tech, Chicago.",
+  summary:"I’m passionate about crafting solutions that simplify complexity and create real impact.",
+  about1:"My journey kicked off at Virtusa as a Software Engineer, where I immersed myself in building full-stack applications and exploring the cloud. Driven by curiosity for data-driven decision-making, I took on a Business Analytics Internship at The Sparks Foundation, unlocking insights from data to solve real-world problems.",
+  about2:"Eager to push boundaries, I ventured into the world of AI at SoundSafe.AI, contributing to the development of intelligent, responsive applications.",
+  about3:"I hold a Bachelor’s degree in Computer Science from VJIT, India, and I’m currently pursuing my Master’s in CS with a specialization in Artificial Intelligence at Illinois Tech, Chicago.",
   imageUrl: "image.jpg",
 };
 
@@ -204,14 +204,11 @@ export default function HomeContainerComponent() {
           <JobTitle variants={itemVariants}>A {mockedData.jobTitle}</JobTitle>
           <SummaryText variants={itemVariants}>
             {mockedData.summary}
-          </SummaryText>
-          <SummaryText variants={itemVariants}>
+            <br></br>
             {mockedData.about1}
-          </SummaryText>
-          <SummaryText variants={itemVariants}>
+            <br></br>
             {mockedData.about2}
-          </SummaryText>
-          <SummaryText variants={itemVariants}>
+            <br></br>
             {mockedData.about3}
           </SummaryText>
         </LeftColumn>
