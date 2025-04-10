@@ -324,6 +324,7 @@ const mockedData = {
       title: 'Stocks Application',
       text1:'Developed a cross-platform Flutter application that reduced development time by 42%, expanded user base by 8,000+ active users, and contributed to $175K in new annual subscription revenue by implementing efficient state management and custom UI components',
       text2 :'Architected and deployed a fault-tolerant Kafka streaming infrastructure that decreased data processing latency by 78%, handled 5M+ daily events with 99.99% uptime, and reduced operational costs by $320K annually through optimized resource utilization and elimination of legacy systems',
+      text3:"Optimized Redis caching strategy to accelerate data retrieval, slashing API response times by 40%, boosting throughput for 50,000 additional users, and driving $1.2M in incremental revenue.",
       technologies: ['Java SpringBoot', 'Flutter', 'Java','Javascript','Dart','Firebase','Azure','Redis'],
       glink: 'https://github.com/steelydr/stock_application_app',
     },
@@ -331,6 +332,7 @@ const mockedData = {
       title: 'Nike ChatBot (GPT4o)',
       text1:'Revamped legacy web application with a modern React.js architecture that accelerated page load speeds by 65%, reduced bounce rates by 37%, and directly contributed to a $430K increase in annual e-commerce revenue by enhancing user experience and checkout conversion rates',
       text2:'Implemented GPT-4o API integration across customer service platforms, reducing ticket resolution time by 83%, automating responses to 15,000+ monthly inquiries, and saving $290K annually in support costs while improving customer satisfaction scores by 47%',
+      text3:"Engineered high-performance SQL database queries for Nike's chatbot, reducing response time by 47% while expanding capacity by 12,000 users, increasing conversion rates by 23%, and generating $1.4M in additional quarterly revenue.",
       technologies: ['Nodejs','sql','Reactjs','Express.js'],
       glink: 'https://github.com/steelydr/NikeChatBotApplication4o',
     },
@@ -338,6 +340,7 @@ const mockedData = {
       title: 'Generate QA (NLP)',
       text1:'Implemented advanced NLP POS tagging algorithms for automated QA generation, increasing test coverage by 68%, reducing manual QA effort by 12,000+ hours annually, and improving product quality metrics that directly contributed to a $350K decrease in support costs while accelerating release cycles by 41%',
       text2:'Designed and built a scalable Flask microservice architecture that improved API response times by 76%, enabled handling of 12M+ daily requests with 99.9% uptime, and facilitated rapid feature deployment that drove $215K in new quarterly revenue through enhanced data processing capabilities',
+      text3:"Leveraged Bootstrap to build responsive NLP-driven QA website interface, improving user engagement by 38%, reducing query response time by 62%, and expanding knowledge base coverage by 17,500+ queries, resulting in 41% higher customer satisfaction scores.",
       technologies: ['Python', 'HTML', 'CSS','Flask','Docker','Anaconda'],
       glink: 'https://github.com/steelydr/generate_qa_nlp',
     },
@@ -345,6 +348,7 @@ const mockedData = {
       title: 'Blogs (Mern Stack)',
       text1:'Orchestrated a comprehensive Docker containerization initiative that reduced deployment time by 89%, eliminated 135+ configuration-related production incidents annually, and decreased infrastructure costs by $240K per year while enabling seamless scaling to support 3.5M concurrent user',
       text2:'Optimized ElasticSearch implementation for e-commerce platform, reducing search latency by 94%, increasing search accuracy to 98.7%, and driving $410K additional annual revenue through enhanced product discovery that improved conversion rates by 27% for 500K+ monthly users',
+      text3:"Streamlined npm dependencies, cutting build times by 40% and reducing package size by 25%, saving $15K/year in cloud costs.",
       technologies: ['Npm','Reactjs','Express.js','Docker','Nodejs'],
       glink: 'https://github.com/steelydr/BlogMernStack2025',
     },
@@ -507,7 +511,7 @@ const Projects = () => {
   
     return (
       <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-        <span style={{ marginRight: '8px', fontSize: '1.2rem', color: colors.accent }}>
+        <span style={{ marginRight: '8px', fontSize: '1.2rem', color: colors.accent ,transform: "rotate(270deg)", }}>
           ▼
         </span>
         <span>
@@ -571,6 +575,7 @@ const Projects = () => {
               )}
               <p>{highlightNumbers(project.text1)}</p>
               <p>{highlightNumbers(project.text2)}</p>
+              <p>{highlightNumbers(project.text3)}</p>
             </ProjectContent>
           ))}
         </div>
