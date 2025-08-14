@@ -260,28 +260,36 @@ const Timeline = styled('div')({
 const mockedData = {
   experiences: [
     {
-      company: 'SoundSafe.Ai',
-      jobTitle: 'Software Engineer',
+      company: 'SoundSafe.AI',
+      jobTitle: 'Software Engineer – Full Stack, Cloud Infrastructure & Product Development',
       description:
-        ' Utilized Azure monitoring tools and automated scripts for proactive database health checks and performance optimization. Engineered real-time audio processing pipelines for applications requiring instant feedback, improving user interaction efficiency. Worked cross-functionally with product and engineering teams to deploy Soundsafe.ai solutions at scale, supporting continuous improvement in content safety.',
-      startDate: '2025-04-07',
+        'Built a Full Stack fintech and payment processing web app with fraud prevention and PCI-DSS-compliant workflows. Designed backend architectures with REST, gRPC, GraphQL, and microservices. Created abstraction layers for payment gateways, logistics APIs, and internal systems. Enhanced UI with responsive React components for checkout, payment tracking, and shipment updates. Integrated AI-driven anomaly detection, improving transaction trust. Monitored AWS-hosted services using Prometheus & Grafana for performance optimization. Coordinated with engineering teams and French-speaking partners via Slack.',
+      startDate: '2025-01-01',
+    },
+    {
+      company: 'IFFCO (via Pravisblu Technology Services)',
+      jobTitle: 'Software Engineer – Backend Infrastructure & Feature Optimization',
+      description:
+        'Developed backend services for payment processing, fraud detection, and shipment tracking. Implemented REST and GraphQL APIs with PostgreSQL and MongoDB for low-latency performance. Enhanced compliance dashboards with intuitive UI flows and real-time data. Built logistics tracking modules with third-party API integration, reducing delivery estimate errors by 12%. Collaborated with international teams to align architecture decisions. Applied debugging, testing, and CI/CD to cut deployment times by 40%.',
+      startDate: '2023-05-01',
     },
     {
       company: 'Virtusa',
-      jobTitle: 'Software Engineer',
+      jobTitle: 'Backend Developer – API Engineering & Scalability',
       description:
-        '	Developed an event-driven fraud detection system using AWS SNS, SQS, and DynamoDB Streams, improving fraud detection speed by 70% and reducing chargebacks by 30%.	Engineered RESTful APIs, enabling seamless client-server communication and improving API response efficiency by 35%.',
-      startDate: '2022-12-01',
+        'Implemented secure, high-performance REST APIs for data-intensive apps. Built ETL processes to clean, transform, and load datasets into PostgreSQL for analytics dashboards. Optimized backend workflows to cut response times by 25% and improve scalability.',
+      startDate: '2022-01-01',
     },
     {
-      company: 'The Sparks Foundation',
-      jobTitle: 'Data Analytics Intern',
+      company: 'Tech Mahindra (via LaxOrbis)',
+      jobTitle: 'Junior Software Engineer – Full Stack Development & QA Automation',
       description:
-        '	Created SQL-based analytics models to track user spending patterns, increasing targeted marketing efficiency by 35% and boosting revenue. Managed multiple high-priority projects in fast-paced environments, meeting 100% deadlines while maintaining code quality.',
-      startDate: '2021-04-10',
+        'Developed internal monitoring dashboards for operations teams using PostgreSQL and data visualization. Automated regression and UI testing, reducing manual QA cycles by 30%. Worked with product teams on UI/UX improvements and feature refinements.',
+      startDate: '2019-08-01',
     },
   ],
 };
+
 
 // ---------------------
 // Animated Timeline Event Component
