@@ -261,28 +261,28 @@ const mockedData = {
   experiences: [
     {
       company: 'SoundSafe.AI',
-      jobTitle: 'Software Engineer – Full Stack, Cloud Infrastructure & Product Development',
+      jobTitle: 'Software Engineer',
       description:
         'Built a Full Stack fintech and payment processing web app with fraud prevention and PCI-DSS-compliant workflows. Designed backend architectures with REST, gRPC, GraphQL, and microservices. Created abstraction layers for payment gateways, logistics APIs, and internal systems. Enhanced UI with responsive React components for checkout, payment tracking, and shipment updates. Integrated AI-driven anomaly detection, improving transaction trust. Monitored AWS-hosted services using Prometheus & Grafana for performance optimization. Coordinated with engineering teams and French-speaking partners via Slack.',
       startDate: '2025-01-01',
     },
     {
       company: 'IFFCO (via Pravisblu Technology Services)',
-      jobTitle: 'Software Engineer – Backend Infrastructure & Feature Optimization',
+      jobTitle: 'Software Engineer',
       description:
         'Developed backend services for payment processing, fraud detection, and shipment tracking. Implemented REST and GraphQL APIs with PostgreSQL and MongoDB for low-latency performance. Enhanced compliance dashboards with intuitive UI flows and real-time data. Built logistics tracking modules with third-party API integration, reducing delivery estimate errors by 12%. Collaborated with international teams to align architecture decisions. Applied debugging, testing, and CI/CD to cut deployment times by 40%.',
       startDate: '2023-05-01',
     },
     {
       company: 'Virtusa',
-      jobTitle: 'Backend Developer – API Engineering & Scalability',
+      jobTitle: 'Backend Developer',
       description:
         'Implemented secure, high-performance REST APIs for data-intensive apps. Built ETL processes to clean, transform, and load datasets into PostgreSQL for analytics dashboards. Optimized backend workflows to cut response times by 25% and improve scalability.',
       startDate: '2022-01-01',
     },
     {
       company: 'Tech Mahindra (via LaxOrbis)',
-      jobTitle: 'Junior Software Engineer – Full Stack Development & QA Automation',
+      jobTitle: 'Junior Software Engineer',
       description:
         'Developed internal monitoring dashboards for operations teams using PostgreSQL and data visualization. Automated regression and UI testing, reducing manual QA cycles by 30%. Worked with product teams on UI/UX improvements and feature refinements.',
       startDate: '2019-08-01',
